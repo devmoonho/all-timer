@@ -6,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
 
+import * as firebase from 'firebase';
 
 @Component({
   templateUrl: 'app.html'
@@ -19,6 +20,16 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+    });
+
+    // Initialize Firebase
+    firebase.initializeApp({
+      apiKey: "AIzaSyArPo-eCEOdgNn2EpklD4Bp_36_rjC79ok",
+      authDomain: "all-timers.firebaseapp.com",
+      databaseURL: "https://all-timers.firebaseio.com",
+      projectId: "all-timers",
+      storageBucket: "all-timers.appspot.com",
+      messagingSenderId: "244147300030"
     });
   }
 }
