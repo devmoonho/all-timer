@@ -1,0 +1,21 @@
+{
+  "IntroSlider": {
+    "Slider1" :{
+      "Title": "dolor noster",
+      "Description": "enim quem elit quis dolore dolor dolor veniam fore minim aliqua aute eram cillu"
+    },
+    "Slider2" :{
+      "Title": "aute aute",
+      "Description": "elit duis sint quorum veniam dolore malis export culpa sunt irure sint aute"
+    },
+    "Slider3" :{
+      "Title": "dolore eram",
+      "Description": "dolore tamen illum malis nulla amet malis magna quem quid quorum summis labore"
+    },
+    "Slider4" :{
+      "Title": "quem sunt",
+      "Description": "eram elit quid fore irure quis quis summis cillum sint esse fore tempor export",
+      "Start": "START"
+    }
+  }
+}
