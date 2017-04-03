@@ -24,6 +24,9 @@
         },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "io.ionic.starter"
+        },
+        "cordova-plugin-globalization": {
+            "PACKAGE_NAME": "com.ionicframework.alltimer168497"
         }
     },
     "dependent_plugins": {}
