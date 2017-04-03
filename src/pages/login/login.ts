@@ -8,17 +8,14 @@ import { HomePage } from '../home/home';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
-  selector: 'page-start',
-  templateUrl: 'start.html'
+  selector: 'page-login',
+  templateUrl: 'login.html'
 })
-export class StartPage {
 
-  constructor(public navCtrl: NavController,
-    public translate: TranslateService) {
+export class LoginPage {
+  loginSwitch: any = "login";
+  
+  constructor( public navCtrl: NavController, public translate: TranslateService) {
+
   }
-
-  goHomePage(): void{
-    this.navCtrl.setRoot(HomePage);
-  }
-
 }

@@ -8,6 +8,7 @@ import { MyApp } from './app.component';
 // Pages
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
 
 // Utils
 import { StatusBar } from '@ionic-native/status-bar';
@@ -25,7 +26,8 @@ export function createTranslateLoader(http: Http) {
   declarations: [
     MyApp,
     HomePage,
-    StartPage
+    StartPage,
+    LoginPage,
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -42,7 +44,8 @@ export function createTranslateLoader(http: Http) {
   entryComponents: [
     MyApp,
     HomePage,
-    StartPage
+    StartPage,
+    LoginPage,
   ],
   providers: [
     StatusBar,
