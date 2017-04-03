@@ -10,6 +10,7 @@ import { HomePage } from '../pages/home/home';
 // utils
 import { TranslateService } from '@ngx-translate/core';
 import { Globalization } from '@ionic-native/globalization';
+import * as firebase from 'firebase';
 
 @Component({
   templateUrl: 'app.html'
@@ -37,5 +38,16 @@ export class MyApp {
         translate.use(userLang);
       })
     });
+
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDEdDmwkxWuyjgrkyPAjKK-YafoahwJAk4",
+      authDomain: "all-timer.firebaseapp.com",
+      databaseURL: "https://all-timer.firebaseio.com",
+      projectId: "all-timer",
+      storageBucket: "all-timer.appspot.com",
+      messagingSenderId: "902931259626"
+    };
+    firebase.initializeApp(config);
   }
 }
