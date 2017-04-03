@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-
 import { NavController } from 'ionic-angular';
+
+// pages
+import { HomePage } from '../home/home';
 
 // utils
 import {TranslateService} from '@ngx-translate/core';
@@ -12,12 +14,12 @@ import {TranslateService} from '@ngx-translate/core';
 export class StartPage {
 
   constructor(public navCtrl: NavController,
-    private translate: TranslateService) {
-      
+    public translate: TranslateService) {
+
   }
 
-  goHomePage(){
-
+  goHomePage(): void{
+    this.navCtrl.setRoot(HomePage);
   }
 
 }
