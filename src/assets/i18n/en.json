@@ -17,5 +17,17 @@
       "Description": "eram elit quid fore irure quis quis summis cillum sint esse fore tempor export",
       "Start": "START"
     }
+  },
+  "Login": {
+    "Header":{
+      "Title": "Login"
+    },
+    "Content":{
+      "UserEmail":"User Email",
+      "Password":"Password",
+      "BtnLogin":"Login",
+      "ForgetPassword":"Forget Password",
+      "SignUp":"Sign up"
+    }
   }
 }

@@ -4,7 +4,7 @@
             <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>
-            로그인
+          {{ 'Login.Header.Title' | translate }}
         </ion-title>
     </ion-navbar>
 </ion-header>
@@ -22,17 +22,23 @@
             </ion-row>
             <form class="list">
                 <ion-item>
-                    <ion-label floating>사용자 이메일</ion-label>
+                    <ion-label floating>
+                      {{ 'Login.Content.UserEmail' | translate }}
+                    </ion-label>
                     <ion-input #email type="email"></ion-input>
                 </ion-item>
                 <ion-item>
-                    <ion-label floating>패스워드</ion-label>
+                    <ion-label floating>
+                      {{ 'Login.Content.Password' | translate }}
+                    </ion-label>
                     <ion-input #password type="password"></ion-input>
                 </ion-item>
                 <div class="spacer" style="width: 300px; height: 10px;"></div>
 
                 <div padding>
-                    <button ion-button type="submit" color="teal-300" block (click)="loginUser(email.value, password.value)">로그인</button>
+                    <button ion-button type="submit" color="teal-300" block (click)="loginUser(email.value, password.value)">
+                      {{ 'Login.Content.BtnLogin' | translate }}
+                    </button>
                 </div>
             </form>
             <div class="spacer" style="width: 300px; height: 5px;"></div>
@@ -56,10 +62,14 @@
             <ion-row text-center>
                 <ion-col>
                     <button ion-button icon-left clear color="bg-500" (click)="goResetPassword()" style="padding-left: 4px;padding-right: 4px;">
-                            <div>패스워드 찾기</div>
+                            <div>
+                              {{ 'Login.Content.ForgetPassword' | translate }}
+                            </div>
                         </button>
                     <button ion-button icon-left clear color="bg-500" style="padding-left: 4px;padding-right: 4px;" (click)="goSignup()">
-                            <div>가입하기</div>
+                            <div>
+                              {{ 'Login.Content.SignUp' | translate }}
+                            </div>
                         </button>
                 </ion-col>
             </ion-row>

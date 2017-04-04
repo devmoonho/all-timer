@@ -17,5 +17,18 @@
       "Description": "각종 운동을 효과적으로 수행 할 수 있는 타이머가 있습니다. 지금 시작해 보시죠.",
       "Start": "시작하기"
     }
+  },
+  "Login": {
+    "Header":{
+      "Title": "로그인"
+    },
+    "Content":{
+      "UserEmail":"사용자 이메일",
+      "Password":"패스워드",
+      "BtnLogin":"로그인",
+      "ForgetPassword":"패스워드 찾기",
+      "SignUp":"가입하기"
+    }
   }
+
 }

@@ -6,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 // page
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
 
 // utils
 import { TranslateService } from '@ngx-translate/core';
@@ -16,7 +17,8 @@ import * as firebase from 'firebase';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage: any = StartPage;
+  // rootPage: any = StartPage;
+  rootPage: any = LoginPage;
   globalization: any = Globalization;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, translate: TranslateService){
