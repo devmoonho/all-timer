@@ -11,33 +11,29 @@
 <ion-content padding>
     <div [ngSwitch]="loginSwitch">
         <ion-list *ngSwitchCase="'login'">
-            <div class="spacer" style="height: 0px;"></div>
-            <ion-row class="logo-row">
-                <ion-col></ion-col>
-                <ion-col width-67>
-                    <img src="assets/icon/login.png" style="display: block; width: 70%; height: auto; margin-left: auto; margin-right: auto;"
-                    />
-                </ion-col>
-                <ion-col></ion-col>
-            </ion-row>
+            <div class="spacer" style="height: 100px;"></div>
             <form class="list">
                 <ion-item>
-                    <ion-label floating>
+                    <ion-label floating style="color:#FF6E40;">
                       {{ 'Login.Content.UserEmail' | translate }}
                     </ion-label>
-                    <ion-input #email type="email"></ion-input>
+                    <ion-input sytle="color:#00695C;" #email type="email"></ion-input>
                 </ion-item>
                 <ion-item>
-                    <ion-label floating>
+                    <ion-label floating style="color:#FF6E40;">
                       {{ 'Login.Content.Password' | translate }}
                     </ion-label>
-                    <ion-input #password type="password"></ion-input>
+                    <ion-input sytle="" #password type="password"></ion-input>
                 </ion-item>
                 <div class="spacer" style="width: 300px; height: 10px;"></div>
 
-                <div padding>
-                    <button ion-button type="submit" color="teal-300" block (click)="loginUser(email.value, password.value)">
+                <div class="button_padding">
+                    <button ion-button type="submit" style="background-color:#EEEEEE; color:#FF6E40;" block (click)="loginUser(email.value, password.value)">
                       {{ 'Login.Content.BtnLogin' | translate }}
+                    </button>
+                    <div class="spacer" style="height: 2px;"></div>
+                    <button ion-button type="submit" style="background-color:#FF6E40; color:#EEEEEE;" block (click)="loginUser(email.value, password.value)">
+                      {{ 'Login.Content.SignUp' | translate }}
                     </button>
                 </div>
             </form>
@@ -58,21 +54,15 @@
                     </button>-->
                 </ion-buttons>
             </div>
-            <div class="spacer" style="width: 300px; height: 10px;"></div>
             <ion-row text-center>
                 <ion-col>
-                    <button ion-button icon-left clear color="bg-500" (click)="goResetPassword()" style="padding-left: 4px;padding-right: 4px;">
-                            <div>
-                              {{ 'Login.Content.ForgetPassword' | translate }}
-                            </div>
-                        </button>
-                    <button ion-button icon-left clear color="bg-500" style="padding-left: 4px;padding-right: 4px;" (click)="goSignup()">
-                            <div>
-                              {{ 'Login.Content.SignUp' | translate }}
-                            </div>
-                        </button>
+                  <button ion-button icon-left clear  (click)="goResetPassword()" style="padding-left: 4px;padding-right: 4px;">
+                    <div style="color:#FF6E40">
+                      {{ 'Login.Content.ForgetPassword' | translate }}
+                    </div>
+                  </button>
                 </ion-col>
-            </ion-row>
+              </ion-row>
         </ion-list>
         <ion-list *ngSwitchCase="'signup'">
             <div class="spacer" style="height: 20px;"></div>
