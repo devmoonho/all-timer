@@ -29,6 +29,16 @@
       "ForgetPassword":"패스워드 찾기",
       "SignUp":"가입하기"
     }
+  },
+  "SignUp" :{
+    "Header": {
+      "Title": "가입하기"
+    },
+    "Content":{
+      "UserName":"사용자 이름",
+      "UserEmail":"사용자 이메일",
+      "Password":"패스워드",
+      "BtnSignUp":"가입하기"
+    }
   }
-
 }

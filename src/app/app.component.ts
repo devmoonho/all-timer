@@ -18,8 +18,8 @@ import * as firebase from 'firebase';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  // rootPage: any = StartPage;
-  rootPage: any = LoginPage;
+  rootPage: any = StartPage;
+  // rootPage: any = LoginPage;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, translate: TranslateService){
     // config translage

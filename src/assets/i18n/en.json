@@ -29,5 +29,16 @@
       "ForgetPassword":"Forget Password",
       "SignUp":"Sign up"
     }
+  },
+  "SignUp" :{
+    "Header": {
+      "Title": "Sign up"
+    },
+    "Content":{
+      "UserName":"User Name",
+      "UserEmail":"User Email",
+      "Password":"Password",
+      "BtnSignUp":"Sign up"
+    }
   }
 }

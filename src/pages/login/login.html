@@ -32,7 +32,7 @@
                       {{ 'Login.Content.BtnLogin' | translate }}
                     </button>
                     <div class="spacer" style="height: 2px;"></div>
-                    <button ion-button type="submit" style="background-color:#FF6E40; color:#EEEEEE;" block (click)="loginUser(email.value, password.value)">
+                    <button ion-button type="button" style="background-color:#FF6E40; color:#EEEEEE;" block (click)="goSignup()">
                       {{ 'Login.Content.SignUp' | translate }}
                     </button>
                 </div>
@@ -65,30 +65,31 @@
               </ion-row>
         </ion-list>
         <ion-list *ngSwitchCase="'signup'">
-            <div class="spacer" style="height: 20px;"></div>
-            <ion-row class="logo-row">
-                <ion-col>
-                    <img src="assets/icon/add-people.png" style="display: block; width: 40%; height: auto; margin-left: auto; margin-right: auto;"
-                    />
-                </ion-col>
-            </ion-row>
-            <div class="spacer" style="height: 10px;"></div>
+            <div class="spacer" style="height: 100px;"></div>
             <form class="list">
                 <ion-item>
-                    <ion-label floating>사용자 이름</ion-label>
+                    <ion-label floating>
+                      {{ 'SignUp.Content.UserName' | translate }}
+                    </ion-label>
                     <ion-input #name type="text"></ion-input>
                 </ion-item>
                 <ion-item>
-                    <ion-label floating>사용자 이메일</ion-label>
+                    <ion-label floating>
+                      {{ 'SignUp.Content.UserEmail' | translate }}
+                    </ion-label>
                     <ion-input #email type="email"></ion-input>
                 </ion-item>
                 <ion-item>
-                    <ion-label floating>패스워드</ion-label>
+                    <ion-label floating>
+                      {{ 'SignUp.Content.Password' | translate }}
+                    </ion-label>
                     <ion-input #password type="password"></ion-input>
                 </ion-item>
                 <div class="spacer" style="height: 20px;"></div>
                 <div padding>
-                    <button ion-button type="submit" color="teal-300" block (click)="signup(name.value, email.value, password.value)">가입하기</button>
+                    <button ion-button type="submit" style="background-color:#FF6E40; color:#EEEEEE;" block (click)="signup(name.value, email.value, password.value)">
+                      {{ 'SignUp.Content.BtnSignUp' | translate }}
+                    </button>
                 </div>
             </form>
         </ion-list>
