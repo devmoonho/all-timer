@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Globalization } from '@ionic-native/globalization';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 // page
 import { StartPage } from '../pages/start/start';
@@ -43,6 +44,7 @@ export class MyApp {
       if (platform.is('ios')) {
         Keyboard.prototype.disableScroll(true);
       }
+      ScreenOrientation.prototype.lock('portrait');
     });
 
     // Initialize Firebase
