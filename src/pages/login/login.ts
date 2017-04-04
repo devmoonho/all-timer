@@ -24,6 +24,30 @@ export class LoginPage {
   }
 
   loginUser(email: string, password: string): void{
-    this.loginService.signInWithEmailAndPassword({email, password});
+    // this.loginService.signInWithEmailAndPassword({email, password});
+  }
+
+  goSignup() {
+    this.loginSwitch = "signup";
+  }
+
+  signup(name: string, email: string, password: string) {
+
+  }
+
+  goResetPassword(){
+    this.loginSwitch = "signup";
+  }
+
+  goGooglePlusAuth(){
+
+  }
+
+  goFacebookAuth(){
+
+  }
+
+  goTwitterAuth(){
+
   }
 }
