@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Keyboard } from '@ionic-native/keyboard';
+import { Globalization } from '@ionic-native/globalization';
 
 // page
 import { StartPage } from '../pages/start/start';
@@ -10,7 +12,6 @@ import { LoginPage } from '../pages/login/login';
 
 // utils
 import { TranslateService } from '@ngx-translate/core';
-import { Globalization } from '@ionic-native/globalization';
 import * as firebase from 'firebase';
 
 @Component({
@@ -19,7 +20,6 @@ import * as firebase from 'firebase';
 export class MyApp {
   // rootPage: any = StartPage;
   rootPage: any = LoginPage;
-  globalization: any = Globalization;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, translate: TranslateService){
     // config translage
@@ -33,12 +33,16 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
 
-      this.globalization.prototype.getPreferredLanguage()
+      Globalization.prototype.getPreferredLanguage()
       .then((res) => {
         let userLang = res.value.split('-')[0];
         userLang = /(en|ko)/gi.test(userLang) ? userLang : 'en';
         translate.use(userLang);
       })
+
+      if (platform.is('ios')) {
+        Keyboard.prototype.disableScroll(true);
+      }
     });
 
     // Initialize Firebase

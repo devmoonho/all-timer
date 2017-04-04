@@ -13,6 +13,9 @@
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.ionicframework.alltimer168497"
         },
+        "cordova-plugin-globalization": {
+            "PACKAGE_NAME": "com.ionicframework.alltimer168497"
+        },
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.ionicframework.alltimer168497"
         },
@@ -23,9 +26,6 @@
             "PACKAGE_NAME": "com.ionicframework.alltimer168497"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.alltimer168497"
-        },
-        "cordova-plugin-globalization": {
             "PACKAGE_NAME": "com.ionicframework.alltimer168497"
         }
     },

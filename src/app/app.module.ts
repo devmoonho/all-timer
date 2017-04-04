@@ -30,7 +30,13 @@ export function createTranslateLoader(http: Http) {
     LoginPage,
   ],
   imports: [
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      platforms : {
+        ios : {
+          scrollAssist: false,
+          autoFocusAssist: false}
+        }
+      }),
     HttpModule,
     TranslateModule.forRoot({
       loader: {
