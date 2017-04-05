@@ -11,7 +11,8 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 
 // services
-import { LoginService } from '../services/loginService';
+import { LoginService } from '../services/login-service';
+import { Globals } from './globals';
 
 // Utils
 import { StatusBar } from '@ionic-native/status-bar';
@@ -61,6 +62,7 @@ export function createTranslateLoader(http: Http) {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginService,
+    Globals,
   ]
 })
 export class AppModule {}
