@@ -39,6 +39,22 @@
       "UserEmail":"사용자 이메일",
       "Password":"패스워드",
       "BtnSignUp":"가입하기"
+    },
+    "Alert":{
+      "LoginErrorTitle":"로그인 에러"
     }
+  },
+  "Error":{
+      "auth/invalid-email": "이메일 형식이 맞지 않습니다.",
+      "auth/email-already-in-use": "이메일이 이미 존재하는 입니다.",
+      "auth/operation-not-allowed": "계정을 사용할 수 없습니다.",
+      "auth/weak-password": "패스워드는 최소 6자 이상입니다."
+  },
+  "Share":{
+      "Ok":"예",
+      "Cancel":"취소",
+      "Yes":"예",
+      "No":"아니오",
+      "Confirm":"확인"
   }
 }

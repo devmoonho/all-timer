@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 
 // services
-import { LoginService } from '../../services/loginService';
+import { LoginService } from '../../services/login-service';
 
 // pages
 import { HomePage } from '../home/home';
@@ -19,7 +19,11 @@ import {TranslateService} from '@ngx-translate/core';
 export class LoginPage {
   loginSwitch: any = "login";
 
-  constructor( public navCtrl: NavController, public translate: TranslateService, public loginService: LoginService) {
+  constructor( public navCtrl: NavController,
+     public translate: TranslateService,
+     public loginService: LoginService,
+     public alertCtrl: AlertController
+   ) {
 
   }
 
@@ -32,7 +36,26 @@ export class LoginPage {
   }
 
   signup(name: string, email: string, password: string) {
+    this.loginService.serviceSignup({name, email, password})
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+      let message: any;
+      let title: any;
 
+      this.translate.get('Error.' + err.code)
+      .subscribe((res: string) => {
+        message = res.match("Error.")? err.message : res;
+      })
+
+      this.translate.get('SignUp.Alert.LoginErrorTitle')
+      .subscribe((res: string) => {
+        title = res;
+      })
+      this.showAlert({title, message});
+    });
   }
 
   goResetPassword(){
@@ -49,5 +72,22 @@ export class LoginPage {
 
   goTwitterAuth(){
 
+  }
+
+  showAlert({title, message}) {
+    let btnConfirm: string;
+
+    this.translate.get('Share.Confirm')
+    .subscribe((res: string) => {
+      btnConfirm = res;
+    })
+
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: message,
+      buttons: [btnConfirm]
+    });
+    
+    alert.present();
   }
 }

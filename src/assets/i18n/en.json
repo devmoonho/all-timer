@@ -39,6 +39,22 @@
       "UserEmail":"User Email",
       "Password":"Password",
       "BtnSignUp":"Sign up"
+    },
+    "Alert":{
+      "LoginErrorTitle":"Login Error"
     }
+  },
+  "Error":{
+      "auth/invalid-email": "The email address is badly formatted.",
+      "auth/email-already-in-use": "There already exists an account with the given email address.",
+      "auth/operation-not-allowed": "Email/password accounts are not enabled.",
+      "auth/weak-password": "Password should be at least 6 characters."
+  },
+  "Share":{
+      "Ok":"OK",
+      "Cancel":"Cancel",
+      "Yes":"Yes",
+      "No":"No",
+      "Confirm":"Confirm"
   }
 }
