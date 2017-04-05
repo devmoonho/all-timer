@@ -42,7 +42,8 @@ export class MyApp {
       })
 
       if (platform.is('ios')) {
-        Keyboard.prototype.disableScroll(true);
+        Keyboard.prototype.disableScroll(false);
+        Keyboard.prototype.hideKeyboardAccessoryBar(false);
       }
       ScreenOrientation.prototype.lock('portrait');
     });
