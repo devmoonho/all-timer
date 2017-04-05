@@ -14,7 +14,7 @@ page-login{
   .button_padding{
       margin: 0 16px 0 16px;
   }
-  ion-label{
+  ion-label, .item-input .label-md, .item-select .label-md, .item-datetime .label-md{
     color: #FF6E40;
   }
   .item-md, .item-ios{
