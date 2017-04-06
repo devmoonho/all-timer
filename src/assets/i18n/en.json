@@ -28,6 +28,15 @@
       "BtnLogin":"Login",
       "ForgetPassword":"Forget Password",
       "SignUp":"Sign up"
+    },
+    "Alert":{
+      "ResetPasswordTitle":"Reset Password",
+      "ResetPasswordMessage":"Enter your email for reset password and check your email",
+      "InputEmail":"User Email",
+      "BtnCancel":"Cancel",
+      "BtnOk":"Ok",
+      "SendEmailTitle":"Send Email",
+      "SendEmailMessage":"An email has been sent.Please check it."
     }
   },
   "SignUp" :{

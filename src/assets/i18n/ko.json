@@ -28,6 +28,15 @@
       "BtnLogin":"로그인",
       "ForgetPassword":"패스워드 찾기",
       "SignUp":"가입하기"
+    },
+    "Alert":{
+      "ResetPasswordTitle":"패스워드 재설정",
+      "ResetPasswordMessage":"패스워드 재설정을 위한 사용자 이메일을 적고 발송된 이메일을 확인해 주세요",
+      "InputEmail":"사용자 이메일",
+      "BtnCancel":"취소",
+      "BtnOk":"확인",
+      "SendEmailTitle":"메일발송",
+      "SendEmailMessage":"이메일이 발송되었습니다. 확인해 주세요"
     }
   },
   "SignUp" :{
