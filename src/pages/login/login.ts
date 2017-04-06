@@ -18,6 +18,7 @@ import {TranslateService} from '@ngx-translate/core';
 
 export class LoginPage {
   loginSwitch: any = "login";
+  bgImage: string = './assets/icon/login.png';
 
   constructor( public navCtrl: NavController,
      public translate: TranslateService,
@@ -33,6 +34,7 @@ export class LoginPage {
 
   goSignup() {
     this.loginSwitch = "signup";
+    this.bgImage = "./assets/icon/login.png";
   }
 
   signup(name: string, email: string, password: string) {
@@ -87,7 +89,7 @@ export class LoginPage {
       subTitle: message,
       buttons: [btnConfirm]
     });
-    
+
     alert.present();
   }
 }

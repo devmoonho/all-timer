@@ -8,7 +8,7 @@
         </ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content padding [style.backgroundImage]="'url(' + bgImage + ')'">
     <div [ngSwitch]="loginSwitch">
         <ion-list *ngSwitchCase="'login'">
             <div class="spacer" style="height: 100px;"></div>
@@ -68,26 +68,26 @@
             <div class="spacer" style="height: 100px;"></div>
             <form class="list">
                 <ion-item>
-                    <ion-label floating>
+                    <ion-label floating style="color:#FF6E40;">
                       {{ 'SignUp.Content.UserName' | translate }}
                     </ion-label>
                     <ion-input #name type="text"></ion-input>
                 </ion-item>
                 <ion-item>
-                    <ion-label floating>
+                    <ion-label floating style="color:#FF6E40;">
                       {{ 'SignUp.Content.UserEmail' | translate }}
                     </ion-label>
                     <ion-input #email type="email"></ion-input>
                 </ion-item>
                 <ion-item>
-                    <ion-label floating>
+                    <ion-label floating style="color:#FF6E40;">
                       {{ 'SignUp.Content.Password' | translate }}
                     </ion-label>
                     <ion-input #password type="password"></ion-input>
                 </ion-item>
-                <div class="spacer" style="height: 20px;"></div>
+                <div class="spacer" style="height: 10px;"></div>
                 <div padding>
-                    <button ion-button type="submit" style="background-color:#FF6E40; color:#EEEEEE;" block (click)="signup(name.value, email.value, password.value)">
+                    <button ion-button type="submit" round full style="background-color:#FF6E40; color:#EEEEEE;" (click)="signup(name.value, email.value, password.value)">
                       {{ 'SignUp.Content.BtnSignUp' | translate }}
                     </button>
                 </div>
