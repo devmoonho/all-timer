@@ -4,22 +4,26 @@ import { Globals } from '../app/globals';
 
 // utils
 import firebase from 'firebase';
+import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class LoginService {
   public fireAuth: any;
   public fireDatabase: any;
 
-  constructor( private globals: Globals ) {
+  constructor(
+    private globals: Globals,
+    private storage: Storage
+  ) {
     this.fireAuth = firebase.auth();
     this.fireDatabase = firebase.database();
   }
 
-  createUser({email, password}){
+  private createUser({email, password}){
       return this.fireAuth.createUserWithEmailAndPassword(email, password);
   }
 
-  saveUserInfo({name, email}){
+  private saveUserInfo({name, email}){
     let user = this.fireAuth.currentUser;
     return this.fireDatabase.ref(this.globals.USERS + user.uid).set({
       username: name,
@@ -27,16 +31,70 @@ export class LoginService {
     });
   }
 
-  serviceSignup({email, name, password}): any {
+  private loginEmail({email, password}): any{
+      return this.fireAuth.signInWithEmailAndPassword(email, password);
+  }
+
+  private saveLoginInfoToLocal(): any {
+    let user = this.fireAuth.currentUser;
+    return this.storage.set('UserInfo', user);
+  }
+
+  private saveLoginInfoToServer(): any{
+    let user = this.fireAuth.currentUser;
+    console.log(user);
+    return ;
+  }
+
+  public serviceSuccessLogin(){
     return Promise.resolve()
-        .then(() => {
-            return this.createUser({email, password});
-        })
-        .then(() => {
-            return this.saveUserInfo({name, email});
-        })
-        .then(function() {
-            console.log(" ---- done ----");
-        });
+    .then(() =>{
+      return this.saveLoginInfoToLocal();
+    })
+    .then(() =>{
+      return this.saveLoginInfoToServer();
+    })
+    .then(() => {
+      console.log("---- serviceSuccessLogin done ----");
+    })
+  }
+
+  public serviceSuccessCreateUser({email, password}){
+    return Promise.resolve()
+    .then(() =>{
+      return this.loginEmail({email, password});
+    })
+    .then(() =>{
+      return this.saveLoginInfoToLocal();
+    })
+    .then(() =>{
+      return this.saveLoginInfoToServer();
+    })
+    .then(() => {
+      console.log("---- serviceSuccessCreateUser done ----");
+    })
+  }
+
+  public serviceLoginUser({email, password}): any{
+    return Promise.resolve()
+    .then(() =>{
+      return this.loginEmail({email, password});
+    })
+    .then(() => {
+      console.log("---- serviceLoginUser done ----");
+    })
+  }
+
+  public serviceSignup({email, name, password}): any {
+    return Promise.resolve()
+    .then(() => {
+      return this.createUser({email, password});
+    })
+    .then(() => {
+      return this.saveUserInfo({name, email});
+    })
+    .then(() => {
+      console.log(" ---- serviceSignup done ----");
+    });
   }
 }
