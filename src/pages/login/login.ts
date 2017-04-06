@@ -58,7 +58,8 @@ export class LoginPage {
     })
 
     let loading = this.loadingCtrl.create({
-      content: message
+      // too short time
+      // content: message
     });
 
     loading.present();
@@ -83,7 +84,7 @@ export class LoginPage {
     })
 
     let loading = this.loadingCtrl.create({
-      content: message
+      // content: message
     });
 
     loading.present();
