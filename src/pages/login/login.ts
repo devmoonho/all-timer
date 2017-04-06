@@ -108,7 +108,7 @@ export class LoginPage {
             })
             .catch((err)=>{
               console.log(err);
-              this.showAlert({titleCode: "SignUp.Alert.LoginErrorTitle", messageObj: err});
+              this.showAlert({titleCode: "Login.Alert.ResetPasswordErrorTitle", messageObj: err});
             })
           }
         }

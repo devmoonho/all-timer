@@ -35,6 +35,7 @@
       "InputEmail":"User Email",
       "BtnCancel":"Cancel",
       "BtnOk":"Ok",
+      "ResetPasswordErrorTitle":"Reset Password Error",
       "SendEmailTitle":"Send Email",
       "SendEmailMessage":"An email has been sent.Please check it."
     }
@@ -50,7 +51,7 @@
       "BtnSignUp":"Sign up"
     },
     "Alert":{
-      "LoginErrorTitle":"Login Error",
+      "LoginErrorTitle":"Singup Error",
       "CreateUserErrorTitle":"Create User Error"
     }
   },
