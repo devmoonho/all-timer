@@ -6,6 +6,8 @@ import { Globals } from '../app/globals';
 import firebase from 'firebase';
 import { Storage } from '@ionic/storage';
 
+import * as moment from 'moment';
+
 @Injectable()
 export class LoginService {
   public fireAuth: any;
@@ -17,33 +19,6 @@ export class LoginService {
   ) {
     this.fireAuth = firebase.auth();
     this.fireDatabase = firebase.database();
-  }
-
-  private createUser({email, password}){
-      return this.fireAuth.createUserWithEmailAndPassword(email, password);
-  }
-
-  private saveUserInfo({name, email}){
-    let user = this.fireAuth.currentUser;
-    return this.fireDatabase.ref(this.globals.USERS + user.uid).set({
-      username: name,
-      email: email
-    });
-  }
-
-  private loginEmail({email, password}): any{
-      return this.fireAuth.signInWithEmailAndPassword(email, password);
-  }
-
-  private saveLoginInfoToLocal(): any {
-    let user = this.fireAuth.currentUser;
-    return this.storage.set('UserInfo', user);
-  }
-
-  private saveLoginInfoToServer(): any{
-    let user = this.fireAuth.currentUser;
-    console.log(user);
-    return ;
   }
 
   public serviceSuccessLogin(){
@@ -95,6 +70,35 @@ export class LoginService {
     })
     .then(() => {
       console.log(" ---- serviceSignup done ----");
+    });
+  }
+
+  private createUser({email, password}){
+      return this.fireAuth.createUserWithEmailAndPassword(email, password);
+  }
+
+  private saveUserInfo({name, email}){
+    let user = this.fireAuth.currentUser;
+    return this.fireDatabase.ref(this.globals.USERS + user.uid).set({
+      username: name,
+      email: email
+    });
+  }
+
+  private loginEmail({email, password}): any{
+      return this.fireAuth.signInWithEmailAndPassword(email, password);
+  }
+
+  private saveLoginInfoToLocal(): any {
+    let user = this.fireAuth.currentUser;
+    return this.storage.set('UserInfo', user);
+  }
+
+  private saveLoginInfoToServer(): any {
+    let user = this.fireAuth.currentUser;
+
+    return this.fireDatabase.ref(this.globals.USERS + user.uid ).update({
+      lastConnect: moment().format('YYYYMMDDHHmmss')
     });
   }
 }
