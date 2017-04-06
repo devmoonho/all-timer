@@ -21,6 +21,16 @@ export class LoginService {
     this.fireDatabase = firebase.database();
   }
 
+  public serviceResetPassword({email}){
+    return Promise.resolve()
+    .then(() => {
+      return this.resetPassword({email});
+    })
+    .then(()=>{
+      console.log("---- serviceResetPassword done ----");
+    })
+  }
+
   public serviceSuccessLogin(){
     return Promise.resolve()
     .then(() =>{
@@ -71,6 +81,11 @@ export class LoginService {
     .then(() => {
       console.log(" ---- serviceSignup done ----");
     });
+  }
+
+
+  private resetPassword({email}){
+    return this.fireAuth.sendPasswordResetEmail(email);
   }
 
   private createUser({email, password}){

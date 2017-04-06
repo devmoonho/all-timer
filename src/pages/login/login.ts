@@ -49,6 +49,74 @@ export class LoginPage {
     });
   }
 
+  goResetPassword(): void{
+    let titleCode: string = "Login.Alert.ResetPasswordTitle";
+    let messageCode: string = "Login.Alert.ResetPasswordMessage";
+    let inputEmailCode: string = "Login.Alert.InputEmail";
+    let btnCancelCode: string = "Login.Alert.BtnCancel";
+    let btnOkCode: string = "Login.Alert.BtnOk";
+
+    let title, message, inputEmail, btnCancel, btnOk: string;
+
+    this.translate.get(titleCode)
+    .subscribe((res: string) => {
+      title = res;
+    })
+
+    this.translate.get(messageCode)
+    .subscribe((res: string) => {
+      message = res;
+    })
+
+    this.translate.get(inputEmailCode)
+    .subscribe((res: string) => {
+      inputEmail = res;
+    })
+
+    this.translate.get(btnCancelCode)
+    .subscribe((res: string) => {
+      btnCancel = res;
+    })
+
+    this.translate.get(btnOkCode)
+    .subscribe((res: string) => {
+      btnOk = res;
+    })
+
+    let prompt = this.alertCtrl.create({
+      title: title,
+      message: message,
+      inputs: [
+        {
+          name: 'email',
+          placeholder: inputEmail
+        },
+      ],
+      buttons: [
+        {
+          text: btnCancel,
+          handler: data => {
+          }
+        },
+        {
+          text: btnOk,
+          handler: data => {
+            this.loginService.serviceResetPassword({email: data.email})
+            .then((res)=>{
+              console.log(res);
+              this.showAlert({titleCode: "Login.Alert.SendEmailTitle", messageObj: "Login.Alert.SendEmailMessage"});
+            })
+            .catch((err)=>{
+              console.log(err);
+              this.showAlert({titleCode: "SignUp.Alert.LoginErrorTitle", messageObj: err});
+            })
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
   private successLogin({userInfo, messageCode}): void{
     let message: string;
 
@@ -106,10 +174,6 @@ export class LoginPage {
     this.bgImage = "./assets/icon/login.png";
   }
 
-  goResetPassword(){
-    this.loginSwitch = "signup";
-  }
-
   goGooglePlusAuth(){
 
   }
@@ -130,9 +194,11 @@ export class LoginPage {
       title = res;
     })
 
-    console.log(messageObj);
-    if(typeof message == 'string'){
-      message = messageObj;
+    if(typeof messageObj == 'string'){
+      this.translate.get(messageObj)
+      .subscribe((res: string) => {
+        message = res;
+      })
     }else{
       this.translate.get("FirebaseMessage." + messageObj.code)
       .subscribe((res: string) => {
