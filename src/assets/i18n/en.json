@@ -41,20 +41,30 @@
       "BtnSignUp":"Sign up"
     },
     "Alert":{
-      "LoginErrorTitle":"Login Error"
+      "LoginErrorTitle":"Login Error",
+      "CreateUserErrorTitle":"Create User Error"
     }
   },
-  "Error":{
-      "auth/invalid-email": "The email address is badly formatted.",
-      "auth/email-already-in-use": "There already exists an account with the given email address.",
-      "auth/operation-not-allowed": "Email/password accounts are not enabled.",
-      "auth/weak-password": "Password should be at least 6 characters."
+  "FirebaseMessage":{
+    "auth/user-not-found": "Unable to find registered user.",
+    "auth/wrong-password": "The password is invalid",
+    "auth/invalid-email": "The email address is badly formatted.",
+    "auth/email-already-in-use": "There already exists an account with the given email address.",
+    "auth/operation-not-allowed": "Email/password accounts are not enabled.",
+    "auth/weak-password": "Password should be at least 6 characters."
+  },
+  "MobileMessage":{
+    "Congratuation": "Congratulations",
+    "SuccessCreateUser":"Congratulations on your joining us.Go home after 3 seconds.",
+    "SuccessLogin":"Welcome to All timer"
   },
   "Share":{
-      "Ok":"OK",
-      "Cancel":"Cancel",
-      "Yes":"Yes",
-      "No":"No",
-      "Confirm":"Confirm"
+    "Ok":"OK",
+    "Cancel":"Cancel",
+    "Yes":"Yes",
+    "No":"No",
+    "Confirm":"Confirm",
+    "Agree":"Agree",
+    "Disagree":"Disagree"
   }
 }

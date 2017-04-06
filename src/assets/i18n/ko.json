@@ -41,20 +41,30 @@
       "BtnSignUp":"가입하기"
     },
     "Alert":{
-      "LoginErrorTitle":"로그인 에러"
+      "LoginErrorTitle":"로그인 에러",
+      "CreateUserErrorTitle":"사용자생성 에러"
     }
   },
-  "Error":{
-      "auth/invalid-email": "이메일 형식이 맞지 않습니다.",
-      "auth/email-already-in-use": "이메일이 이미 존재하는 입니다.",
-      "auth/operation-not-allowed": "계정을 사용할 수 없습니다.",
-      "auth/weak-password": "패스워드는 최소 6자 이상입니다."
+  "FirebaseMessage":{
+    "auth/user-not-found": "등록된 사용자를 찾을 수 없습니다.",
+    "auth/wrong-password": "유효하지 않은 패스워드입니다.",
+    "auth/invalid-email": "이메일 형식이 맞지 않습니다.",
+    "auth/email-already-in-use": "이메일이 이미 존재하는 입니다.",
+    "auth/operation-not-allowed": "계정을 사용할 수 없습니다.",
+    "auth/weak-password": "패스워드는 최소 6자 이상입니다."
+  },
+  "MobileMessage":{
+    "Congratuation": "축하드립니다.",
+    "SuccessCreateUser":"가입을 축하드립니다. 3초 후 홈으로 이동 합니다.",
+    "SuccessLogin":"반갑습니다."
   },
   "Share":{
-      "Ok":"예",
-      "Cancel":"취소",
-      "Yes":"예",
-      "No":"아니오",
-      "Confirm":"확인"
+    "Ok":"예",
+    "Cancel":"취소",
+    "Yes":"예",
+    "No":"아니오",
+    "Confirm":"확인",
+    "Agree":"동의",
+    "Disagree":"반대"
   }
 }
