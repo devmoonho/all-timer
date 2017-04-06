@@ -18,9 +18,11 @@ import { Globals } from './globals';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import {HttpModule, Http} from '@angular/http';
-import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { HttpModule, Http } from '@angular/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { IonicStorageModule } from '@ionic/storage';
+
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -41,6 +43,7 @@ export function createTranslateLoader(http: Http) {
           autoFocusAssist: false}
         }
       }),
+    IonicStorageModule.forRoot(),
     HttpModule,
     TranslateModule.forRoot({
       loader: {
