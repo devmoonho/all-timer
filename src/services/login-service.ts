@@ -21,6 +21,16 @@ export class LoginService {
     this.fireDatabase = firebase.database();
   }
 
+  public serviceLogout(){
+    return Promise.resolve()
+    .then(()=>{
+      return this.logout();
+    })
+    .then(()=>{
+      console.log("---- serviceLogout done ----");
+    })
+  }
+
   public serviceResetPassword({email}){
     return Promise.resolve()
     .then(() => {
@@ -83,16 +93,19 @@ export class LoginService {
     });
   }
 
+  private logout(): any{
+    return this.fireAuth.signOut();
+  }
 
-  private resetPassword({email}){
+  private resetPassword({email}): any{
     return this.fireAuth.sendPasswordResetEmail(email);
   }
 
-  private createUser({email, password}){
+  private createUser({email, password}): any{
       return this.fireAuth.createUserWithEmailAndPassword(email, password);
   }
 
-  private saveUserInfo({name, email}){
+  private saveUserInfo({name, email}): any{
     let user = this.fireAuth.currentUser;
     return this.fireDatabase.ref(this.globals.USERS + user.uid).set({
       username: name,

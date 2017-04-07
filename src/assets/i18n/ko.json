@@ -37,7 +37,11 @@
       "BtnOk":"확인",
       "ResetPasswordErrorTitle":"패스워드 재설정 에러",
       "SendEmailTitle":"메일발송",
-      "SendEmailMessage":"이메일이 발송되었습니다. 확인해 주세요"
+      "SendEmailMessage":"이메일이 발송되었습니다. 확인해 주세요",
+      "LogoutTitle":"로그아웃",
+      "LogoutMessage":"로그아웃 되었습니다.",
+      "LogoutErrorTitle":"로그아웃 에러",
+      "LogoutErrorMessage":"로그아웃 중에 에러가 발생했습니다."
     }
   },
   "SignUp" :{

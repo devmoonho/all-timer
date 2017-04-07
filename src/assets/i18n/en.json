@@ -37,7 +37,11 @@
       "BtnOk":"Ok",
       "ResetPasswordErrorTitle":"Reset Password Error",
       "SendEmailTitle":"Send Email",
-      "SendEmailMessage":"An email has been sent.Please check it."
+      "SendEmailMessage":"An email has been sent.Please check it.",
+      "LogoutTitle":"Logout",
+      "LogoutMessage":"Logged out.",
+      "LogoutErrorTitle":"Logout Error",
+      "LogoutErrorMessage":"Error occurred while logging out."
     }
   },
   "SignUp" :{
