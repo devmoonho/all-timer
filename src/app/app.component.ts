@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Platform, NavController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -18,12 +18,18 @@ import * as firebase from 'firebase';
 @Component({
   templateUrl: 'app.html'
 })
-export class MyApp {
-  rootPage: any = StartPage;
+export class MyApp implements OnInit{
+  @ViewChild('rootNav') navCtrl: NavController
+  rootPage: any;
+  // rootPage: any = StartPage;
   // rootPage: any = LoginPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, translate: TranslateService){
-    // config translage
+  constructor(platform: Platform,
+    statusBar: StatusBar,
+    splashScreen: SplashScreen,
+    translate: TranslateService
+  ){
+    // config translate
     translate.addLangs(["en", "ko"]);
     translate.setDefaultLang('en');
 
@@ -46,7 +52,9 @@ export class MyApp {
         Keyboard.prototype.hideKeyboardAccessoryBar(false);
       }
       ScreenOrientation.prototype.lock('portrait');
-    });
+
+
+    });//platform.ready()
 
     // Initialize Firebase
     var config = {
@@ -58,5 +66,17 @@ export class MyApp {
       messagingSenderId: "902931259626"
     };
     firebase.initializeApp(config);
+  }
+
+  ngOnInit() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log(user)
+        this.navCtrl.setRoot(HomePage);
+      } else {
+        this.navCtrl.setRoot(StartPage);
+        console.log("No user is signed in.")
+      }
+    });
   }
 }
