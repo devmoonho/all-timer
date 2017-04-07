@@ -6,6 +6,7 @@ import { LoginService } from '../../services/login-service';
 
 // pages
 import { HomePage } from '../home/home';
+import { SignupPage } from '../signup/signup';
 
 // utils
 import {TranslateService} from '@ngx-translate/core';
@@ -17,9 +18,6 @@ import {TranslateService} from '@ngx-translate/core';
 })
 
 export class LoginPage {
-  loginSwitch: any = "login";
-  bgImage: string = './assets/icon/login.png';
-
   constructor( public navCtrl: NavController,
     public translate: TranslateService,
     public loginService: LoginService,
@@ -28,25 +26,23 @@ export class LoginPage {
   ) {}
 
   loginEmail(email: string, password: string): void{
+    let message: string;
+
+    let loading = this.loadingCtrl.create({
+    });
+
+    loading.present();
+
     this.loginService.serviceLoginEmail({email, password})
     .then(() =>{
-      this.successLogin({userInfo:{email, password}, messageCode:"SuccessLogin.SuccessLogin"});
+      this.navCtrl.setRoot(HomePage);
+      loading.dismiss();
     })
     .catch((err) => {
       console.log(err)
-      this.showAlert({titleCode: "SignUp.Alert.LoginErrorTitle", messageObj: err});
+      loading.dismiss();
+      this.showAlert({titleCode: "Common.AlertTitle.Error", messageObj: err});
     })
-  }
-
-  signup(name: string, email: string, password: string) {
-    this.loginService.serviceSignup({email, password, name})
-    .then(() => {
-      this.successSignup({userInfo: {name, email, password}, messageCode: "MobileMessage.SuccessCreateUser"});
-    })
-    .catch((err) => {
-      console.log(err)
-      this.showAlert({titleCode: "SignUp.Alert.LoginErrorTitle", messageObj: err});
-    });
   }
 
   goResetPassword(): void{
@@ -117,61 +113,8 @@ export class LoginPage {
     prompt.present();
   }
 
-  private successLogin({userInfo, messageCode}): void{
-    let message: string;
-
-    this.translate.get(messageCode)
-    .subscribe((res: string) => {
-      message = res;
-    })
-
-    let loading = this.loadingCtrl.create({
-      // too short time
-      // content: message
-    });
-
-    loading.present();
-
-    this.loginService.serviceSuccessLogin()
-    .then((res) =>{
-      this.navCtrl.setRoot(HomePage);
-      loading.dismiss();
-    })
-    .catch((err) =>{
-      loading.dismiss();
-      this.showAlert({titleCode: "SignUp.Alert.LoginErrorTitle", messageObj: err});
-    })
-  }
-
-  private successSignup({userInfo, messageCode}) {
-    let message: string;
-
-    this.translate.get(messageCode)
-    .subscribe((res: string) => {
-      message = res;
-    })
-
-    let loading = this.loadingCtrl.create({
-      // content: message
-    });
-
-    loading.present();
-
-    this.loginService.serviceSuccessCreateUser({email:userInfo.email, password:userInfo.password})
-    .then(() => {
-      this.navCtrl.setRoot(HomePage);
-      loading.dismiss();
-    })
-    .catch((err) => {
-      console.log(err);
-      loading.dismiss();
-      this.showAlert({titleCode: "SignUp.Alert.CreateUserErrorTitle", messageObj: err});
-    })
-  }
-
   goSignup() {
-    this.loginSwitch = "signup";
-    this.bgImage = "./assets/icon/login.png";
+    this.navCtrl.push(SignupPage)
   }
 
   goGooglePlusAuth(){
@@ -206,7 +149,7 @@ export class LoginPage {
       })
     }
 
-    this.translate.get('Share.Confirm')
+    this.translate.get('Common.Confirm')
     .subscribe((res: string) => {
       btnConfirm = res;
     })
@@ -217,7 +160,7 @@ export class LoginPage {
       buttons: [{
         text: btnConfirm,
         handler: () => {
-          console.log('Confirm clicked');
+          // console.log('Confirm clicked');
         }
       }]
     });

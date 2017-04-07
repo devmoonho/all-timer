@@ -33,11 +33,11 @@ export class HomePage {
   goLogout(): void{
     this.loginService.serviceLogout()
     .then((res) =>{
-      this.showAlert({titleCode: "Login.Alert.LogoutTitle", messageObj: "Login.Alert.LogoutMessage"});
+      this.showAlert({titleCode: "Common.AlertTitle.Information", messageObj: "Login.Alert.LogoutMessage"});
     })
     .catch((err)=>{
       console.log(err);
-      this.showAlert({titleCode: "Login.Alert.LogoutErrorTitle", messageObj: "Login.Alert.LogoutErrorMessage"});
+      this.showAlert({titleCode: "Common.AlertTitle.Error", messageObj: "Login.Alert.LogoutErrorMessage"});
     })
   }
 
@@ -61,7 +61,7 @@ export class HomePage {
       })
     }
 
-    this.translate.get('Share.Confirm')
+    this.translate.get('Common.Confirm')
     .subscribe((res: string) => {
       btnConfirm = res;
     })

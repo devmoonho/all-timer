@@ -75,6 +75,13 @@ export class LoginService {
     .then(() =>{
       return this.loginEmail({email, password});
     })
+    // TODO I don't know user info need to be saved to local storage
+    // .then(() =>{
+    //   return this.saveLoginInfoToLocal();
+    // })
+    .then(() =>{
+      return this.saveLoginInfoToServer();
+    })
     .then(() => {
       console.log("---- serviceLoginUser done ----");
     })
@@ -87,6 +94,16 @@ export class LoginService {
     })
     .then(() => {
       return this.saveUserInfo({name, email});
+    })
+    .then(() =>{
+      return this.loginEmail({email, password});
+    })
+    // TODO I don't know user info need to be saved to local storage
+    // .then(() =>{
+    //   return this.saveLoginInfoToLocal();
+    // })
+    .then(() =>{
+      return this.saveLoginInfoToServer();
     })
     .then(() => {
       console.log(" ---- serviceSignup done ----");
@@ -107,7 +124,7 @@ export class LoginService {
 
   private saveUserInfo({name, email}): any{
     let user = this.fireAuth.currentUser;
-    return this.fireDatabase.ref(this.globals.USERS + user.uid).set({
+    return this.fireDatabase.ref(this.globals.SERVER_PATH_USERS + user.uid + this.globals.SERVER_PATH_USER_PROFILE).set({
       username: name,
       email: email
     });
@@ -119,13 +136,13 @@ export class LoginService {
 
   private saveLoginInfoToLocal(): any {
     let user = this.fireAuth.currentUser;
-    return this.storage.set('UserInfo', user);
+    return this.storage.set(this.globals.LOCAL_STORAGE_KEY_USER_INFO, user);
   }
 
   private saveLoginInfoToServer(): any {
     let user = this.fireAuth.currentUser;
 
-    return this.fireDatabase.ref(this.globals.USERS + user.uid ).update({
+    return this.fireDatabase.ref(this.globals.SERVER_PATH_USERS + user.uid + this.globals.SERVER_PATH_USER_PROFILE).update({
       lastConnect: moment().format('YYYYMMDDHHmmss')
     });
   }
