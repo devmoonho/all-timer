@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
+import { Globals } from '../../app/globals';
 
 // services
 import { LoginService } from '../../services/login-service';
@@ -9,7 +10,10 @@ import { HomePage } from '../home/home';
 import { SignupPage } from '../signup/signup';
 
 // utils
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
+import { GooglePlus } from '@ionic-native/google-plus';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { TwitterConnect } from '@ionic-native/twitter-connect';
 
 @Component({
   selector: 'page-login',
@@ -22,12 +26,11 @@ export class LoginPage {
     public translate: TranslateService,
     public loginService: LoginService,
     public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    public globals: Globals
   ) {}
 
   loginEmail(email: string, password: string): void{
-    let message: string;
-
     let loading = this.loadingCtrl.create({
     });
 
@@ -117,16 +120,38 @@ export class LoginPage {
     this.navCtrl.push(SignupPage)
   }
 
-  goGooglePlusAuth(){
-
+  goGooglePlusLogin(){
+    GooglePlus.prototype.login({
+      'webClientId': this.globals.WEB_CLINED_ID
+    })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.error(err)
+    });
   }
 
-  goFacebookAuth(){
-
+  goFacebookLogin(){
+    Facebook.prototype.login(
+      ["public_profile", "email"]
+    )
+    .then((res: FacebookLoginResponse)=>{
+      console.log(res);
+    })
+    .catch((err)=>{
+      console.error(err)
+    })
   }
 
-  goTwitterAuth(){
-
+  goTwitterLogin(){
+    TwitterConnect.prototype.login()
+    .then((res)=>{
+      console.log(res);
+    })
+    .catch((err)=>{
+      console.error(err);
+    })
   }
 
   showAlert({titleCode, messageObj}) {

@@ -21,7 +21,17 @@ export class LoginService {
     this.fireDatabase = firebase.database();
   }
 
-  public serviceLogout(){
+  public serviceGoogleLogin(): any{
+    return Promise.resolve()
+    .then(()=>{
+
+    })
+    .then(()=>{
+      console.log("---- serviceGoogleLogin done ----");
+    })
+  }
+
+  public serviceLogout(): any{
     return Promise.resolve()
     .then(()=>{
       return this.logout();
@@ -41,44 +51,15 @@ export class LoginService {
     })
   }
 
-  public serviceSuccessLogin(){
-    return Promise.resolve()
-    .then(() =>{
-      return this.saveLoginInfoToLocal();
-    })
-    .then(() =>{
-      return this.saveLoginInfoToServer();
-    })
-    .then(() => {
-      console.log("---- serviceSuccessLogin done ----");
-    })
-  }
-
-  public serviceSuccessCreateUser({email, password}){
-    return Promise.resolve()
-    .then(() =>{
-      return this.loginEmail({email, password});
-    })
-    .then(() =>{
-      return this.saveLoginInfoToLocal();
-    })
-    .then(() =>{
-      return this.saveLoginInfoToServer();
-    })
-    .then(() => {
-      console.log("---- serviceSuccessCreateUser done ----");
-    })
-  }
-
   public serviceLoginEmail({email, password}): any{
     return Promise.resolve()
     .then(() =>{
       return this.loginEmail({email, password});
     })
     // TODO I don't know user info need to be saved to local storage
-    // .then(() =>{
-    //   return this.saveLoginInfoToLocal();
-    // })
+    .then(() =>{
+      return this.saveLoginInfoToLocal();
+    })
     .then(() =>{
       return this.saveLoginInfoToServer();
     })
@@ -99,9 +80,9 @@ export class LoginService {
       return this.loginEmail({email, password});
     })
     // TODO I don't know user info need to be saved to local storage
-    // .then(() =>{
-    //   return this.saveLoginInfoToLocal();
-    // })
+    .then(() =>{
+      return this.saveLoginInfoToLocal();
+    })
     .then(() =>{
       return this.saveLoginInfoToServer();
     })
@@ -136,7 +117,7 @@ export class LoginService {
 
   private saveLoginInfoToLocal(): any {
     let user = this.fireAuth.currentUser;
-    return this.storage.set(this.globals.LOCAL_STORAGE_KEY_USER_INFO, user);
+    return this.storage.set(this.globals.LOCAL_STORAGE_KEY_USER_INFO, JSON.stringify(user));
   }
 
   private saveLoginInfoToServer(): any {

@@ -79,5 +79,36 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-googleplus": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-googleplus"
+        },
+        "is_top_level": true,
+        "variables": {
+            "REVERSED_CLIENT_ID": "com.googleusercontent.apps.902931259626-9dfn1usd4vmb1ffk9gao4bsgg2avdei1"
+        }
+    },
+    "cordova-plugin-facebook4": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-facebook4"
+        },
+        "is_top_level": true,
+        "variables": {
+            "APP_ID": "197315390766182",
+            "APP_NAME": "All Timer"
+        }
+    },
+    "twitter-connect-plugin": {
+        "source": {
+            "type": "registry",
+            "id": "twitter-connect-plugin"
+        },
+        "is_top_level": true,
+        "variables": {
+            "FABRIC_KEY": "540aa44ce61b01d83d12783716a90d6d93e1bcf6"
+        }
     }
 }

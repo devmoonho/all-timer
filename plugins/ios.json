@@ -33,6 +33,19 @@
         },
         "cordova-sqlite-storage": {
             "PACKAGE_NAME": "com.ionicframework.alltimer168497"
+        },
+        "cordova-plugin-googleplus": {
+            "REVERSED_CLIENT_ID": "com.googleusercontent.apps.902931259626-9dfn1usd4vmb1ffk9gao4bsgg2avdei1",
+            "PACKAGE_NAME": "com.ionicframework.alltimer168497"
+        },
+        "cordova-plugin-facebook4": {
+            "APP_ID": "197315390766182",
+            "APP_NAME": "All Timer",
+            "PACKAGE_NAME": "com.ionicframework.alltimer168497"
+        },
+        "twitter-connect-plugin": {
+            "FABRIC_KEY": "540aa44ce61b01d83d12783716a90d6d93e1bcf6",
+            "PACKAGE_NAME": "com.ionicframework.alltimer168497"
         }
     },
     "dependent_plugins": {}
