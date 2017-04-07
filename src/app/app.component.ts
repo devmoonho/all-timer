@@ -6,6 +6,8 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { Globalization } from '@ionic-native/globalization';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
+import { Globals } from './globals';
+
 // page
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
@@ -14,15 +16,16 @@ import { LoginPage } from '../pages/login/login';
 // utils
 import { TranslateService } from '@ngx-translate/core';
 import * as firebase from 'firebase';
+import * as moment from 'moment';
 
 @Component({
+  providers: [Globals],
   templateUrl: 'app.html'
 })
 export class MyApp implements OnInit{
   @ViewChild('rootNav') navCtrl: NavController
   rootPage: any;
-  // rootPage: any = StartPage;
-  // rootPage: any = LoginPage;
+  globals: any = new Globals();
 
   constructor(platform: Platform,
     statusBar: StatusBar,
@@ -72,11 +75,19 @@ export class MyApp implements OnInit{
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         console.log(user)
+        this.updateLastConnection();
         this.navCtrl.setRoot(HomePage);
       } else {
         this.navCtrl.setRoot(StartPage);
         console.log("No user is signed in.")
       }
+    });
+  }
+
+  private updateLastConnection(): void {
+    let user = firebase.auth().currentUser;
+    firebase.database().ref(this.globals.SERVER_PATH_USERS + user.uid + this.globals.SERVER_PATH_USER_PROFILE).update({
+      lastConnect: moment().format('YYYYMMDDHHmmss')
     });
   }
 }
