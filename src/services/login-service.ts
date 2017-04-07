@@ -60,7 +60,7 @@ export class LoginService {
     })
   }
 
-  public serviceLoginUser({email, password}): any{
+  public serviceLoginEmail({email, password}): any{
     return Promise.resolve()
     .then(() =>{
       return this.loginEmail({email, password});

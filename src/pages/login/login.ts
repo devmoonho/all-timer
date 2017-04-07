@@ -27,8 +27,8 @@ export class LoginPage {
     public loadingCtrl: LoadingController
   ) {}
 
-  loginUser(email: string, password: string): void{
-    this.loginService.serviceLoginUser({email, password})
+  loginEmail(email: string, password: string): void{
+    this.loginService.serviceLoginEmail({email, password})
     .then(() =>{
       this.successLogin({userInfo:{email, password}, messageCode:"SuccessLogin.SuccessLogin"});
     })
