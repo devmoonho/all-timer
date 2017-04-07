@@ -9,6 +9,7 @@ import { MyApp } from './app.component';
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
+import { SignupPage } from '../pages/signup/signup';
 
 // services
 import { LoginService } from '../services/login-service';
@@ -34,6 +35,7 @@ export function createTranslateLoader(http: Http) {
     HomePage,
     StartPage,
     LoginPage,
+    SignupPage,
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -59,6 +61,7 @@ export function createTranslateLoader(http: Http) {
     HomePage,
     StartPage,
     LoginPage,
+    SignupPage,
   ],
   providers: [
     StatusBar,

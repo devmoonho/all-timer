@@ -55,7 +55,7 @@
       "BtnSignUp":"Sign up"
     },
     "Alert":{
-      "LoginErrorTitle":"Singup Error",
+      "LoginErrorTitle":"Signup Error",
       "CreateUserErrorTitle":"Create User Error"
     }
   },
@@ -72,7 +72,12 @@
     "SuccessCreateUser":"Congratulations on your joining us.Go home after 3 seconds.",
     "SuccessLogin":"Welcome to All timer"
   },
-  "Share":{
+  "Common":{
+    "AlertTitle":{
+        "Information":"Information",
+        "Warning":"Warning",
+        "Error":"Error"
+    },
     "Ok":"OK",
     "Cancel":"Cancel",
     "Yes":"Yes",
