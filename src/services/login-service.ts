@@ -2,11 +2,17 @@ import { Injectable } from '@angular/core';
 
 import { Globals } from '../app/globals';
 
+
 // utils
 import firebase from 'firebase';
 import { Storage } from '@ionic/storage';
 
 import * as moment from 'moment';
+
+//Oauth
+import { GooglePlus } from '@ionic-native/google-plus';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { TwitterConnect } from '@ionic-native/twitter-connect';
 
 @Injectable()
 export class LoginService {
@@ -21,10 +27,23 @@ export class LoginService {
     this.fireDatabase = firebase.database();
   }
 
-  public serviceGoogleLogin(): any{
+  public serviceGooglePlusLogin(): any{
     return Promise.resolve()
     .then(()=>{
-
+      return this.googlePluselogin();
+    })
+    .then((res) =>{
+      console.log(res);
+      return this.firebaseGoogleCredentialLogin(res);
+    })
+    .then(() => {
+      return this.saveUserInfoToServer();
+    })
+    .then(() =>{
+      return this.saveLoginInfoToLocal();
+    })
+    .then(() =>{
+      return this.saveLoginInfoToServer();
     })
     .then(()=>{
       console.log("---- serviceGoogleLogin done ----");
@@ -73,8 +92,11 @@ export class LoginService {
     .then(() => {
       return this.createUser({email, password});
     })
+    .then(() =>{
+      return this.updateUserProfile({profile:{displayName:name}});
+    })
     .then(() => {
-      return this.saveUserInfo({name, email});
+      return this.saveUserInfoToServer();
     })
     .then(() =>{
       return this.loginEmail({email, password});
@@ -91,6 +113,17 @@ export class LoginService {
     });
   }
 
+  private firebaseGoogleCredentialLogin(res: any):any{
+      let credential:any = firebase.auth.GoogleAuthProvider.credential(res.idToken);
+      return this.fireAuth.signInWithCredential(credential);
+  }
+
+  private googlePluselogin():any{
+    return GooglePlus.prototype.login({
+      'webClientId': this.globals.WEB_CLINED_ID
+    })
+  }
+
   private logout(): any{
     return this.fireAuth.signOut();
   }
@@ -103,11 +136,18 @@ export class LoginService {
       return this.fireAuth.createUserWithEmailAndPassword(email, password);
   }
 
-  private saveUserInfo({name, email}): any{
+  private updateUserProfile({profile}): any{
+    let user = this.fireAuth.currentUser;
+    return user.updateProfile({
+      displayName:profile.displayName
+    });
+  }
+
+  private saveUserInfoToServer(): any{
     let user = this.fireAuth.currentUser;
     return this.fireDatabase.ref(this.globals.SERVER_PATH_USERS + user.uid + this.globals.SERVER_PATH_USER_PROFILE).set({
-      username: name,
-      email: email
+      username: user.displayName,
+      email: user.email
     });
   }
 

@@ -11,6 +11,5 @@ export class Globals{
   public LOCAL_STORAGE_KEY_USER_INFO: any = 'userInfo';
 
   // variable
-  public WEB_CLINED_ID: any = '902931259626-6jmla2upftn4rpj5tosqhdd9psc3ofso.apps.googleusercontent.com';
-  
+  public WEB_CLINED_ID: any = '902931259626-87cv97578lsa82ea92us4o3h1qje31u4.apps.googleusercontent.com';
 }

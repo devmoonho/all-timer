@@ -76,6 +76,7 @@
     "AlertTitle":{
         "Information":"Information",
         "Warning":"Warning",
+        "Notification":"Notification",
         "Error":"Error"
     },
     "Ok":"OK",

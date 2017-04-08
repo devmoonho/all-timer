@@ -44,7 +44,7 @@ export class LoginPage {
     .catch((err) => {
       console.log(err)
       loading.dismiss();
-      this.showAlert({titleCode: "Common.AlertTitle.Error", messageObj: err});
+      this.showAlert({titleCode: "Common.AlertTitle.Notification", messageObj: err});
     })
   }
 
@@ -121,15 +121,14 @@ export class LoginPage {
   }
 
   goGooglePlusLogin(){
-    GooglePlus.prototype.login({
-      'webClientId': this.globals.WEB_CLINED_ID
-    })
-    .then((res) => {
+    this.loginService.serviceGooglePlusLogin()
+    .then((res)=>{
       console.log(res);
+      return res;
     })
-    .catch((err) => {
+    .catch((err)=>{
       console.error(err)
-    });
+    })
   }
 
   goFacebookLogin(){

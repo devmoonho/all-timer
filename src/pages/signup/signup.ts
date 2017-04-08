@@ -38,7 +38,7 @@ export class SignupPage{
     .catch((err) => {
       console.log(err)
       loading.dismiss();
-      this.showAlert({titleCode: "Common.AlertTitle.Error", messageObj: err});
+      this.showAlert({titleCode: "Common.AlertTitle.Notification", messageObj: err});
     });
   }
 

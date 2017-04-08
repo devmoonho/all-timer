@@ -73,9 +73,10 @@
     "SuccessLogin":"반갑습니다."
   },
   "Common":{
-    "Title":{
+    "AlertTitle":{
         "Information":"정보",
         "Warning":"경고",
+        "Notification":"알림",
         "Error":"에러"
     },
     "Ok":"예",
