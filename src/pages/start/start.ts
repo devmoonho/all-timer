@@ -15,7 +15,6 @@ export class StartPage {
 
   constructor(public navCtrl: NavController,
     public translate: TranslateService) {
-
   }
 
   goHomePage(): void{

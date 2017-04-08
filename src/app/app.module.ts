@@ -8,14 +8,22 @@ import { MyApp } from './app.component';
 // Pages
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
+import { SignupPage } from '../pages/signup/signup';
+
+// services
+import { LoginService } from '../services/login-service';
+import { Globals } from './globals';
 
 // Utils
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import {HttpModule, Http} from '@angular/http';
-import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { HttpModule, Http } from '@angular/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { IonicStorageModule } from '@ionic/storage';
+
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -25,10 +33,19 @@ export function createTranslateLoader(http: Http) {
   declarations: [
     MyApp,
     HomePage,
-    StartPage
+    StartPage,
+    LoginPage,
+    SignupPage,
   ],
   imports: [
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      platforms : {
+        ios : {
+          scrollAssist: false,
+          autoFocusAssist: false}
+        }
+      }),
+    IonicStorageModule.forRoot(),
     HttpModule,
     TranslateModule.forRoot({
       loader: {
@@ -42,12 +59,16 @@ export function createTranslateLoader(http: Http) {
   entryComponents: [
     MyApp,
     HomePage,
-    StartPage
+    StartPage,
+    LoginPage,
+    SignupPage,
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    LoginService,
+    Globals,
   ]
 })
 export class AppModule {}

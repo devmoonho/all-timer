@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-navbar color="Amber">
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      {{ 'Login.Header.Title' | translate }}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding >
+  <div class="spacer" style="margin-top: 30%;"></div>
+  <form class="list">
+    <ion-item>
+      <ion-label floating style="color:#FF6E40;">
+        {{ 'Login.Content.UserEmail' | translate }}
+      </ion-label>
+      <ion-input sytle="color:#00695C;" #email type="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating style="color:#FF6E40;">
+        {{ 'Login.Content.Password' | translate }}
+      </ion-label>
+      <ion-input sytle="" #password type="password"></ion-input>
+    </ion-item>
+    <div class="spacer" style="width: 300px; height: 30px;"></div>
+
+    <div class="button_padding">
+      <button ion-button type="submit" block [color]="'Amber'" (click)="loginEmail(email.value, password.value)">
+        {{ 'Login.Content.BtnLogin' | translate }}
+      </button>
+      <div class="spacer" style="height: 2px;"></div>
+      <button ion-button type="button"  block  [color]="'Yellow'" (click)="goSignup()">
+        {{ 'Login.Content.SignUp' | translate }}
+      </button>
+    </div>
+  </form>
+  <div class="spacer" style="width: 300px; margin-top: 6%;"></div>
+  <div>
+    <ion-buttons text-center>
+      <button ion-button icon-only style="color:#dd4b39" clear (click)="goGooglePlusLogin()">
+        <ion-icon ios="logo-googleplus" md="logo-googleplus"></ion-icon>
+      </button>
+      <button ion-button icon-only style="color:#3b5998" clear (click)="goFacebookLogin()">
+        <ion-icon ios="logo-facebook" md="logo-facebook"></ion-icon>
+      </button>
+      <button ion-button icon-only style="color:#55acee" clear (click)="goTwitterLogin()">
+        <ion-icon ios="logo-twitter" md="logo-twitter"></ion-icon>
+      </button>
+      <!--<button ion-button icon-only style="color:#000000" clear (click)="goLinkedInAuth()">
+      <ion-icon ios="logo-linkedin" md="logo-linkedin"></ion-icon>
+    </button>-->
+  </ion-buttons>
+</div>
+<ion-row text-center>
+  <ion-col>
+    <button ion-button icon-left clear  (click)="goResetPassword()" style="padding-left: 4px;padding-right: 4px;">
+      <div style="color:#FF6E40">
+        {{ 'Login.Content.ForgetPassword' | translate }}
+      </div>
+    </button>
+  </ion-col>
+</ion-row>
+
+</ion-content>

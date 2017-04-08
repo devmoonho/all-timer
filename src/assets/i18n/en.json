@@ -17,5 +17,75 @@
       "Description": "eram elit quid fore irure quis quis summis cillum sint esse fore tempor export",
       "Start": "START"
     }
+  },
+  "Login": {
+    "Header":{
+      "Title": "Login"
+    },
+    "Content":{
+      "UserEmail":"User Email",
+      "Password":"Password",
+      "BtnLogin":"Login",
+      "ForgetPassword":"Forget Password",
+      "SignUp":"Sign up"
+    },
+    "Alert":{
+      "ResetPasswordTitle":"Reset Password",
+      "ResetPasswordMessage":"Enter your email for reset password and check your email",
+      "InputEmail":"User Email",
+      "BtnCancel":"Cancel",
+      "BtnOk":"Ok",
+      "ResetPasswordErrorTitle":"Reset Password Error",
+      "SendEmailTitle":"Send Email",
+      "SendEmailMessage":"An email has been sent.Please check it.",
+      "LogoutTitle":"Logout",
+      "LogoutMessage":"Logged out.",
+      "LogoutErrorTitle":"Logout Error",
+      "LogoutErrorMessage":"Error occurred while logging out."
+    }
+  },
+  "SignUp" :{
+    "Header": {
+      "Title": "Sign up"
+    },
+    "Content":{
+      "UserName":"User Name",
+      "UserEmail":"User Email",
+      "Password":"Password",
+      "BtnSignUp":"Sign up"
+    },
+    "Alert":{
+      "LoginErrorTitle":"Signup Error",
+      "CreateUserErrorTitle":"Create User Error"
+    }
+  },
+  "FirebaseMessage":{
+    "auth/account-exists-with-different-credential": "An account already exists with the same email addr",
+    "auth/user-not-found": "Unable to find registered user.",
+    "auth/wrong-password": "The password is invalid",
+    "auth/invalid-email": "The email address is badly formatted.",
+    "auth/email-already-in-use": "There already exists an account with the given email address.",
+    "auth/operation-not-allowed": "Email/password accounts are not enabled.",
+    "auth/weak-password": "Password should be at least 6 characters."
+  },
+  "MobileMessage":{
+    "Congratuation": "Congratulations",
+    "SuccessCreateUser":"Congratulations on your joining us.Go home after 3 seconds.",
+    "SuccessLogin":"Welcome to All timer"
+  },
+  "Common":{
+    "AlertTitle":{
+        "Information":"Information",
+        "Warning":"Warning",
+        "Notification":"Notification",
+        "Error":"Error"
+    },
+    "Ok":"OK",
+    "Cancel":"Cancel",
+    "Yes":"Yes",
+    "No":"No",
+    "Confirm":"Confirm",
+    "Agree":"Agree",
+    "Disagree":"Disagree"
   }
 }
