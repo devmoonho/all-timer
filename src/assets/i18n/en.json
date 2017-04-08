@@ -60,6 +60,7 @@
     }
   },
   "FirebaseMessage":{
+    "auth/account-exists-with-different-credential": "An account already exists with the same email addr",
     "auth/user-not-found": "Unable to find registered user.",
     "auth/wrong-password": "The password is invalid",
     "auth/invalid-email": "The email address is badly formatted.",

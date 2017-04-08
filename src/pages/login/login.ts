@@ -122,34 +122,34 @@ export class LoginPage {
 
   goGooglePlusLogin(){
     this.loginService.serviceGooglePlusLogin()
-    .then((res)=>{
-      console.log(res);
-      return res;
+    .then(() =>{
+      this.navCtrl.setRoot(HomePage);
     })
-    .catch((err)=>{
+    .catch((err) => {
       console.error(err)
+      this.showAlert({titleCode: "Common.AlertTitle.Notification", messageObj: err});
     })
   }
 
   goFacebookLogin(){
-    Facebook.prototype.login(
-      ["public_profile", "email"]
-    )
-    .then((res: FacebookLoginResponse)=>{
-      console.log(res);
+    this.loginService.serviceFacebookLogin()
+    .then(() =>{
+      this.navCtrl.setRoot(HomePage);
     })
-    .catch((err)=>{
+    .catch((err) => {
       console.error(err)
+      this.showAlert({titleCode: "Common.AlertTitle.Notification", messageObj: err});
     })
   }
 
   goTwitterLogin(){
-    TwitterConnect.prototype.login()
-    .then((res)=>{
-      console.log(res);
+    this.loginService.serviceTwitterLogin()
+    .then(() =>{
+      this.navCtrl.setRoot(HomePage);
     })
-    .catch((err)=>{
-      console.error(err);
+    .catch((err) => {
+      console.error(err)
+      this.showAlert({titleCode: "Common.AlertTitle.Notification", messageObj: err});
     })
   }
 

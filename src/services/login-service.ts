@@ -27,13 +27,58 @@ export class LoginService {
     this.fireDatabase = firebase.database();
   }
 
+  public serviceTwitterLogin(): any{
+    return Promise.resolve()
+    .then(()=>{
+      return this.twitterLogin();
+    })
+    .then((res)=>{
+      console.log(res);
+      return this.firebaseTwitterCredentialLogin(res);
+    })
+    .then(() => {
+      return this.saveUserInfoToServer();
+    })
+    .then(() =>{
+      return this.saveLoginInfoToLocal();
+    })
+    .then(() =>{
+      return this.saveLoginInfoToServer();
+    })
+    .then(()=>{
+      console.log("---- serviceTwitterLogin done ----");
+    })
+  }
+
+  public serviceFacebookLogin(): any{
+    return Promise.resolve()
+    .then(()=>{
+      return this.facebookLogin();
+    })
+    .then((res)=>{
+      console.log(res);
+      return this.firebaseFacebookCredentialLogin(res);
+    })
+    .then(() => {
+      return this.saveUserInfoToServer();
+    })
+    .then(() =>{
+      return this.saveLoginInfoToLocal();
+    })
+    .then(() =>{
+      return this.saveLoginInfoToServer();
+    })
+    .then(()=>{
+      console.log("---- serviceFacebookLogin done ----");
+    })
+  }
+
   public serviceGooglePlusLogin(): any{
     return Promise.resolve()
     .then(()=>{
       return this.googlePluselogin();
     })
     .then((res) =>{
-      console.log(res);
       return this.firebaseGoogleCredentialLogin(res);
     })
     .then(() => {
@@ -111,6 +156,26 @@ export class LoginService {
     .then(() => {
       console.log(" ---- serviceSignup done ----");
     });
+  }
+
+  private firebaseTwitterCredentialLogin(res: any): any{
+    let credential = firebase.auth.TwitterAuthProvider.credential(res.token, res.secret);
+    return this.fireAuth.signInWithCredential(credential)
+  }
+
+  private twitterLogin():any{
+    return TwitterConnect.prototype.login();
+  }
+
+  private firebaseFacebookCredentialLogin(res: any): any{
+    let credential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
+    return this.fireAuth.signInWithCredential(credential)
+  }
+
+  private facebookLogin():any{
+    return Facebook.prototype.login(
+      ["public_profile", "email"]
+    )
   }
 
   private firebaseGoogleCredentialLogin(res: any):any{
