@@ -55,7 +55,7 @@ export class MyApp implements OnInit{
         screenOrientation.lock('portrait');
       }
 
-      this.initGlobalization(globalization);
+      this.initGlobalization();
       this.initNavFirebase();
     });//platform.ready()
 
@@ -68,29 +68,6 @@ export class MyApp implements OnInit{
 
   initNavFirebase(){
     this.cordovaFirebase.grantPermission();
-  }
-
-  initGlobalization(globalization){    // config translate
-    globalization.getPreferredLanguage()
-    .then((res) => {
-      let userLang = res.value.split('-')[0];
-      userLang = /(en|ko)/gi.test(userLang) ? userLang : 'en';
-      this.translate.use(userLang);
-    })
-  }
-
-  ngOnInit() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        console.log(user)
-        this.updateLastConnection();
-        this.navCtrl.setRoot(HomePage);
-      } else {
-        this.navCtrl.setRoot(StartPage);
-        console.log("No user is signed in.")
-      }
-    });
-
     this.cordovaFirebase.onNotificationOpen()
     .subscribe((res)=>{
         console.log(res);
@@ -115,6 +92,28 @@ export class MyApp implements OnInit{
         });
         alert.present();
     })
+  }
+
+  initGlobalization(){    // config translate
+    this.globalization.getPreferredLanguage()
+    .then((res) => {
+      let userLang = res.value.split('-')[0];
+      userLang = /(en|ko)/gi.test(userLang) ? userLang : 'en';
+      this.translate.use(userLang);
+    })
+  }
+
+  ngOnInit() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log(user)
+        this.updateLastConnection();
+        this.navCtrl.setRoot(HomePage);
+      } else {
+        this.navCtrl.setRoot(StartPage);
+        console.log("No user is signed in.")
+      }
+    });
   }
 
   private updateLastConnection(): void {
