@@ -80,16 +80,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-googleplus": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-googleplus"
-        },
-        "is_top_level": true,
-        "variables": {
-            "REVERSED_CLIENT_ID": "com.googleusercontent.apps.902931259626-9dfn1usd4vmb1ffk9gao4bsgg2avdei1"
-        }
-    },
     "cordova-plugin-facebook4": {
         "source": {
             "type": "registry",
@@ -110,5 +100,23 @@
         "variables": {
             "FABRIC_KEY": "540aa44ce61b01d83d12783716a90d6d93e1bcf6"
         }
+    },
+    "cordova-plugin-googleplus": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-googleplus"
+        },
+        "is_top_level": true,
+        "variables": {
+            "REVERSED_CLIENT_ID": "com.googleusercontent.apps.902931259626-nbckc9j7b2p10dqok55ovkpmkbc1c3o4"
+        }
+    },
+    "cordova-plugin-firebase": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-firebase"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>902931259626-9dfn1usd4vmb1ffk9gao4bsgg2avdei1.apps.googleusercontent.com</string>
+	<string>902931259626-nbckc9j7b2p10dqok55ovkpmkbc1c3o4.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.902931259626-9dfn1usd4vmb1ffk9gao4bsgg2avdei1</string>
+	<string>com.googleusercontent.apps.902931259626-nbckc9j7b2p10dqok55ovkpmkbc1c3o4</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCKSafLQ1eTc15JESIQMLeUKE7R9pj9r_I</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.ionicframework.alltimer168497</string>
+	<string>com.halflemon.alltimer</string>
 	<key>PROJECT_ID</key>
 	<string>all-timer</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:902931259626:ios:f5412d5b12371795</string>
+	<string>1:902931259626:ios:de371a455a1fde67</string>
 	<key>DATABASE_URL</key>
 	<string>https://all-timer.firebaseio.com</string>
 </dict>
