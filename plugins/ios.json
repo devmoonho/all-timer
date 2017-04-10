@@ -51,5 +51,9 @@
             "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "es6-promise-plugin": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        }
+    }
 }
