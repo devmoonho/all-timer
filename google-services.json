@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:902931259626:android:f5412d5b12371795",
+        "mobilesdk_app_id": "1:902931259626:android:de371a455a1fde67",
         "android_client_info": {
-          "package_name": "com.ionicframework.alltimer168497"
+          "package_name": "com.halflemon.alltimer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "902931259626-6jmla2upftn4rpj5tosqhdd9psc3ofso.apps.googleusercontent.com",
+          "client_id": "902931259626-tta1md2vt30gpo8r4au4mtd9ra0nurki.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.ionicframework.alltimer168497",
+            "package_name": "com.halflemon.alltimer",
             "certificate_hash": "7d20ce6faa6a3a57d6c1b7d07fed608ed5354047"
           }
         },
@@ -42,6 +42,13 @@
             {
               "client_id": "902931259626-87cv97578lsa82ea92us4o3h1qje31u4.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "902931259626-nbckc9j7b2p10dqok55ovkpmkbc1c3o4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.halflemon.alltimer"
+              }
             }
           ]
         },

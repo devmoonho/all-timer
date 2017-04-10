@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ionicframework.alltimer168497" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.halflemon.alltimer" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>All timer</name>
     <description>useful timer.</description>
     <author email="dev.moonho@gmail.com" href="https://all-timers.firebaseapp.com/">Ionic Framework Team</author>
@@ -88,13 +88,13 @@
     <plugin name="cordova-sqlite-storage" spec="~2.0.2" />
 
     <plugin name="cordova-plugin-googleplus" source="npm">
-      <param name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.902931259626-9dfn1usd4vmb1ffk9gao4bsgg2avdei1"/>
+        <param name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.902931259626-nbckc9j7b2p10dqok55ovkpmkbc1c3o4" />
     </plugin>
 
     <preference name="TwitterConsumerKey" value="x4HnRlH6aVLYRtKSHPbaj7IAS" />
     <preference name="TwitterConsumerSecret" value="XP9XovsOlrMljzQnnfjAZqgaxVxi1S2fWJDtwIJXBDAUXSKO5T" />
     <preference name="deployment-target" value="7.0" />
     <plugin name="twitter-connect-plugin" source="npm" spec="0.5.0">
-      <param name="FABRIC_KEY" value="540aa44ce61b01d83d12783716a90d6d93e1bcf6"/>
+        <param name="FABRIC_KEY" value="540aa44ce61b01d83d12783716a90d6d93e1bcf6" />
     </plugin>
 </widget>

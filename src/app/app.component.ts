@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Platform, NavController } from 'ionic-angular';
+import { Platform, NavController, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -11,28 +11,31 @@ import { Globals } from './globals';
 // page
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
-import { LoginPage } from '../pages/login/login';
 
 // utils
 import { TranslateService } from '@ngx-translate/core';
 import * as firebase from 'firebase';
 import * as moment from 'moment';
+import { Firebase } from '@ionic-native/firebase';
 
 @Component({
-  providers: [Globals],
   templateUrl: 'app.html'
 })
 export class MyApp implements OnInit{
   @ViewChild('rootNav') navCtrl: NavController
   rootPage: any;
-  globals: any = new Globals();
 
-  constructor(platform: Platform,
-    statusBar: StatusBar,
-    splashScreen: SplashScreen,
-    translate: TranslateService
+  constructor(public platform: Platform,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    public globals: Globals,
+    public alertCtrl: AlertController,
+    public screenOrientation: ScreenOrientation,
+    public translate: TranslateService,
+    public globalization: Globalization,
+    public keyboard: Keyboard,
+    public cordovaFirebase: Firebase
   ){
-    // config translate
     translate.addLangs(["en", "ko"]);
     translate.setDefaultLang('en');
 
@@ -43,32 +46,37 @@ export class MyApp implements OnInit{
       statusBar.styleDefault();
       splashScreen.hide();
 
-      Globalization.prototype.getPreferredLanguage()
-      .then((res) => {
-        let userLang = res.value.split('-')[0];
-        userLang = /(en|ko)/gi.test(userLang) ? userLang : 'en';
-        translate.use(userLang);
-      })
-
       if (platform.is('ios')) {
-        Keyboard.prototype.disableScroll(false);
-        Keyboard.prototype.hideKeyboardAccessoryBar(false);
+        keyboard.disableScroll(false);
+        keyboard.hideKeyboardAccessoryBar(false);
       }
-      ScreenOrientation.prototype.lock('portrait');
 
+      if (platform.is('ios') || platform.is('android')) {
+        screenOrientation.lock('portrait');
+      }
 
+      this.initGlobalization(globalization);
+      this.initNavFirebase();
     });//platform.ready()
 
-    // Initialize Firebase
-    var config = {
-      apiKey: "AIzaSyDEdDmwkxWuyjgrkyPAjKK-YafoahwJAk4",
-      authDomain: "all-timer.firebaseapp.com",
-      databaseURL: "https://all-timer.firebaseio.com",
-      projectId: "all-timer",
-      storageBucket: "all-timer.appspot.com",
-      messagingSenderId: "902931259626"
-    };
-    firebase.initializeApp(config);
+    this.initFirebase();
+  }
+
+  initFirebase(){
+    firebase.initializeApp(this.globals.FIREBASE_CONFIG);
+  }
+
+  initNavFirebase(){
+    this.cordovaFirebase.grantPermission();
+  }
+
+  initGlobalization(globalization){    // config translate
+    globalization.getPreferredLanguage()
+    .then((res) => {
+      let userLang = res.value.split('-')[0];
+      userLang = /(en|ko)/gi.test(userLang) ? userLang : 'en';
+      this.translate.use(userLang);
+    })
   }
 
   ngOnInit() {
@@ -82,6 +90,31 @@ export class MyApp implements OnInit{
         console.log("No user is signed in.")
       }
     });
+
+    this.cordovaFirebase.onNotificationOpen()
+    .subscribe((res)=>{
+        console.log(res);
+        let message: any;
+
+        if (this.platform.is('ios')) {
+            message = res.aps.alert;
+        }
+        else{
+            message = res.body;
+        }
+
+        let alert = this.alertCtrl.create({
+          title: 'All timer',
+          subTitle: message,
+          buttons: [{
+            text: "OK",
+            handler: () => {
+              // console.log('Confirm clicked');
+            }
+          }]
+        });
+        alert.present();
+    })
   }
 
   private updateLastConnection(): void {
