@@ -24,6 +24,12 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicStorageModule } from '@ionic/storage';
 
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { TranslateService } from '@ngx-translate/core';
+import { Keyboard } from '@ionic-native/keyboard';
+import { Globalization } from '@ionic-native/globalization';
+
+import { Firebase } from '@ionic-native/firebase';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -69,6 +75,11 @@ export function createTranslateLoader(http: Http) {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginService,
     Globals,
+    ScreenOrientation,
+    TranslateService,
+    Keyboard,
+    Globalization,
+    Firebase,
   ]
 })
 export class AppModule {}
