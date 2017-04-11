@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.alltimer168497" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.halflemon.alltimer" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>All timer</name>
-  <description>This is an app that is useful timer.</description>
+  <description>useful timer.</description>
   <author email="dev.moonho@gmail.com" href="https://all-timers.firebaseapp.com/">Ionic Framework Team</author>
   <content src="index.html"/>
   <access origin="*"/>
@@ -70,11 +70,26 @@
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>
-  <preference name="SplashMaintainAspectRatio" value="true"/>
+
+  <!-- <preference name="SplashMaintainAspectRatio" value="true"/>
   <preference name="FadeSplashScreenDuration" value="300"/>
   <preference name="SplashShowOnlyFirstTime" value="false"/>
   <preference name="SplashScreen" value="screen"/>
-  <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="SplashScreenDelay" value="3000"/> -->
+
+  <preference name="AutoHideSplashScreen" value="false" />
+<preference name="SplashScreenDelay" value="10000" />
+<preference name="FadeSplashScreenDuration" value="1000" />
+<preference name="SplashScreen" value="screen" />
+<preference name="ShowSplashScreen" value="true" />
+<preference name="ShowSplashScreenSpinner" value="false" />
+<preference name="SplashShowOnlyFirstTime" value="false" />
+<preference name="FadeSplashScreen" value="true" />
+
+
+  <preference name="TwitterConsumerKey" value="x4HnRlH6aVLYRtKSHPbaj7IAS"/>
+  <preference name="TwitterConsumerSecret" value="XP9XovsOlrMljzQnnfjAZqgaxVxi1S2fWJDtwIJXBDAUXSKO5T"/>
+  <preference name="deployment-target" value="7.0"/>
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>
@@ -84,5 +99,12 @@
   <plugin name="cordova-plugin-statusbar" spec="2.2.1"/>
   <plugin name="cordova-plugin-device" spec="1.1.4"/>
   <plugin name="cordova-plugin-splashscreen" spec="~4.0.1"/>
+  <plugin name="cordova-sqlite-storage" spec="~2.0.2"/>
+  <plugin name="cordova-plugin-googleplus" source="npm">
+    <param name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.902931259626-nbckc9j7b2p10dqok55ovkpmkbc1c3o4"/>
+  </plugin>
+  <plugin name="twitter-connect-plugin" source="npm" spec="0.5.0">
+    <param name="FABRIC_KEY" value="540aa44ce61b01d83d12783716a90d6d93e1bcf6"/>
+  </plugin>
   <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
 </widget>

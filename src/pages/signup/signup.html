@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-navbar color="Yellow">
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      {{ 'SignUp.Header.Title' | translate }}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <div class="spacer" style="height: 100px;"></div>
+  <form class="list">
+    <ion-item>
+      <ion-label floating style="color:#FF6E40;">
+        {{ 'SignUp.Content.UserName' | translate }}
+      </ion-label>
+      <ion-input #name type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating style="color:#FF6E40;">
+        {{ 'SignUp.Content.UserEmail' | translate }}
+      </ion-label>
+      <ion-input #email type="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating style="color:#FF6E40;">
+        {{ 'SignUp.Content.Password' | translate }}
+      </ion-label>
+      <ion-input #password type="password"></ion-input>
+    </ion-item>
+    <div class="spacer" style="height: 10px;"></div>
+    <div padding>
+      <button ion-button class="flex_button_item" type="submit" round full [color]="'Yellow'" (click)="signup(name.value, email.value, password.value)">
+        {{ 'SignUp.Content.BtnSignUp' | translate }}
+      </button>
+    </div>
+  </form>
+</ion-content>

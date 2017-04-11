@@ -8,23 +8,51 @@
     },
     "installed_plugins": {
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.ionicframework.alltimer168497"
+            "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.ionicframework.alltimer168497"
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-facebook4": {
+            "APP_ID": "197315390766182",
+            "APP_NAME": "All Timer",
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-firebase": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-globalization": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-googleplus": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-screen-orientation": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.ionicframework.alltimer168497"
+            "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.ionicframework.alltimer168497"
+            "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ionicframework.alltimer168497"
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-sqlite-storage": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.alltimer168497"
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "twitter-connect-plugin": {
+            "FABRIC_KEY": "540aa44ce61b01d83d12783716a90d6d93e1bcf6",
+            "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "es6-promise-plugin": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        }
+    }
 }

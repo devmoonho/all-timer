@@ -2,4 +2,10 @@ page-start {
   .input-cover {
     position: static;
   }
+  .show-list-numbers-and-dots{
+    margin: 0 10px 0 10px;
+  }
+  .swiper-pagination-bullet-active{
+    background: #FFFFFF;
+  }
 }

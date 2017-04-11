@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "902931259626",
+    "firebase_url": "https://all-timer.firebaseio.com",
+    "project_id": "all-timer",
+    "storage_bucket": "all-timer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902931259626:android:de371a455a1fde67",
+        "android_client_info": {
+          "package_name": "com.halflemon.alltimer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "902931259626-tta1md2vt30gpo8r4au4mtd9ra0nurki.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.halflemon.alltimer",
+            "certificate_hash": "7d20ce6faa6a3a57d6c1b7d07fed608ed5354047"
+          }
+        },
+        {
+          "client_id": "902931259626-87cv97578lsa82ea92us4o3h1qje31u4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBpzq_WI-qwM-J2MUNvofvRPzgkeikMwE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "902931259626-87cv97578lsa82ea92us4o3h1qje31u4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "902931259626-nbckc9j7b2p10dqok55ovkpmkbc1c3o4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.halflemon.alltimer"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
