@@ -80,6 +80,10 @@ export class MyApp implements OnInit{
             message = res.body;
         }
 
+        if (message.replace(/ /g,'') == ''){
+          return ;
+        }
+
         let alert = this.alertCtrl.create({
           title: 'All timer',
           subTitle: message,

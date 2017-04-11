@@ -166,11 +166,15 @@ export class LoginPage {
       .subscribe((res: string) => {
         message = res;
       })
-    }else{
+    }else if(typeof messageObj == 'object'){
       this.translate.get("FirebaseMessage." + messageObj.code)
       .subscribe((res: string) => {
         message = res.match("FirebaseMessage.")? messageObj.message : res;
       })
+    }
+
+    if (message.replace(/ /g,'') == ''){
+      return ;
     }
 
     this.translate.get('Common.Confirm')
