@@ -11,8 +11,15 @@ page-login{
     background-position: center top;
     background-size: cover;
   }
-  .button_padding{
+  .flex_button_group{
       margin: 0 16px 0 16px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+  }
+  .flex_button_item{
+      margin: 0 5px 0 5px;
+      font-weight: bold;
   }
   // .label, .label-md{
   //   color: #FF6E40;

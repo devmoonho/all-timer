@@ -25,12 +25,12 @@
     </ion-item>
     <div class="spacer" style="width: 300px; height: 30px;"></div>
 
-    <div class="button_padding">
-      <button ion-button type="submit" block [color]="'Amber'" (click)="loginEmail(email.value, password.value)">
+    <div class="flex_button_group">
+      <button ion-button class="flex_button_item" type="submit" block [color]="'Amber'" (click)="loginEmail(email.value, password.value)">
         {{ 'Login.Content.BtnLogin' | translate }}
       </button>
-      <div class="spacer" style="height: 2px;"></div>
-      <button ion-button type="button"  block  [color]="'Yellow'" (click)="goSignup()">
+      <!-- <div class="spacer" style="height: 2px;"></div> -->
+      <button ion-button class="flex_button_item" type="button"  block  [color]="'Yellow'" (click)="goSignup()">
         {{ 'Login.Content.SignUp' | translate }}
       </button>
     </div>
