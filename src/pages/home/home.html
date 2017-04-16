@@ -18,4 +18,30 @@
   <button ion-button color="light" (click)="goLogout()">
     logout
   </button>
+  <button ion-button color="light" (click)="goIncrease()">
+    increase
+  </button>
+  <button ion-button color="light" (click)="goDecrease()">
+    decrease
+  </button>
+    <button ion-button color="light" (click)="goTimerAction(btnState)">
+        {{btnState}}
+    </button>
+    <button ion-button color="light" (click)="goTimerReset()">
+      reset
+  </button>
+  <div>
+    current: {{current}}
+  </div>
+  <div>
+    <div class="progress-wrapper">
+      <div class="progress" ng-hide="showTime">
+        <!-- {{humanizeDurationTimer(timer,'s')}} -->
+        {{timerString}}
+      </div>
+    <round-progress [current]="current" [max]="max" [radius]="radius" [rounded]="rounded">
+
+    </round-progress>
+    </div>
+  </div>
 </ion-content>

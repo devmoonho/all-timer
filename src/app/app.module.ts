@@ -31,6 +31,8 @@ import { Globalization } from '@ionic-native/globalization';
 
 import { Firebase } from '@ionic-native/firebase';
 
+import {RoundProgressModule} from 'angular-svg-round-progressbar';
+
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -59,7 +61,8 @@ export function createTranslateLoader(http: Http) {
         useFactory: (createTranslateLoader),
         deps: [Http]
       }
-    })
+    }),
+    RoundProgressModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

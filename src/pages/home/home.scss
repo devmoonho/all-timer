@@ -1,5 +1,28 @@
 page-home {
   .content, .content-ios{
-      background-color: #B2DFDB
+    background-color: #B2DFDB
+  }
+  .progress-wrapper {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin: 2px auto;
+    font-size: 21px;
+  }
+
+  .progress-wrapper path {
+    stroke: #4a62ad !important;
+  }
+
+  .progress {
+    position: absolute;
+    color: #000000;
+    font-weight: 100;
+    line-height: 1;
+    top: 50%;
+    bottom: auto;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 2rem;
   }
 }
