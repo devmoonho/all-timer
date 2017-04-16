@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { Platform, NavController, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -23,7 +23,8 @@ import { Firebase } from '@ionic-native/firebase';
 })
 export class MyApp implements OnInit{
   @ViewChild('rootNav') navCtrl: NavController
-  rootPage: any;
+  rootPage: any = null;
+  zone: NgZone;
 
   constructor(public platform: Platform,
     public statusBar: StatusBar,
@@ -38,6 +39,7 @@ export class MyApp implements OnInit{
   ){
     translate.addLangs(["en", "ko"]);
     translate.setDefaultLang('en');
+    this.initFirebase();
 
     platform.ready()
     .then(() => {
@@ -59,11 +61,11 @@ export class MyApp implements OnInit{
       this.initNavFirebase();
     });//platform.ready()
 
-    this.initFirebase();
   }
 
   initFirebase(){
     firebase.initializeApp(this.globals.FIREBASE_CONFIG);
+    this.zone = new NgZone({});
   }
 
   initNavFirebase(){
@@ -109,14 +111,16 @@ export class MyApp implements OnInit{
 
   ngOnInit() {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        console.log(user)
-        this.updateLastConnection();
-        this.navCtrl.setRoot(HomePage);
-      } else {
-        this.navCtrl.setRoot(StartPage);
-        console.log("No user is signed in.")
-      }
+      this.zone.run(() => {
+        if (!user) {
+          console.log("No user is signed in.")
+          this.rootPage = StartPage ;
+        } else {
+          console.log(user)
+          this.updateLastConnection();
+          this.rootPage = HomePage;
+        }
+      });
     });
   }
 
