@@ -14,17 +14,26 @@ page-home {
     stroke: #4a62ad !important;
   }
 
-  .progress {
+  .progress-text {
     position: absolute;
     color: #000000;
     font-weight: 100;
     line-height: 1;
-    top: 50%;
+    top: 45%;
     bottom: auto;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
-    // font-family: 'Passion One' !important;
     font-family: 'Poiret', cursive;
-    font-size: 3rem;
+    font-size: 2.6rem;
+  }
+
+  .progress-icon {
+    position: absolute;
+    color: #000000;
+    top: 68%;
+    bottom: auto;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 2.6rem;
   }
 }

@@ -5,7 +5,11 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
-
+<style>
+    i {
+      font-family: fontello;
+    }
+</style>
 <ion-content padding>
   The world is your oyster.
   <p>
@@ -33,15 +37,17 @@
   <div>
     current: {{current}}
   </div>
+
   <div>
     <div class="progress-wrapper">
-      <div class="progress" ng-hide="showTime">
-        <!-- {{humanizeDurationTimer(timer,'s')}} -->
+      <div class="progress-text" ng-hide="showTime">
         {{timerString}}
       </div>
-    <round-progress [current]="current" [max]="max" [radius]="radius" [rounded]="rounded">
+      <i class="progress-icon icon-play" ng-hide="showTime">
+      </i>
 
-    </round-progress>
+      <round-progress [current]="current" [max]="max" [radius]="radius" [rounded]="rounded">
+      </round-progress>
     </div>
   </div>
 </ion-content>
