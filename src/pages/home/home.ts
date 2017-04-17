@@ -6,6 +6,7 @@ import { NavController, AlertController } from 'ionic-angular';
 import { LoginService } from '../../services/login-service';
 
 // utils
+import { BackgroundMode } from '@ionic-native/background-mode';
 import { TranslateService } from '@ngx-translate/core';
 import * as humanizeDuration from 'humanize-duration';
 import * as moment from 'moment';
@@ -45,33 +46,19 @@ export class HomePage {
   timer: any;
   subscribtion: any;
 
-  shortEnglishHumanizer = humanizeDuration.humanizer({
-    language: 'shortEn',
-    languages: {
-      shortEn: {
-        y: function() { return 'y' },
-        mo: function() { return 'mo' },
-        w: function() { return 'w' },
-        d: function() { return 'd' },
-        h: function() { return ':' },
-        m: function() { return ':' },
-        s: function() { return '' },
-        ms: function() { return 'ms' },
-      }
-    }
-  })
 
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
     public translate: TranslateService,
-    public loginService: LoginService
+    public loginService: LoginService,
+    public backgroundMode: BackgroundMode
   ) {
     this.timer = Observable.timer(0, 1000);
   }
 
   ngOnInit() {
-    this.setTimer({day:0, hour:0, minunt:1, seconds:50});
+    this.setTimer({day:0, hour:0, minunt:1, seconds:30});
   }
 
   goIncrease():void{
@@ -87,28 +74,24 @@ export class HomePage {
     return 0;
   }
 
-  getTimeStringFormat(): string{
-
-    return "";
-  }
-
   setTimer({day, hour, minunt, seconds}){
-    let _day:number = day ;
-    let _hour:number = hour;
-    let _minunt:number = minunt;
-    let _seconds:number = seconds;
-
-    let convertSeconds = (_day * 24 * 60 * 60) + (_hour * 60 * 60) + (_minunt * 60) + _seconds;
-
+    let convertSeconds = this.utilsConvertSecond({day, hour, minunt, seconds});
     this.max = convertSeconds;
     this.current = 0;
+    this.timerString = this.utilsTimerStringFormat({current: this.current});
+  }
 
-    this.timerString = this.shortEnglishHumanizer(convertSeconds * 1000).replace(/,| /gi,'');
+  utilsTimerStringFormat({current}):string{
+    let timerVar = this.max - current;
+    return moment().startOf('day').seconds(timerVar).format('HH:mm:ss');
+  }
+
+  utilsConvertSecond({day, hour, minunt, seconds}):number{
+    return (day * 24 * 60 * 60) + (hour * 60 * 60) + (minunt * 60) + seconds;
   }
 
   goTimerAction(status){
     // let timer = this.timer;
-
     switch(status){
       case "start":
       this.timerAction({timer:this.timer, status: "s"});
@@ -136,35 +119,37 @@ export class HomePage {
     switch(status){
       case "s":
       this.subscribtion = timer.subscribe(t => {
-      this.current = t;
-      this.timerString = this.shortEnglishHumanizer(this.max * 1000 - this.current * 1000).replace(/,| /gi,'');
-      if(this.current == this.max){
-        // this.subscribtion.unsubscribe();
-        this.goTimerAction("end");
-      }
+        this.current = t;
+        this.timerString = this.utilsTimerStringFormat({current: this.current});
+        if(this.current == this.max){
+          this.goTimerAction("end");
+        }
       })
+      this.backgroundMode.enable();
       break;
 
       case "p":
       this.subscribtion.unsubscribe();
+      this.backgroundMode.disable();
       break;
 
       case "r":
       let _current = this.current;
       this.subscribtion = timer.subscribe(t => {
-      this.current = t + _current;
-      this.timerString = this.shortEnglishHumanizer(this.max * 1000 - this.current * 1000).replace(/,| /gi,'');
-      if(this.current == this.max){
-        this.goTimerAction("end");
-        // this.subscribtion.unsubscribe();
-      }
+        this.current = t + _current;
+        this.timerString = this.utilsTimerStringFormat({current: this.current});
+        if(this.current == this.max){
+          this.goTimerAction("end");
+        }
       })
+      this.backgroundMode.enable();
       break;
 
       case "e":
       this.subscribtion.unsubscribe();
       this.current = 0;
-      this.timerString = this.shortEnglishHumanizer(this.max * 1000 - this.current * 1000).replace(/,| /gi,'');
+      this.timerString = this.utilsTimerStringFormat({current: this.current});
+      this.backgroundMode.disable();
       break;
     }
 
@@ -173,6 +158,7 @@ export class HomePage {
 
   goTimerReset(){
     this.goTimerAction("end");
+    this.backgroundMode.disable();
   }
 
   startAlram(){
