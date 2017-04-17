@@ -32,6 +32,7 @@ import { Globalization } from '@ionic-native/globalization';
 import { Firebase } from '@ionic-native/firebase';
 
 import {RoundProgressModule} from 'angular-svg-round-progressbar';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -83,6 +84,7 @@ export function createTranslateLoader(http: Http) {
     Keyboard,
     Globalization,
     Firebase,
+    BackgroundMode,
   ]
 })
 export class AppModule {}
