@@ -18,7 +18,7 @@ import { Globals } from './globals';
 // Utils
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -48,6 +48,7 @@ export function createTranslateLoader(http: Http) {
     SignupPage,
   ],
   imports: [
+    BrowserModule,
     IonicModule.forRoot(MyApp, {
       platforms : {
         ios : {
