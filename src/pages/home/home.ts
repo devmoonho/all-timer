@@ -8,7 +8,6 @@ import { LoginService } from '../../services/login-service';
 // utils
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { TranslateService } from '@ngx-translate/core';
-import * as humanizeDuration from 'humanize-duration';
 import * as moment from 'moment';
 
 import { Observable } from 'rxjs/Rx';
@@ -44,10 +43,11 @@ export class HomePage {
   timerString: string = "";
   btnState: string = "start"
 
-  timer: any;
   subscribtion: any;
-
   timerList: any;
+
+  currentPosition: number = 0;
+  callbackExcuteFlow: any = '';
 
   constructor(
     public navCtrl: NavController,
@@ -69,11 +69,11 @@ export class HomePage {
       subscribtion: null,
       current: 0,
       max:0,
-      timeSet:'00:00:20',
+      timeSet:'00:00:10',
       status: 'ready',
       btnStatus: 'start',
       detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-      order: 0,
+      order: 2,
       alram: true,
       backgroundImage: "",
       color:"#E91E63",
@@ -83,7 +83,7 @@ export class HomePage {
       subscribtion: null,
       current: 0,
       max:0,
-      timeSet:'00:02:20',
+      timeSet:'00:00:10',
       status: 'ready',
       btnStatus: 'start',
       detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
@@ -97,11 +97,11 @@ export class HomePage {
       subscribtion: null,
       current: 0,
       max:0,
-      timeSet:'00:03:20',
+      timeSet:'00:0:10',
       status: 'ready',
       btnStatus: 'start',
       detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-      order:2,
+      order:3,
       alram: true,
       backgroundImage: '',
       color:"#009688",
@@ -110,6 +110,8 @@ export class HomePage {
     this.timerList .forEach((el) => {
       el.max = this.getMax(el.timeSet)
     });
+
+    this.timerList.sort(function(a, b){return a.order - b.order});
   }
 
   goIncrease():void{
@@ -125,8 +127,27 @@ export class HomePage {
     );
   }
 
-  goDecrease():void{
-    // this.current-=1;
+  goStartFlow(){
+    this.loop(this.timerList.length, this.currentPosition, (results)=>{
+      this.callbackExcuteFlow = '';
+      this.currentPosition = 0 ;
+      console.log(results)
+    })
+  }
+
+  loop (max, currentPosition, done) {
+    // Recursion base-case
+    if (this.currentPosition >= max) return done(this.currentPosition)
+
+    this.asyncTimerActions((res) => {
+      this.currentPosition +=1
+      this.loop(max, this.currentPosition, done)
+    })
+  }
+
+  asyncTimerActions(cb): any{
+    this.callbackExcuteFlow = cb;
+    this.goTimerAction(this.timerList[this.currentPosition]);
   }
 
   getMax(timeSet: string):number{
@@ -183,7 +204,7 @@ export class HomePage {
       case "end":
       this.timerAction({item, status: "e"});
       item.btnStatus = "start";
-      break;
+      if (this.callbackExcuteFlow!= '') this.callbackExcuteFlow(this.currentPosition);
     }
   }
 
@@ -215,7 +236,6 @@ export class HomePage {
         item.status = "running";
         item.timeSet= this.utilsTimerStringFormat({max: item.max, current: item.current});
         if(item.current >= item.max){
-          item.status = "complete";
           item.btnStatus = "end";
           this.goTimerAction(item);
         }

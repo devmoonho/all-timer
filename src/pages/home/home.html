@@ -23,12 +23,12 @@ i {
     logout
   </button>
   <button ion-button color="light" (click)="goIncrease()">
-    increase
-  </button>
-  <button ion-button color="light" (click)="goDecrease()">
-    decrease
-  </button>
-  <button ion-button color="light" (click)="goTimerAction(btnState)">
+     timepicker
+   </button>
+  <button ion-button color="light" (click)="goStartFlow()">
+    start Flow
+    </button>
+  <button ion-button color="light" (click)="goTimerAction(btnState, '')">
     {{btnState}}
   </button>
   <button ion-button color="light" (click)="goTimerReset()">
@@ -58,9 +58,9 @@ i {
         {{item.timeSet}}
       </div>
       <div>
-        <i *ngIf="item.btnStatus=='start'" class="icon-play progress-icon" (click)="goTimerAction(item)" ></i>
-        <i *ngIf="item.btnStatus=='pause'" class="icon-pause progress-icon" (click)="goTimerAction(item)" ></i>
-        <i *ngIf="item.btnStatus=='resume'" class="icon-play progress-icon"  (click)="goTimerAction(item)"></i>
+        <i *ngIf="item.btnStatus=='start'" class="icon-play progress-icon" (click)="goTimerAction(item, '')" ></i>
+        <i *ngIf="item.btnStatus=='pause'" class="icon-pause progress-icon" (click)="goTimerAction(item, '')" ></i>
+        <i *ngIf="item.btnStatus=='resume'" class="icon-play progress-icon"  (click)="goTimerAction(item, '')"></i>
         <i *ngIf="item.btnStatus=='end'" class="icon-play progress-icon" ></i>
       </div>
       <round-progress [current]="item.current" [max]="item.max" [radius]="radius" [rounded]="rounded" [color]=item.color >
