@@ -11,7 +11,8 @@ import { TranslateService } from '@ngx-translate/core';
 import * as humanizeDuration from 'humanize-duration';
 import * as moment from 'moment';
 
-import {Observable} from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
+import { DatePicker } from '@ionic-native/date-picker';
 
 // pages
 import { LoginPage } from '../login/login';
@@ -46,43 +47,115 @@ export class HomePage {
   timer: any;
   subscribtion: any;
 
+  timerList: any;
 
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
     public translate: TranslateService,
     public loginService: LoginService,
-    public backgroundMode: BackgroundMode
+    public backgroundMode: BackgroundMode,
+    public datePicker: DatePicker,
   ) {
-    this.timer = Observable.timer(0, 1000);
+    // this.timer = Observable.timer(0, 1000);
   }
 
   ngOnInit() {
     this.setTimer({day:0, hour:0, minunt:1, seconds:30});
+
+    this.timerList = [{
+      title:'title #1',
+      timer: Observable.timer(0, 1000),
+      subscribtion: null,
+      current: 0,
+      max:0,
+      timeSet:'00:00:20',
+      status: 'ready',
+      btnStatus: 'start',
+      detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
+      order: 0,
+      alram: true,
+      backgroundImage: "",
+      color:"#E91E63",
+    },{
+      title:'title #2',
+      timer: Observable.timer(0, 1000),
+      subscribtion: null,
+      current: 0,
+      max:0,
+      timeSet:'00:02:20',
+      status: 'ready',
+      btnStatus: 'start',
+      detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
+      order:1,
+      alram: false,
+      backgroundImage: '',
+      color:"#9C27B0",
+    },{
+      title:'title #3',
+      timer: Observable.timer(0, 1000),
+      subscribtion: null,
+      current: 0,
+      max:0,
+      timeSet:'00:03:20',
+      status: 'ready',
+      btnStatus: 'start',
+      detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
+      order:2,
+      alram: true,
+      backgroundImage: '',
+      color:"#009688",
+    }]
+
+    this.timerList .forEach((el) => {
+      el.max = this.getMax(el.timeSet)
+    });
   }
 
   goIncrease():void{
-    this.current+=1;
+    // this.current+=1;
+    this.datePicker.show({
+      date: new Date(),
+      mode: 'time',
+      androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT,
+      is24Hour: true
+    }).then(
+      date => console.log('Got date: ', date),
+      err => console.log('Error occurred while getting date: ', err)
+    );
   }
 
   goDecrease():void{
-    this.current-=1;
+    // this.current-=1;
   }
 
-  getMax():number{
+  getMax(timeSet: string):number{
+    let day:number = 0;
+    let hour:number = moment(timeSet, "HH:mm:ss").hour();
+    let minunt:number = moment(timeSet, "HH:mm:ss").minute();
+    let seconds:number = moment(timeSet, "HH:mm:ss").second();
+    return this.utilsConvertSecond({day, hour, minunt, seconds});
+  }
 
-    return 0;
+
+  onChangeTimeSet(timeSet:string): void{
+    console.log(timeSet);
+    let _hour:number = moment(timeSet, "HH:mm:ss").hour();
+    let _minunt:number = moment(timeSet, "HH:mm:ss").minute();
+    let _seconds:number = moment(timeSet, "HH:mm:ss").second();
+
+    this.setTimer({day: 0, hour:_hour, minunt: _minunt, seconds: _seconds})
   }
 
   setTimer({day, hour, minunt, seconds}){
     let convertSeconds = this.utilsConvertSecond({day, hour, minunt, seconds});
     this.max = convertSeconds;
     this.current = 0;
-    this.timerString = this.utilsTimerStringFormat({current: this.current});
+    this.timerString = this.utilsTimerStringFormat({max: this.max, current: this.current});
   }
 
-  utilsTimerStringFormat({current}):string{
-    let timerVar = this.max - current;
+  utilsTimerStringFormat({max, current}):string{
+    let timerVar = max - current;
     return moment().startOf('day').seconds(timerVar).format('HH:mm:ss');
   }
 
@@ -90,71 +163,75 @@ export class HomePage {
     return (day * 24 * 60 * 60) + (hour * 60 * 60) + (minunt * 60) + seconds;
   }
 
-  goTimerAction(status){
-    // let timer = this.timer;
-    switch(status){
+  goTimerAction(item){
+    switch(item.btnStatus){
       case "start":
-      this.timerAction({timer:this.timer, status: "s"});
-      this.btnState = "pause";
+      this.timerAction({item, status: "s"});
+      item.btnStatus= "pause";
       break;
 
       case "pause":
-      this.timerAction({timer:this.timer, status: "p"});
-      this.btnState = "resume";
+      this.timerAction({item, status: "p"});
+      item.btnStatus = "resume";
       break;
 
       case "resume":
-      this.timerAction({timer:this.timer, status: "r"});
-      this.btnState = "pause";
+      this.timerAction({item, status: "r"});
+      item.btnStatus = "pause";
       break;
 
       case "end":
-      this.timerAction({timer:this.timer, status: "e"});
-      this.btnState = "start";
+      this.timerAction({item, status: "e"});
+      item.btnStatus = "start";
       break;
     }
   }
 
-  timerAction({timer, status}){
+  timerAction({item, status}){
     switch(status){
       case "s":
-      this.subscribtion = timer.subscribe(t => {
-        this.current = t;
-        this.timerString = this.utilsTimerStringFormat({current: this.current});
-        if(this.current == this.max){
-          this.goTimerAction("end");
+      item.subscribtion = item.timer.subscribe(t => {
+        item.current = t;
+        item.status = "running";
+        item.timeSet = this.utilsTimerStringFormat({max: item.max, current: item.current});
+        if(item.current >= item.max){
+          item.btnStatus = "end";
+          this.goTimerAction(item);
         }
       })
       this.backgroundMode.enable();
       break;
 
       case "p":
-      this.subscribtion.unsubscribe();
+      item.status = "ready";
+      item.subscribtion.unsubscribe();
       this.backgroundMode.disable();
       break;
 
       case "r":
-      let _current = this.current;
-      this.subscribtion = timer.subscribe(t => {
-        this.current = t + _current;
-        this.timerString = this.utilsTimerStringFormat({current: this.current});
-        if(this.current == this.max){
-          this.goTimerAction("end");
+      let _current = item.current;
+      item.subscribtion = item.timer.subscribe(t => {
+        item.current = t + _current;
+        item.status = "running";
+        item.timeSet= this.utilsTimerStringFormat({max: item.max, current: item.current});
+        if(item.current >= item.max){
+          item.status = "complete";
+          item.btnStatus = "end";
+          this.goTimerAction(item);
         }
       })
       this.backgroundMode.enable();
       break;
 
       case "e":
-      this.subscribtion.unsubscribe();
-      this.current = 0;
-      this.timerString = this.utilsTimerStringFormat({current: this.current});
+      item.subscribtion.unsubscribe();
+      item.status = "complete";
+      item.current = 0;
+      item.timeSet= this.utilsTimerStringFormat({max: item.max, current: item.current});
       this.backgroundMode.disable();
       break;
     }
-
   }
-
 
   goTimerReset(){
     this.goTimerAction("end");

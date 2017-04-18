@@ -10,30 +10,39 @@ page-home {
     font-size: 21px;
   }
 
-  .progress-wrapper path {
-    stroke: #4a62ad !important;
-  }
-
   .progress-text {
     position: absolute;
     color: #000000;
     font-weight: 100;
     line-height: 1;
-    top: 45%;
+    top: 48%;
     bottom: auto;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
     font-family: 'Poiret', cursive;
     font-size: 2.6rem;
+    z-index: 2;
   }
 
   .progress-icon {
     position: absolute;
     color: #000000;
-    top: 68%;
+    top: 70%;
     bottom: auto;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
     font-size: 2.6rem;
+    z-index: 3;
+  }
+
+  .progress-status{
+    position: absolute;
+    // color: #607D8B;
+    top: 25%;
+    bottom: auto;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 4.5rem;
+    z-index: 1;
   }
 }

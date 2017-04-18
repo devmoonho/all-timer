@@ -6,9 +6,9 @@
   </ion-navbar>
 </ion-header>
 <style>
-    i {
-      font-family: fontello;
-    }
+i {
+  font-family: fontello;
+}
 </style>
 <ion-content padding>
   The world is your oyster.
@@ -28,26 +28,68 @@
   <button ion-button color="light" (click)="goDecrease()">
     decrease
   </button>
-    <button ion-button color="light" (click)="goTimerAction(btnState)">
-        {{btnState}}
-    </button>
-    <button ion-button color="light" (click)="goTimerReset()">
-      reset
+  <button ion-button color="light" (click)="goTimerAction(btnState)">
+    {{btnState}}
+  </button>
+  <button ion-button color="light" (click)="goTimerReset()">
+    reset
   </button>
   <div>
     current: {{current}}
   </div>
+  <ion-item>
+  <ion-label>Date</ion-label>
+    <ion-datetime  displayFormat="HH:mm:ss" (ionChange)="onChangeTimeSet(timerString)" [(ngModel)]="timerString">
+    </ion-datetime>
+  </ion-item>
 
-  <div>
-    <div class="progress-wrapper">
+<ion-card *ngFor="let item of timerList">
+  <ion-item>
+    <p>{{item.title}} November 5, 1955</p>
+  </ion-item>
+
+  <div class="progress-wrapper">
+    <div>
+      <!-- <i *ngIf="item.status=='ready'" class="progress-status"></i> -->
+      <!-- <i *ngIf="item.status=='running'" class="icon-spin3 progress-status"></i> -->
+      <i *ngIf="item.status=='complete'" [style.color]=item.color class="icon-ok progress-status"></i>
+
       <div class="progress-text" ng-hide="showTime">
-        {{timerString}}
+        {{item.timeSet}}
       </div>
-      <i class="progress-icon icon-play" ng-hide="showTime">
-      </i>
-
-      <round-progress [current]="current" [max]="max" [radius]="radius" [rounded]="rounded">
+      <div>
+        <i *ngIf="item.btnStatus=='start'" class="icon-play progress-icon" (click)="goTimerAction(item)" ></i>
+        <i *ngIf="item.btnStatus=='pause'" class="icon-pause progress-icon" (click)="goTimerAction(item)" ></i>
+        <i *ngIf="item.btnStatus=='resume'" class="icon-play progress-icon"  (click)="goTimerAction(item)"></i>
+        <i *ngIf="item.btnStatus=='end'" class="icon-play progress-icon" ></i>
+      </div>
+      <round-progress [current]="item.current" [max]="item.max" [radius]="radius" [rounded]="rounded" [color]=item.color >
       </round-progress>
     </div>
   </div>
+
+  <ion-card-content>
+    <p>{{item.detail}}</p>
+  </ion-card-content>
+
+  <ion-row>
+    <ion-col>
+      <button ion-button icon-left clear small>
+        <ion-icon name="thumbs-up"></ion-icon>
+        <div>12 Likes</div>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button ion-button icon-left clear small>
+        <ion-icon name="text"></ion-icon>
+        <div>4 Comments</div>
+      </button>
+    </ion-col>
+    <ion-col center text-center>
+      <ion-note>
+        11h ago
+      </ion-note>
+    </ion-col>
+  </ion-row>
+</ion-card>
 </ion-content>
