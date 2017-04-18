@@ -21,6 +21,7 @@
     "@angular/platform-server": "2.4.8",
     "@ionic-native/background-mode": "^3.4.4",
     "@ionic-native/core": "3.1.0",
+    "@ionic-native/date-picker": "^3.4.4",
     "@ionic-native/facebook": "^3.4.4",
     "@ionic-native/firebase": "^3.4.4",
     "@ionic-native/globalization": "^3.4.4",

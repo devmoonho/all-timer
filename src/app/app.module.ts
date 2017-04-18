@@ -33,6 +33,7 @@ import { Firebase } from '@ionic-native/firebase';
 
 import {RoundProgressModule} from 'angular-svg-round-progressbar';
 import { BackgroundMode } from '@ionic-native/background-mode';
+import { DatePicker } from '@ionic-native/date-picker';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -85,6 +86,7 @@ export function createTranslateLoader(http: Http) {
     Globalization,
     Firebase,
     BackgroundMode,
+    DatePicker,
   ]
 })
 export class AppModule {}

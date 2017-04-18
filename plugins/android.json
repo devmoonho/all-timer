@@ -51,6 +51,9 @@
         },
         "cordova-plugin-background-mode": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-datepicker": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     },
     "dependent_plugins": {
