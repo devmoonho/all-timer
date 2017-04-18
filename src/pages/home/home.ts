@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
-import { NavController, AlertController } from 'ionic-angular';
+import { Content, NavController, AlertController } from 'ionic-angular';
 
 // services
 import { LoginService } from '../../services/login-service';
@@ -22,6 +22,8 @@ import { LoginPage } from '../login/login';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  @ViewChild(Content) content: Content;
+
   counter: number = 0;
   current: number = 0;
   max: number = 0;
@@ -146,7 +148,9 @@ export class HomePage {
   }
 
   asyncTimerActions(cb): any{
+    let yOffset = document.getElementById('timerId_' + this.currentPosition).offsetTop;
     this.callbackExcuteFlow = cb;
+    this.content.scrollTo(0, yOffset - 10, 1000)
     this.goTimerAction(this.timerList[this.currentPosition]);
   }
 
@@ -157,7 +161,6 @@ export class HomePage {
     let seconds:number = moment(timeSet, "HH:mm:ss").second();
     return this.utilsConvertSecond({day, hour, minunt, seconds});
   }
-
 
   onChangeTimeSet(timeSet:string): void{
     console.log(timeSet);

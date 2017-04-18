@@ -52,8 +52,8 @@ export function createTranslateLoader(http: Http) {
     IonicModule.forRoot(MyApp, {
       platforms : {
         ios : {
-          scrollAssist: false,
-          autoFocusAssist: false}
+          scrollAssist: true,
+          autoFocusAssist: true}
         }
       }),
     IonicStorageModule.forRoot(),

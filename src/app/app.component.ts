@@ -49,7 +49,7 @@ export class MyApp implements OnInit{
       splashScreen.hide();
 
       if (platform.is('ios')) {
-        keyboard.disableScroll(false);
+        keyboard.disableScroll(true);
         keyboard.hideKeyboardAccessoryBar(false);
       }
 
