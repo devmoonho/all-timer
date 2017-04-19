@@ -11,9 +11,6 @@ import { SignupPage } from '../signup/signup';
 
 // utils
 import { TranslateService } from '@ngx-translate/core';
-import { GooglePlus } from '@ionic-native/google-plus';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
-import { TwitterConnect } from '@ionic-native/twitter-connect';
 
 @Component({
   selector: 'page-login',

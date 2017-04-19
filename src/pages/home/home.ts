@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 
 import { Content, NavController, AlertController } from 'ionic-angular';
 
@@ -12,6 +12,9 @@ import * as moment from 'moment';
 
 import { Observable } from 'rxjs/Rx';
 import { DatePicker } from '@ionic-native/date-picker';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { Device } from '@ionic-native/device';
+import { UUID } from 'angular2-uuid';
 
 // pages
 import { LoginPage } from '../login/login';
@@ -51,6 +54,8 @@ export class HomePage {
   currentPosition: number = 0;
   callbackExcuteFlow: any = '';
 
+  timerExcuteMode: any = 'continue'
+
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
@@ -58,14 +63,16 @@ export class HomePage {
     public loginService: LoginService,
     public backgroundMode: BackgroundMode,
     public datePicker: DatePicker,
+    public localNotifications: LocalNotifications,
+    public elRef: ElementRef,
+    public device: Device,
   ) {
     // this.timer = Observable.timer(0, 1000);
   }
 
   ngOnInit() {
-    this.setTimer({day:0, hour:0, minunt:1, seconds:30});
-
     this.timerList = [{
+      id: UUID.UUID(),
       title:'title #1',
       timer: Observable.timer(0, 1000),
       subscribtion: null,
@@ -76,35 +83,58 @@ export class HomePage {
       btnStatus: 'start',
       detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
       order: 2,
-      alram: true,
+      notification:{
+        enable:true,
+        id: 1,
+        title:'',
+        text:'',
+        sound:'',
+        data:''
+      },
       backgroundImage: "",
       color:"#E91E63",
     },{
+      id: UUID.UUID(),
       title:'title #2',
       timer: Observable.timer(0, 1000),
       subscribtion: null,
       current: 0,
       max:0,
-      timeSet:'00:00:10',
+      timeSet:'00:00:20',
       status: 'ready',
       btnStatus: 'start',
       detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
       order:1,
-      alram: false,
+      notification:{
+        enable:false,
+        id: 1,
+        title:'',
+        text:'',
+        sound:'',
+        data:''
+      },
       backgroundImage: '',
       color:"#9C27B0",
     },{
+      id: UUID.UUID(),
       title:'title #3',
       timer: Observable.timer(0, 1000),
       subscribtion: null,
       current: 0,
       max:0,
-      timeSet:'00:0:10',
+      timeSet:'00:00:30',
       status: 'ready',
       btnStatus: 'start',
       detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
       order:3,
-      alram: true,
+      notification:{
+        enable:true,
+        id: 1,
+        title:'',
+        text:'',
+        sound:'',
+        data:''
+      },
       backgroundImage: '',
       color:"#009688",
     }]
@@ -114,6 +144,19 @@ export class HomePage {
     });
 
     this.timerList.sort(function(a, b){return a.order - b.order});
+  }
+
+  popLocalNotifications(timer){
+    console.log('pop notification');
+    this.localNotifications.schedule({
+      id: 1,
+      title:'Single Title',
+      text: 'Single ILocalNotification'
+    });
+  }
+
+  toggleNotification(timer){
+    timer.notification.enable = timer.notification.enable? false: true;
   }
 
   goIncrease():void{
@@ -129,11 +172,16 @@ export class HomePage {
     );
   }
 
+  stopContinuousTimer(){
+    this.callbackExcuteFlow = '';
+    this.currentPosition = 0 ;
+  }
+
   goStartFlow(){
+    this.timerExcuteMode = 'continue';
     this.loop(this.timerList.length, this.currentPosition, (results)=>{
-      this.callbackExcuteFlow = '';
-      this.currentPosition = 0 ;
-      console.log(results)
+      this.timerExcuteMode = 'each';
+      this.stopContinuousTimer();
     })
   }
 
@@ -142,13 +190,18 @@ export class HomePage {
     if (this.currentPosition >= max) return done(this.currentPosition)
 
     this.asyncTimerActions((res) => {
+      let currentTimer = this.timerList[this.currentPosition];
+      if(currentTimer.notification.enable) {this.popLocalNotifications(currentTimer)}
       this.currentPosition +=1
       this.loop(max, this.currentPosition, done)
     })
   }
 
   asyncTimerActions(cb): any{
-    let yOffset = document.getElementById('timerId_' + this.currentPosition).offsetTop;
+    let doc:any = document;
+    let yOffset = doc.getElementById('timerId_' + this.timerList[this.currentPosition].id).offsetTop;
+
+    console.log(this.content);
     this.callbackExcuteFlow = cb;
     this.content.scrollTo(0, yOffset - 10, 1000)
     this.goTimerAction(this.timerList[this.currentPosition]);
@@ -162,20 +215,28 @@ export class HomePage {
     return this.utilsConvertSecond({day, hour, minunt, seconds});
   }
 
-  onChangeTimeSet(timeSet:string): void{
-    console.log(timeSet);
-    let _hour:number = moment(timeSet, "HH:mm:ss").hour();
-    let _minunt:number = moment(timeSet, "HH:mm:ss").minute();
-    let _seconds:number = moment(timeSet, "HH:mm:ss").second();
+  onCancelTimeSet(item:any){
 
-    this.setTimer({day: 0, hour:_hour, minunt: _minunt, seconds: _seconds})
   }
 
-  setTimer({day, hour, minunt, seconds}){
+  onChangeTimeSet(item:any): void{
+    let _day:number = 0;
+    let _hour:number = moment(item.timeSet, "HH:mm:ss").hour();
+    let _minunt:number = moment(item.timeSet, "HH:mm:ss").minute();
+    let _seconds:number = moment(item.timeSet, "HH:mm:ss").second();
+
+    this.setTimer({timer: item, day: _day, hour:_hour, minunt: _minunt, seconds: _seconds})
+  }
+
+  setTimer({timer, day, hour, minunt, seconds}){
     let convertSeconds = this.utilsConvertSecond({day, hour, minunt, seconds});
-    this.max = convertSeconds;
-    this.current = 0;
-    this.timerString = this.utilsTimerStringFormat({max: this.max, current: this.current});
+    timer.max = convertSeconds;
+    timer.current = 0;
+
+    if(timer.status == 'running'){
+      timer.btnStatus = 'pause';
+      this.goTimerAction(timer)
+    }
   }
 
   utilsTimerStringFormat({max, current}):string{
@@ -185,6 +246,16 @@ export class HomePage {
 
   utilsConvertSecond({day, hour, minunt, seconds}):number{
     return (day * 24 * 60 * 60) + (hour * 60 * 60) + (minunt * 60) + seconds;
+  }
+
+  utilsBackGroundMode(enable: boolean){
+    if(this.device.uuid != null){
+      if(enable){
+        this.backgroundMode.isEnabled() ? {} : this.backgroundMode.enable();
+      }else{
+        this.backgroundMode.isEnabled() ? this.backgroundMode.disable() : {};
+      }
+    }
   }
 
   goTimerAction(item){
@@ -223,13 +294,13 @@ export class HomePage {
           this.goTimerAction(item);
         }
       })
-      this.backgroundMode.enable();
+      this.utilsBackGroundMode(true);
       break;
 
       case "p":
       item.status = "ready";
       item.subscribtion.unsubscribe();
-      this.backgroundMode.disable();
+      this.utilsBackGroundMode(false);
       break;
 
       case "r":
@@ -243,7 +314,7 @@ export class HomePage {
           this.goTimerAction(item);
         }
       })
-      this.backgroundMode.enable();
+      this.utilsBackGroundMode(true);
       break;
 
       case "e":
@@ -251,14 +322,15 @@ export class HomePage {
       item.status = "complete";
       item.current = 0;
       item.timeSet= this.utilsTimerStringFormat({max: item.max, current: item.current});
-      this.backgroundMode.disable();
+      this.utilsBackGroundMode(false);
       break;
     }
   }
 
   goTimerReset(){
-    this.goTimerAction("end");
-    this.backgroundMode.disable();
+    this.popLocalNotifications(null);
+    // this.goTimerAction("end");
+    // this.backgroundMode.disable();
   }
 
   startAlram(){

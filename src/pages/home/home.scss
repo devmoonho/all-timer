@@ -25,6 +25,7 @@ page-home {
   }
 
   .progress-icon {
+    font-family: fontello;
     position: absolute;
     color: #000000;
     top: 70%;
@@ -36,13 +37,22 @@ page-home {
   }
 
   .progress-status{
+    font-family: fontello;
     position: absolute;
-    // color: #607D8B;
     top: 25%;
     bottom: auto;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
     font-size: 4.5rem;
     z-index: 1;
+  }
+  .progress-notification{
+    position: absolute;
+    top: 90%;
+    bottom: auto;
+    left: 88%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 3.5rem;
+    z-index: 0;
   }
 }

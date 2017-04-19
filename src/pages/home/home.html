@@ -6,7 +6,7 @@
   </ion-navbar>
 </ion-header>
 
-<!-- <ion-content padding>
+<ion-content padding>
   The world is your oyster.
   <p>
     If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
@@ -39,23 +39,28 @@
     </ion-datetime>
   </ion-item>
 
-  <ion-card *ngFor="let item of timerList ; let i = index;" [attr.id]="'timerId_' + i">
+  <ion-card *ngFor="let item of timerList ; " [attr.id]="'timerId_' + item.id">
     <ion-item>
       <p>{{item.title}} November 5, 1955</p>
     </ion-item>
 
+
     <div class="progress-wrapper" >
       <div>
-        <i *ngIf="item.status=='complete'" [style.color]=item.color class="icon-ok progress-status"></i>
+        <ion-icon *ngIf="item.notification.enable==true" [style.color]=item.color class="progress-notification" name="notifications" (click)="toggleNotification(item)"></ion-icon>
+        <ion-icon *ngIf="item.notification.enable==false" [style.color]=item.color class="progress-notification" name="notifications-off" (click)="toggleNotification(item)"></ion-icon>
 
-        <div class="progress-text" ng-hide="showTime">
-          {{item.timeSet}}
+        <i *ngIf="item.status=='complete'" [style.color]=item.color class="icon-ok progress-status"></i>
+        <div class="progress-text">
+          <!-- {{item.timeSet}} -->
+          <ion-datetime [style.color]=item.color displayFormat="HH:mm:ss" (ionCancel)="onCancelTimeSet(item)" (ionChange)="onChangeTimeSet(item)" [(ngModel)]="item.timeSet">
+          </ion-datetime>
         </div>
         <div>
-          <i *ngIf="item.btnStatus=='start'" class="icon-play progress-icon" (click)="goTimerAction(item, '')" ></i>
-          <i *ngIf="item.btnStatus=='pause'" class="icon-pause progress-icon" (click)="goTimerAction(item, '')" ></i>
-          <i *ngIf="item.btnStatus=='resume'" class="icon-play progress-icon"  (click)="goTimerAction(item, '')"></i>
-          <i *ngIf="item.btnStatus=='end'" class="icon-play progress-icon" ></i>
+          <i *ngIf="item.btnStatus=='start'" [style.color]=item.color class="icon-play progress-icon" (click)="goTimerAction(item, '')" ></i>
+          <i *ngIf="item.btnStatus=='pause'" [style.color]=item.color class="icon-pause progress-icon" (click)="goTimerAction(item, '')" ></i>
+          <i *ngIf="item.btnStatus=='resume'" [style.color]=item.color class="icon-play progress-icon"  (click)="goTimerAction(item, '')"></i>
+          <i *ngIf="item.btnStatus=='end'" [style.color]=item.color class="icon-play progress-icon" ></i>
         </div>
         <round-progress [current]="item.current" [max]="item.max" [radius]="radius" [rounded]="rounded" [color]=item.color >
         </round-progress>
@@ -86,8 +91,8 @@
       </ion-col>
     </ion-row>
   </ion-card>
-</ion-content> -->
-
+</ion-content>
+<!--
 <ion-content>
   <button ion-button color="light" (click)="goLoginPage()">
     login
@@ -145,4 +150,4 @@
       </ion-col>
     </ion-row>
   </ion-card>
-</ion-content>
+</ion-content> -->
