@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Globalization } from '@ionic-native/globalization';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { Device } from '@ionic-native/device';
 
 import { Globals } from './globals';
 
@@ -35,7 +36,8 @@ export class MyApp implements OnInit{
     public translate: TranslateService,
     public globalization: Globalization,
     public keyboard: Keyboard,
-    public cordovaFirebase: Firebase
+    public cordovaFirebase: Firebase,
+    public device: Device,
   ){
     translate.addLangs(["en", "ko"]);
     translate.setDefaultLang('en');
@@ -53,14 +55,13 @@ export class MyApp implements OnInit{
         keyboard.hideKeyboardAccessoryBar(false);
       }
 
-      if (platform.is('ios') || platform.is('android')) {
+      // real device case
+      if(this.device.uuid != null){
         screenOrientation.lock('portrait');
+        this.initGlobalization();
+        this.initNavFirebase();
       }
-
-      this.initGlobalization();
-      this.initNavFirebase();
     });//platform.ready()
-
   }
 
   initFirebase(){

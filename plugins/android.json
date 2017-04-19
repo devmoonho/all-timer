@@ -54,10 +54,16 @@
         },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "de.appplant.cordova.plugin.local-notification": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     },
     "dependent_plugins": {
         "es6-promise-plugin": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-app-event": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     }
