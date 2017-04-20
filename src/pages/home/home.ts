@@ -53,8 +53,8 @@ export class HomePage {
 
   currentPosition: number = -1;
   nextTimerPosition: number = -1;
-  callbackContinuousTimer: any = '';
-  currentTimerBackup: any = {};
+  // callbackContinuousTimer: any = '';
+  timerBackup: any;
 
   constructor(
     public navCtrl: NavController,
@@ -84,6 +84,8 @@ export class HomePage {
       btnStatus: 'start',
       detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
       order: 2,
+      callback:'',
+      nextTimer: false,
       notification:{
         enable:true,
         id: 1,
@@ -107,6 +109,8 @@ export class HomePage {
       btnStatus: 'start',
       detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
       order:1,
+      callback:'',
+      nextTimer: false,
       notification:{
         enable:false,
         id: 1,
@@ -130,6 +134,8 @@ export class HomePage {
       btnStatus: 'start',
       detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
       order:3,
+      callback:'',
+      nextTimer: false,
       notification:{
         enable:true,
         id: 1,
@@ -153,6 +159,8 @@ export class HomePage {
       btnStatus: 'start',
       detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
       order:4,
+      callback:'',
+      nextTimer: false,
       notification:{
         enable:false,
         id: 1,
@@ -178,7 +186,7 @@ export class HomePage {
     });
   }
 
-  toggleNotification(timer){
+  goNotificationToggle(timer){
     timer.notification.enable = timer.notification.enable? false: true;
   }
 
@@ -201,18 +209,7 @@ export class HomePage {
     return this.timerList[this.currentPosition];
   }
 
-  getPosition(timer): number{
-    let cnt = 0;
-    for (let _timer of this.timerList) {
-        if(_timer.id === timer.id){
-          return cnt;
-        }
-      cnt += 1;
-    }
-    return -1;
-  }
-
-  resetTimer(timer){
+  goTimerReset(timer){
     timer.timeSet = timer.defaultTimeSet;
     let day:number = 0;
     let hour:number = moment(timer.timeSet, "HH:mm:ss").hour();
@@ -221,23 +218,34 @@ export class HomePage {
     this.setTimer({timer, day, hour, minunt, seconds})
   }
 
-  stopContinuousTimer(){
-    this.currentTimerBackup = {
-      callback : this.callbackContinuousTimer,
-      position: this.currentPosition
+  getNextTimerPosition(): any{
+    let pos: number = 0;
+    for(let _timer of this.timerList){
+      if(_timer.nextTimer == true){
+        return pos;
+      }
+      pos +=1;
     }
-
-    this.callbackContinuousTimer = '';
-    this.currentPosition = -1;
+    return pos;
   }
 
-  setCurrentTimer(timer){
-    if(this.getPosition(timer) == this.currentTimerBackup.position){
-      this.currentPosition = this.currentTimerBackup.position;
-    }else{
-      this.currentPosition = this.nextTimerPosition = this.getPosition(timer);
+  setNextTimerUI(timer){
+    for(let _timer of this.timerList){
+      if(timer == _timer){
+        _timer.nextTimer= true;
+      }else{
+        _timer.nextTimer= false;
+      }
     }
-    this.callbackContinuousTimer = this.currentTimerBackup.callback;
+  }
+
+  goNextTimerSet(timer, idx){
+    this.setNextTimerUI(timer);
+    this.currentPosition = this.getNextTimerPosition() - 1;
+  }
+
+  goNextTimerStop(){
+    this.setNextTimerUI('');
   }
 
   initTimer(){
@@ -248,10 +256,17 @@ export class HomePage {
   }
 
   goStartFlow(){
-    if(this.getCurrentContinuousTimer().id == -1){ this.currentPosition = 0; }
+    if(this.getCurrentContinuousTimer().id == -1){
+      this.currentPosition = 0;
+      this.setNextTimerUI(this.getCurrentContinuousTimer());
+    }else{
+      this.currentPosition = this.getNextTimerPosition();
+    }
 
     this.loop(this.timerList.length, this.currentPosition, (results)=>{
-      this.stopContinuousTimer();
+      // complete all
+      this.getCurrentContinuousTimer().id = -1;
+      this.getCurrentContinuousTimer().callback = '';
     })
   }
 
@@ -260,12 +275,12 @@ export class HomePage {
     if (this.currentPosition >= max) return done(this.currentPosition)
 
     this.asyncTimerActions((res) => {
-      if(this.nextTimerPosition != -1){
-        this.currentPosition = this.nextTimerPosition;
-        this.nextTimerPosition = -1;
-      }else{
+    if(this.getNextTimerPosition() == this.currentPosition){
         this.currentPosition +=1
+      }else {
+        this.currentPosition = this.getNextTimerPosition();
       }
+      this.setNextTimerUI(this.getCurrentContinuousTimer());
       this.loop(max, this.currentPosition, done)
     })
   }
@@ -274,7 +289,7 @@ export class HomePage {
     let doc:any = document;
     let yOffset = doc.getElementById('timerId_' + this.getCurrentContinuousTimer().id).offsetTop;
 
-    this.callbackContinuousTimer = cb;
+    this.getCurrentContinuousTimer().callback = cb;
     this.content.scrollTo(0, yOffset - 10, 1000)
 
     if(this.getCurrentContinuousTimer().status != 'running'){
@@ -362,7 +377,14 @@ export class HomePage {
       case "end":
       this.timerAction({item, status: "e"});
       item.btnStatus = "start";
-      if (this.callbackContinuousTimer!= '') {this.callbackContinuousTimer(this.currentPosition)};
+      if (item.callback != '') {
+        item.callback(this.currentPosition)
+      }else{
+        if(this.getNextTimerPosition() == 0){
+          this.getCurrentContinuousTimer().id = -1;
+          this.getCurrentContinuousTimer().callback = '';
+        }
+      };
       if(item.notification.enable) {this.popLocalNotifications(item)}
     }
   }
@@ -411,12 +433,6 @@ export class HomePage {
       break;
     }
     this.utilsIsRunningTimer() ? this.utilsBackGroundMode(true) : this.utilsBackGroundMode(false);
-  }
-
-  goTimerReset(){
-    this.popLocalNotifications(null);
-    // this.goTimerAction("end");
-    // this.backgroundMode.disable();
   }
 
   startAlram(){

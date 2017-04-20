@@ -27,9 +27,9 @@
   <button ion-button color="light" (click)="goTimerAction(btnState, '')">
     {{btnState}}
   </button>
-  <button ion-button color="light" (click)="goTimerReset()">
+  <!-- <button ion-button color="light" (click)="goTimerReset()">
     reset
-  </button>
+  </button> -->
   <div>
     current: {{current}}
   </div>
@@ -39,7 +39,7 @@
     </ion-datetime>
   </ion-item>
 
-  <ion-card *ngFor="let item of timerList ; " [attr.id]="'timerId_' + item.id">
+  <ion-card *ngFor="let item of timerList ; let i = index" [attr.id]="'timerId_' + item.id">
     <ion-item>
       <p>{{item.title}} November 5, 1955</p>
     </ion-item>
@@ -47,18 +47,18 @@
 
     <div class="progress-wrapper" >
       <div>
-        <i [style.color]=item.color class="icon-spin3 progress-refresh" (click)="resetTimer(item)" ></i>
+        <i [style.color]=item.color class="icon-spin3 progress-refresh" (click)="goTimerReset(item)" ></i>
 
-        <ion-icon [style.color]=item.color class="progress-current" *ngIf="item.id==getCurrentContinuousTimer().id" name="radio-button-on" (click)="stopContinuousTimer()"></ion-icon>
+        <ion-icon [style.color]=item.color class="progress-current" *ngIf="item.nextTimer==true" name="radio-button-on" (click)="goNextTimerStop()"></ion-icon>
+        <ion-icon [style.color]=item.color class="progress-current" *ngIf="item.nextTimer==false" name="radio-button-off" (click)="goNextTimerSet(item, i)"></ion-icon>
 
-        <ion-icon [style.color]=item.color class="progress-current" *ngIf="item.id!=getCurrentContinuousTimer().id" name="radio-button-off" (click)="setCurrentTimer(item)"></ion-icon>
+        <ion-icon [style.color]=item.color class="progress-setting" name="settings" (click)="goTimerSetting(item)"></ion-icon>
 
-        <ion-icon [style.color]=item.color class="progress-setting" name="settings" (click)="timerSetting(item)"></ion-icon>
-
-        <ion-icon *ngIf="item.notification.enable==true" [style.color]=item.color class="progress-notification" name="notifications" (click)="toggleNotification(item)"></ion-icon>
-        <ion-icon *ngIf="item.notification.enable==false" [style.color]=item.color class="progress-notification" name="notifications-off" (click)="toggleNotification(item)"></ion-icon>
+        <ion-icon *ngIf="item.notification.enable==true" [style.color]=item.color class="progress-notification" name="notifications" (click)="goNotificationToggle(item)"></ion-icon>
+        <ion-icon *ngIf="item.notification.enable==false" [style.color]=item.color class="progress-notification" name="notifications-off" (click)="goNotificationToggle(item)"></ion-icon>
 
         <i *ngIf="item.status=='complete'" [style.color]=item.color class="icon-ok progress-status "></i>
+
         <ion-spinner *ngIf="item.status=='running'" [style.stroke]=item.color class="progress-status" name="bubbles"></ion-spinner>
 
         <div class="progress-text">
