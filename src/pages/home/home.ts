@@ -51,9 +51,10 @@ export class HomePage {
   subscribtion: any;
   timerList: any;
 
-  currentPosition: number = 0;
+  currentPosition: number = -1;
   nextTimerPosition: number = -1;
   callbackContinuousTimer: any = '';
+  currentTimerBackup: any = {};
 
   constructor(
     public navCtrl: NavController,
@@ -194,12 +195,10 @@ export class HomePage {
   }
 
   getCurrentContinuousTimer(): any{
-      return this.timerList[this.currentPosition];
-  }
-
-  stopContinuousTimer(){
-    this.callbackContinuousTimer = '';
-    this.currentPosition = 0 ;
+    if(this.timerList[this.currentPosition] == undefined){
+        return { id: -1 }
+    }
+    return this.timerList[this.currentPosition];
   }
 
   getPosition(timer): number{
@@ -222,8 +221,23 @@ export class HomePage {
     this.setTimer({timer, day, hour, minunt, seconds})
   }
 
+  stopContinuousTimer(){
+    this.currentTimerBackup = {
+      callback : this.callbackContinuousTimer,
+      position: this.currentPosition
+    }
+
+    this.callbackContinuousTimer = '';
+    this.currentPosition = -1;
+  }
+
   setCurrentTimer(timer){
-    this.currentPosition = this.nextTimerPosition = this.getPosition(timer);
+    if(this.getPosition(timer) == this.currentTimerBackup.position){
+      this.currentPosition = this.currentTimerBackup.position;
+    }else{
+      this.currentPosition = this.nextTimerPosition = this.getPosition(timer);
+    }
+    this.callbackContinuousTimer = this.currentTimerBackup.callback;
   }
 
   initTimer(){
@@ -234,7 +248,8 @@ export class HomePage {
   }
 
   goStartFlow(){
-    // this.setCurrentMode('continue');
+    if(this.getCurrentContinuousTimer().id == -1){ this.currentPosition = 0; }
+
     this.loop(this.timerList.length, this.currentPosition, (results)=>{
       this.stopContinuousTimer();
     })
@@ -245,14 +260,11 @@ export class HomePage {
     if (this.currentPosition >= max) return done(this.currentPosition)
 
     this.asyncTimerActions((res) => {
-      let currentTimer = this.getCurrentContinuousTimer();
-      if(currentTimer.notification.enable) {this.popLocalNotifications(currentTimer)}
-
-      if(this.nextTimerPosition == -1){
-        this.currentPosition +=1
-      }else{
+      if(this.nextTimerPosition != -1){
         this.currentPosition = this.nextTimerPosition;
         this.nextTimerPosition = -1;
+      }else{
+        this.currentPosition +=1
       }
       this.loop(max, this.currentPosition, done)
     })
@@ -351,6 +363,7 @@ export class HomePage {
       this.timerAction({item, status: "e"});
       item.btnStatus = "start";
       if (this.callbackContinuousTimer!= '') {this.callbackContinuousTimer(this.currentPosition)};
+      if(item.notification.enable) {this.popLocalNotifications(item)}
     }
   }
 

@@ -49,7 +49,7 @@
       <div>
         <i [style.color]=item.color class="icon-spin3 progress-refresh" (click)="resetTimer(item)" ></i>
 
-        <ion-icon [style.color]=item.color class="progress-current" *ngIf="item.id==getCurrentContinuousTimer().id" name="radio-button-on"></ion-icon>
+        <ion-icon [style.color]=item.color class="progress-current" *ngIf="item.id==getCurrentContinuousTimer().id" name="radio-button-on" (click)="stopContinuousTimer()"></ion-icon>
 
         <ion-icon [style.color]=item.color class="progress-current" *ngIf="item.id!=getCurrentContinuousTimer().id" name="radio-button-off" (click)="setCurrentTimer(item)"></ion-icon>
 
