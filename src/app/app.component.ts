@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { Platform, NavController, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Globalization } from '@ionic-native/globalization';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { Device } from '@ionic-native/device';
 
 import { Globals } from './globals';
 
@@ -23,7 +24,8 @@ import { Firebase } from '@ionic-native/firebase';
 })
 export class MyApp implements OnInit{
   @ViewChild('rootNav') navCtrl: NavController
-  rootPage: any;
+  rootPage: any = null;
+  zone: NgZone;
 
   constructor(public platform: Platform,
     public statusBar: StatusBar,
@@ -34,10 +36,12 @@ export class MyApp implements OnInit{
     public translate: TranslateService,
     public globalization: Globalization,
     public keyboard: Keyboard,
-    public cordovaFirebase: Firebase
+    public cordovaFirebase: Firebase,
+    public device: Device,
   ){
     translate.addLangs(["en", "ko"]);
     translate.setDefaultLang('en');
+    this.initFirebase();
 
     platform.ready()
     .then(() => {
@@ -47,23 +51,22 @@ export class MyApp implements OnInit{
       splashScreen.hide();
 
       if (platform.is('ios')) {
-        keyboard.disableScroll(false);
+        keyboard.disableScroll(true);
         keyboard.hideKeyboardAccessoryBar(false);
       }
 
-      if (platform.is('ios') || platform.is('android')) {
+      // real device case
+      if(this.device.uuid != null){
         screenOrientation.lock('portrait');
+        this.initGlobalization();
+        this.initNavFirebase();
       }
-
-      this.initGlobalization();
-      this.initNavFirebase();
     });//platform.ready()
-
-    this.initFirebase();
   }
 
   initFirebase(){
     firebase.initializeApp(this.globals.FIREBASE_CONFIG);
+    this.zone = new NgZone({});
   }
 
   initNavFirebase(){
@@ -109,14 +112,16 @@ export class MyApp implements OnInit{
 
   ngOnInit() {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        console.log(user)
-        this.updateLastConnection();
-        this.navCtrl.setRoot(HomePage);
-      } else {
-        this.navCtrl.setRoot(StartPage);
-        console.log("No user is signed in.")
-      }
+      this.zone.run(() => {
+        if (!user) {
+          console.log("No user is signed in.")
+          this.rootPage = StartPage ;
+        } else {
+          console.log(user)
+          this.updateLastConnection();
+          this.rootPage = HomePage;
+        }
+      });
     });
   }
 

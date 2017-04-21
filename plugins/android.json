@@ -42,16 +42,28 @@
         "cordova-sqlite-storage": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
+        "twitter-connect-plugin": {
+            "FABRIC_KEY": "540aa44ce61b01d83d12783716a90d6d93e1bcf6",
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-background-mode": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-datepicker": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
-        "twitter-connect-plugin": {
-            "FABRIC_KEY": "540aa44ce61b01d83d12783716a90d6d93e1bcf6",
+        "de.appplant.cordova.plugin.local-notification": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     },
     "dependent_plugins": {
         "es6-promise-plugin": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-app-event": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     }

@@ -1,5 +1,90 @@
 page-home {
   .content, .content-ios{
-      background-color: #B2DFDB
+    background-color: #B2DFDB;
+  }
+  .progress-wrapper {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin: 2px auto;
+    font-size: 21px;
+  }
+
+  .progress-text {
+    position: absolute;
+    color: #000000;
+    font-weight: 100;
+    line-height: 1;
+    top: 48%;
+    bottom: auto;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-family: 'Raleway', cursive;
+    font-size: 2.6rem;
+    font-weight: 900;
+    z-index: 2;
+  }
+
+  .progress-icon {
+    font-family: fontello;
+    position: absolute;
+    color: #000000;
+    top: 74%;
+    bottom: auto;
+    left: 50%;
+    transform: translateY(-50%) translateX(-45%);
+    font-size: 3.6rem;
+    z-index: 3;
+  }
+
+  .progress-status{
+    font-family: fontello;
+    position: absolute;
+    top: 25%;
+    bottom: auto;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 3rem;
+    z-index: 1;
+  }
+  .progress-notification{
+    position: absolute;
+    top: 88%;
+    bottom: auto;
+    left: 87%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 3.5rem;
+    z-index: 0;
+  }
+
+  .progress-setting{
+    position: absolute;
+    top: 90%;
+    bottom: auto;
+    left: 14%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 3.5rem;
+    z-index: 0;
+  }
+
+  .progress-current{
+    position: absolute;
+    top: 10%;
+    bottom: auto;
+    left: 14%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 3.5rem;
+    z-index: 0;
+  }
+
+  .progress-refresh{
+    font-family: fontello;
+    position: absolute;
+    top: 9%;
+    bottom: auto;
+    left: 87%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 2.5rem;
+    z-index: 0;
   }
 }

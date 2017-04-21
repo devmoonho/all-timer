@@ -10,6 +10,8 @@ import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
+import { StorePage } from '../pages/store/store';
+import { TimerPage } from '../pages/timer/timer';
 
 // services
 import { LoginService } from '../services/login-service';
@@ -18,7 +20,7 @@ import { Globals } from './globals';
 // Utils
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -28,8 +30,16 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { TranslateService } from '@ngx-translate/core';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Globalization } from '@ionic-native/globalization';
+import { Device } from '@ionic-native/device';
 
 import { Firebase } from '@ionic-native/firebase';
+
+import { RoundProgressModule } from 'angular-svg-round-progressbar';
+import { BackgroundMode } from '@ionic-native/background-mode';
+import { DatePicker } from '@ionic-native/date-picker';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { UUID } from 'angular2-uuid';
+import { SuperTabsModule } from 'ionic2-super-tabs';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -44,11 +54,12 @@ export function createTranslateLoader(http: Http) {
     SignupPage,
   ],
   imports: [
+    BrowserModule,
     IonicModule.forRoot(MyApp, {
       platforms : {
         ios : {
-          scrollAssist: false,
-          autoFocusAssist: false}
+          scrollAssist: true,
+          autoFocusAssist: true}
         }
       }),
     IonicStorageModule.forRoot(),
@@ -59,7 +70,9 @@ export function createTranslateLoader(http: Http) {
         useFactory: (createTranslateLoader),
         deps: [Http]
       }
-    })
+    }),
+    RoundProgressModule,
+    SuperTabsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -80,6 +93,11 @@ export function createTranslateLoader(http: Http) {
     Keyboard,
     Globalization,
     Firebase,
+    BackgroundMode,
+    DatePicker,
+    LocalNotifications,
+    Device,
+    UUID,
   ]
 })
 export class AppModule {}

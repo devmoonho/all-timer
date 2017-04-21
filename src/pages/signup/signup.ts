@@ -23,8 +23,6 @@ export class SignupPage{
   ) {}
 
   signup(name: string, email: string, password: string) {
-    let message: string;
-
     let loading = this.loadingCtrl.create({
     });
 

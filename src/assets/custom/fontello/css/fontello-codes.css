@@ -1,0 +1,18 @@
+
+.icon-ok-circled:before { content: '\e800'; } /* '' */
+.icon-ok-circled2:before { content: '\e801'; } /* '' */
+.icon-ok:before { content: '\e802'; } /* '' */
+.icon-th:before { content: '\e803'; } /* '' */
+.icon-th-large:before { content: '\e804'; } /* '' */
+.icon-play-circled2:before { content: '\e805'; } /* '' */
+.icon-stop:before { content: '\e806'; } /* '' */
+.icon-pause:before { content: '\e807'; } /* '' */
+.icon-play:before { content: '\e808'; } /* '' */
+.icon-spin1:before { content: '\e830'; } /* '' */
+.icon-spin2:before { content: '\e831'; } /* '' */
+.icon-spin3:before { content: '\e832'; } /* '' */
+.icon-spin4:before { content: '\e834'; } /* '' */
+.icon-menu:before { content: '\f0c9'; } /* '' */
+.icon-play-circled:before { content: '\f144'; } /* '' */
+.icon-ok-squared:before { content: '\f14a'; } /* '' */
+.icon-sliders:before { content: '\f1de'; } /* '' */
