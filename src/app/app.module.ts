@@ -10,6 +10,8 @@ import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
+import { StorePage } from '../pages/store/store';
+import { TimerPage } from '../pages/timer/timer';
 
 // services
 import { LoginService } from '../services/login-service';
@@ -37,6 +39,7 @@ import { BackgroundMode } from '@ionic-native/background-mode';
 import { DatePicker } from '@ionic-native/date-picker';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { UUID } from 'angular2-uuid';
+import { SuperTabsModule } from 'ionic2-super-tabs';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -68,7 +71,8 @@ export function createTranslateLoader(http: Http) {
         deps: [Http]
       }
     }),
-    RoundProgressModule
+    RoundProgressModule,
+    SuperTabsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

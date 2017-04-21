@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 
-import { Content, NavController, AlertController } from 'ionic-angular';
+import { Content, NavController, NavParams, AlertController } from 'ionic-angular';
 
 // services
 import { LoginService } from '../../services/login-service';
@@ -18,6 +18,8 @@ import { UUID } from 'angular2-uuid';
 
 // pages
 import { LoginPage } from '../login/login';
+import { StorePage } from '../store/store';
+import { TimerPage } from '../timer/timer';
 
 @Component({
   selector: 'page-home',
@@ -26,6 +28,15 @@ import { LoginPage } from '../login/login';
 })
 export class HomePage {
   @ViewChild(Content) content: Content;
+
+  login: any = LoginPage;
+  store: any = StorePage;
+  timer: any = TimerPage;
+
+  showIcons: boolean = true;
+  showTitles: boolean = true;
+  pageTitle: string = 'Full Example';
+
 
   counter: number = 0;
   current: number = 0;
@@ -58,6 +69,7 @@ export class HomePage {
 
   constructor(
     public navCtrl: NavController,
+    public navParams: NavParams,
     public alertCtrl: AlertController,
     public translate: TranslateService,
     public loginService: LoginService,
@@ -68,6 +80,9 @@ export class HomePage {
     public device: Device,
   ) {
     // this.timer = Observable.timer(0, 1000);
+    this.showIcons = navParams.get('icons');
+    this.showTitles = navParams.get('titles');
+    this.pageTitle = navParams.get('pageTitle');
   }
 
   ngOnInit() {
@@ -350,13 +365,6 @@ export class HomePage {
     }
   }
 
-  utilsIsRunningTimer(): boolean{
-    for(let timer of this.timerList){
-      if(timer.status == 'running'){ return true; }
-    }
-    return false;
-  }
-
   goTimerAction(item){
     switch(item.btnStatus){
       case "start":
@@ -400,14 +408,14 @@ export class HomePage {
           item.btnStatus = "end";
           this.goTimerAction(item);
         }
+        this.utilsBackGroundMode(true);
       })
-      // this.utilsBackGroundMode(true);
       break;
 
       case "p":
       item.status = "ready";
       item.subscribtion.unsubscribe();
-      // this.utilsBackGroundMode(false);
+      this.utilsBackGroundMode(false);
       break;
 
       case "r":
@@ -420,8 +428,8 @@ export class HomePage {
           item.btnStatus = "end";
           this.goTimerAction(item);
         }
+        this.utilsBackGroundMode(true);
       })
-      // this.utilsBackGroundMode(true);
       break;
 
       case "e":
@@ -429,10 +437,9 @@ export class HomePage {
       item.status = "complete";
       item.current = 0;
       item.timeSet= this.utilsTimerStringFormat({max: item.max, current: item.current});
-      // this.utilsBackGroundMode(false);
+      this.utilsBackGroundMode(false);
       break;
     }
-    this.utilsIsRunningTimer() ? this.utilsBackGroundMode(true) : this.utilsBackGroundMode(false);
   }
 
   startAlram(){

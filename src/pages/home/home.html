@@ -5,12 +5,15 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
-
+<ion-content>
+<super-tabs [rootNavCtrl]="navCtrl" [selectedTabIndex]="1"  height="100%" tabsColor="light" toolbarColor="dark" sliderColor="light">
+  <super-tab [tabRoot]="login" [title]="showTitles? 'First page' : ''" [icon]="showIcons? 'home': ''"></super-tab>
+  <super-tab [tabRoot]="page2" [title]="showTitles? 'Second page' : ''" [icon]="showIcons? 'pin' : ''"></super-tab>
+  <super-tab [tabRoot]="page3" [title]="showTitles? 'Third page' : ''" [icon]="showIcons? 'heart' : ''"></super-tab>
+</super-tabs>
+</ion-content>
+<!--
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
 
   <button ion-button color="light" (click)="goLoginPage()">
     login
@@ -27,9 +30,6 @@
   <button ion-button color="light" (click)="goTimerAction(btnState, '')">
     {{btnState}}
   </button>
-  <!-- <button ion-button color="light" (click)="goTimerReset()">
-    reset
-  </button> -->
   <div>
     current: {{current}}
   </div>
@@ -62,7 +62,6 @@
         <ion-spinner *ngIf="item.status=='running'" [style.stroke]=item.color class="progress-status" name="bubbles"></ion-spinner>
 
         <div class="progress-text">
-          <!-- {{item.timeSet}} -->
           <ion-datetime [style.color]=item.color displayFormat="HH:mm:ss" (ionCancel)="onCancelTimeSet(item)" (ionChange)="onChangeTimeSet(item)" [(ngModel)]="item.timeSet">
           </ion-datetime>
         </div>
@@ -71,65 +70,6 @@
           <i *ngIf="item.btnStatus=='pause'" [style.color]=item.color class="icon-pause progress-icon" (click)="goTimerAction(item)" ></i>
           <i *ngIf="item.btnStatus=='resume'" [style.color]=item.color class="icon-play progress-icon" (click)="goTimerAction(item)"></i>
           <i *ngIf="item.btnStatus=='end'" [style.color]=item.color class="icon-play progress-icon"></i>
-        </div>
-        <round-progress [current]="item.current" [max]="item.max" [radius]="radius" [rounded]="rounded" [color]=item.color >
-        </round-progress>
-      </div>
-    </div>
-
-    <ion-card-content>
-      <p>{{item.detail}}</p>
-    </ion-card-content>
-
-    <ion-row>
-      <ion-col>
-        <button ion-button icon-left clear small>
-          <ion-icon name="thumbs-up"></ion-icon>
-          <div>12 Likes</div>
-        </button>
-      </ion-col>
-      <ion-col>
-        <button ion-button icon-left clear small>
-          <ion-icon name="text"></ion-icon>
-          <div>4 Comments</div>
-        </button>
-      </ion-col>
-      <ion-col center text-center>
-        <ion-note>
-          11h ago
-        </ion-note>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-</ion-content>
-<!--
-<ion-content>
-  <button ion-button color="light" (click)="goLoginPage()">
-    login
-  </button>
-  <button ion-button color="light" (click)="goLogout()">
-    logout
-  </button>
-  <button ion-button color="light" (click)="goStartFlow()">
-    start Flow
-  </button>
-  <ion-card *ngFor="let item of timerList ; let i = index;" [attr.id]="'timerId_' + i">
-    <ion-item>
-      <p>{{item.title}} November 5, 1955</p>
-    </ion-item>
-
-    <div class="progress-wrapper" >
-      <div>
-        <i *ngIf="item.status=='complete'" [style.color]=item.color class="icon-ok progress-status"></i>
-
-        <div class="progress-text" ng-hide="showTime">
-          {{item.timeSet}}
-        </div>
-        <div>
-          <i *ngIf="item.btnStatus=='start'" class="icon-play progress-icon" (click)="goTimerAction(item, '')" ></i>
-          <i *ngIf="item.btnStatus=='pause'" class="icon-pause progress-icon" (click)="goTimerAction(item, '')" ></i>
-          <i *ngIf="item.btnStatus=='resume'" class="icon-play progress-icon"  (click)="goTimerAction(item, '')"></i>
-          <i *ngIf="item.btnStatus=='end'" class="icon-play progress-icon" ></i>
         </div>
         <round-progress [current]="item.current" [max]="item.max" [radius]="radius" [rounded]="rounded" [color]=item.color >
         </round-progress>
