@@ -18,7 +18,6 @@ import { UUID } from 'angular2-uuid';
 
 // pages
 import { LoginPage } from '../login/login';
-import { StorePage } from '../store/store';
 
 @Component({
   selector: 'page-timer',
@@ -55,8 +54,7 @@ export class TimerPage {
 
   currentPosition: number = -1;
   nextTimerPosition: number = -1;
-  // callbackContinuousTimer: any = '';
-  timerBackup: any;
+  isContinueMode: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -249,6 +247,7 @@ export class TimerPage {
   goNextTimerSet(timer, idx){
     this.setNextTimerUI(timer);
     this.currentPosition = this.getNextTimerPosition() - 1;
+    this.goContinuousTimer();
   }
 
   goNextTimerStop(){
@@ -262,7 +261,17 @@ export class TimerPage {
     this.timerList.sort(function(a, b){return a.order - b.order});
   }
 
-  goStartFlow(){
+  completeContinuousTimer(){
+    this.getCurrentContinuousTimer().id = -1;
+    this.getCurrentContinuousTimer().callback = '';
+    this.isContinueMode = false;
+  }
+
+  goContinuousTimer(){
+    // avoid twice execute
+    if(this.isContinueMode) return;
+    this.isContinueMode = true;
+
     if(this.getCurrentContinuousTimer().id == -1){
       this.currentPosition = 0;
       this.setNextTimerUI(this.getCurrentContinuousTimer());
@@ -272,8 +281,7 @@ export class TimerPage {
 
     this.loop(this.timerList.length, this.currentPosition, (results)=>{
       // complete all
-      this.getCurrentContinuousTimer().id = -1;
-      this.getCurrentContinuousTimer().callback = '';
+      this.completeContinuousTimer();
     })
   }
 
@@ -381,8 +389,7 @@ export class TimerPage {
         item.callback(this.currentPosition)
       }else{
         if(this.getNextTimerPosition() == 0){
-          this.getCurrentContinuousTimer().id = -1;
-          this.getCurrentContinuousTimer().callback = '';
+          this.completeContinuousTimer();
         }
       };
       if(item.notification.enable) {this.popLocalNotifications(item)}

@@ -1,21 +1,10 @@
-<ion-content>
+<ion-content padding>
   <button ion-button color="light" (click)="goLogout()">
     logout
   </button>
   <button ion-button color="light" (click)="goIncrease()">
     timepicker
   </button>
-  <button ion-button color="light" (click)="goStartFlow()">
-    start Flow
-  </button>
-  <div>
-    current: {{current}}
-  </div>
-  <ion-item>
-    <ion-label>Date</ion-label>
-    <ion-datetime  displayFormat="HH:mm:ss" (ionChange)="onChangeTimeSet(timerString)" [(ngModel)]="timerString">
-    </ion-datetime>
-  </ion-item>
 
   <ion-card *ngFor="let item of timerList ; let i = index" [attr.id]="'timerId_' + item.id">
     <ion-item>
@@ -24,7 +13,6 @@
 
 
     <div class="progress-wrapper" >
-      <div>
         <i [style.color]=item.color class="icon-spin3 progress-refresh" (click)="goTimerReset(item)" ></i>
 
         <ion-icon [style.color]=item.color class="progress-current" *ngIf="item.nextTimer==true" name="radio-button-on" (click)="goNextTimerStop()"></ion-icon>
@@ -54,10 +42,9 @@
           <i *ngIf="item.btnStatus=='end'" [style.color]=item.color class="icon-play progress-icon"></i>
         </div>
 
-        <round-progress [current]="item.current" [max]="item.max" [radius]="radius" [rounded]="rounded" [color]=item.color >
+        <round-progress [style.marginRight.px]="10" [style.marginLeft.px]="10" [current]="item.current" [max]="item.max" [radius]="radius" [rounded]="rounded" [color]=item.color >
         </round-progress>
 
-      </div>
     </div>
 
     <ion-card-content>

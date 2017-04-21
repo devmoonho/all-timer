@@ -8,6 +8,7 @@ page-timer{
   }
 
   .progress-text {
+    font-family: 'Raleway', sans-serif;
     position: absolute;
     color: #000000;
     font-weight: 100;
@@ -16,13 +17,13 @@ page-timer{
     bottom: auto;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
-    font-family: 'Raleway', cursive;
     font-size: 2.6rem;
     font-weight: 900;
     z-index: 2;
   }
 
   .progress-default-text{
+    font-family: 'Raleway', sans-serif;
     position: absolute;
     color: #000000;
     font-weight: 100;
@@ -31,12 +32,13 @@ page-timer{
     bottom: auto;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
-    font-family: 'Raleway', cursive;
     font-size: 1.4rem;
     font-weight: 900;
     z-index: 2;
   }
+
   .progress-percent{
+    font-family: 'Raleway', sans-serif;
     position: absolute;
     color: #000000;
     font-weight: 100;
@@ -45,7 +47,6 @@ page-timer{
     bottom: auto;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
-    font-family: 'Raleway', cursive;
     font-size: 1.4rem;
     font-weight: 900;
     z-index: 2;
