@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
-import { Platform, NavController, AlertController } from 'ionic-angular';
+import { Platform, Nav, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -12,6 +12,8 @@ import { Globals } from './globals';
 // page
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
+import { StorePage } from '../pages/store/store';
+import { LoginPage } from '../pages/login/login';
 
 // utils
 import { TranslateService } from '@ngx-translate/core';
@@ -23,9 +25,45 @@ import { Firebase } from '@ionic-native/firebase';
   templateUrl: 'app.html'
 })
 export class MyApp implements OnInit{
-  @ViewChild('rootNav') navCtrl: NavController
+  @ViewChild(Nav) nav: Nav;
+  // @ViewChild(Nav) nav: Nav;
+
   rootPage: any = null;
+  rootParams: any;
   zone: NgZone;
+
+  menuItems: any[] = [
+    {
+      name: 'Full page',
+      page: LoginPage,
+      params: { icons: true, titles: true, pageTitle: 'Full page' }
+    },
+    {
+      name: 'Full - Title only',
+      page: LoginPage,
+      params: { icons: false, titles: true }
+    },
+    {
+      name: 'Full - Icons only',
+      page: LoginPage,
+      params: { icons: true, titles: false }
+    },
+    {
+      name: 'Partial nav',
+      page: LoginPage,
+      params: { icons: true, titles: true }
+    },
+    {
+      name: 'Partial - Title only',
+      page: LoginPage,
+      params: { icons: false, titles: true }
+    },
+    {
+      name: 'Partial - Icons only',
+      page: LoginPage,
+      params: { icons: true, titles: false }
+    }
+  ];
 
   constructor(public platform: Platform,
     public statusBar: StatusBar,
@@ -130,5 +168,10 @@ export class MyApp implements OnInit{
     firebase.database().ref(this.globals.SERVER_PATH_USERS + user.uid + this.globals.SERVER_PATH_USER_PROFILE).update({
       lastConnect: moment().format('YYYYMMDDHHmmss')
     });
+  }
+
+  openPage(page) {
+    page.params.pageTitle = page.name;
+    this.nav.push(page.page, page.params);
   }
 }

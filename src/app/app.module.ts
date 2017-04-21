@@ -39,6 +39,7 @@ import { BackgroundMode } from '@ionic-native/background-mode';
 import { DatePicker } from '@ionic-native/date-picker';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { UUID } from 'angular2-uuid';
+
 import { SuperTabsModule } from 'ionic2-super-tabs';
 
 export function createTranslateLoader(http: Http) {
@@ -52,6 +53,8 @@ export function createTranslateLoader(http: Http) {
     StartPage,
     LoginPage,
     SignupPage,
+    StorePage,
+    TimerPage,
   ],
   imports: [
     BrowserModule,
@@ -72,7 +75,7 @@ export function createTranslateLoader(http: Http) {
       }
     }),
     RoundProgressModule,
-    SuperTabsModule
+    SuperTabsModule.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -81,6 +84,8 @@ export function createTranslateLoader(http: Http) {
     StartPage,
     LoginPage,
     SignupPage,
+    StorePage,
+    TimerPage,
   ],
   providers: [
     StatusBar,

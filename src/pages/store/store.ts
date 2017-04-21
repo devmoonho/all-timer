@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
-  selector: 'page-store',
+  selector: 'store-page',
   templateUrl: 'store.html'
 })
-
 export class StorePage {
-  constructor() { }
+
+  rootNavCtrl: NavController;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.rootNavCtrl = navParams.get('rootNavCtrl');
+  }
 }
