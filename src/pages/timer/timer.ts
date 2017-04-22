@@ -52,9 +52,8 @@ export class TimerPage {
   subscribtion: any;
   timerList: any;
 
-  currentPosition: number = -1;
-  nextTimerPosition: number = -1;
-  isContinueMode: boolean = false;
+  continuousMode: boolean = false;
+  continuousCallback: any;
 
   constructor(
     public navCtrl: NavController,
@@ -68,7 +67,6 @@ export class TimerPage {
     public elRef: ElementRef,
     public device: Device,
   ) {
-    // this.timer = Observable.timer(0, 1000);
   }
 
   ngOnInit() {
@@ -85,7 +83,6 @@ export class TimerPage {
       btnStatus: 'start',
       detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
       order: 2,
-      callback:'',
       nextTimer: false,
       notification:{
         enable:true,
@@ -110,7 +107,6 @@ export class TimerPage {
       btnStatus: 'start',
       detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
       order:1,
-      callback:'',
       nextTimer: false,
       notification:{
         enable:false,
@@ -135,7 +131,6 @@ export class TimerPage {
       btnStatus: 'start',
       detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
       order:3,
-      callback:'',
       nextTimer: false,
       notification:{
         enable:true,
@@ -160,7 +155,6 @@ export class TimerPage {
       btnStatus: 'start',
       detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
       order:4,
-      callback:'',
       nextTimer: false,
       notification:{
         enable:false,
@@ -176,6 +170,12 @@ export class TimerPage {
   ]
 
     this.initTimer();
+  }
+  initTimer(){
+    this.timerList .forEach((el) => {
+      el.max = this.getMax(el.timeSet)
+    });
+    this.timerList.sort(function(a, b){return a.order - b.order});
   }
 
   popLocalNotifications(timer){
@@ -207,13 +207,6 @@ export class TimerPage {
     );
   }
 
-  getCurrentContinuousTimer(): any{
-    if(this.timerList[this.currentPosition] == undefined){
-        return { id: -1 }
-    }
-    return this.timerList[this.currentPosition];
-  }
-
   goTimerReset(timer){
     timer.timeSet = timer.defaultTimeSet;
     let day:number = 0;
@@ -223,7 +216,83 @@ export class TimerPage {
     this.setTimer({timer, day, hour, minunt, seconds})
   }
 
-  getNextTimerPosition(): any{
+  setContinuousMode(enabled: boolean){
+    this.continuousMode = enabled;
+  }
+
+  isContinuousMode(): boolean{
+    return this.continuousMode;
+  }
+
+  isAllTimerSleep(): boolean{
+    if(this.isContinuousMode()) {return false;}
+
+    for(let _timer of this.timerList){
+      if(_timer.status == 'running'){
+        return false;
+      }
+    }
+    return true;
+  }
+
+  startContinuousTimer(){
+    if(this.isContinuousMode()) return;
+    this.setContinuousMode(true);
+
+    this.loopTimer(this.timerList.length, 0, (res)=>{
+        this.setNextTimerUI('');
+        this.setContinuousMode(false);
+        console.log('done', res);
+    })
+  }
+
+  loopTimer(max, currentPos, done){
+    this.doNextAction((res) =>{
+      if(max <= res){
+        return done(res);
+      }
+      let timer =this.timerList[res];
+      let doc:any = document;
+      let yOffset = doc.getElementById('timerId_' + timer.id).offsetTop;
+
+      this.content.scrollTo(0, yOffset - 10, 1000)
+      if(timer.status != 'running'){
+        this.goTimerAction(timer);
+      }
+      this.setNextTimerUI(timer);
+
+      this.loopTimer(max, res, done);
+    })
+  }
+
+  doNextAction(cb){
+    this.continuousCallback= cb;
+  }
+
+  executeNextTimer(timer){
+    let currentPosition: number;
+    let nextPosition: number;
+
+    if(this.getNextTimerPosition() != -1 ){ // is there nextposition
+      currentPosition= this.getTimerPostion(timer);
+      nextPosition = currentPosition == this.getNextTimerPosition() ? this.getNextTimerPosition() + 1 : this.getNextTimerPosition();
+      this.startContinuousTimer();
+      this.continuousCallback(nextPosition);
+    }
+  }
+
+  getTimerPostion(timer): number{
+    let pos: number = 0;
+    for(let _timer of this.timerList){
+      if(_timer == timer){
+        return pos;
+      }
+      pos +=1;
+    }
+    return this.timerList.length == pos ? -1 : pos;
+  }
+
+  getNextTimerPosition(): number{
     let pos: number = 0;
     for(let _timer of this.timerList){
       if(_timer.nextTimer == true){
@@ -231,7 +300,7 @@ export class TimerPage {
       }
       pos +=1;
     }
-    return pos;
+    return this.timerList.length == pos ? -1 : pos;
   }
 
   setNextTimerUI(timer){
@@ -246,70 +315,10 @@ export class TimerPage {
 
   goNextTimerSet(timer, idx){
     this.setNextTimerUI(timer);
-    this.currentPosition = this.getNextTimerPosition() - 1;
-    this.goContinuousTimer();
   }
 
   goNextTimerStop(){
     this.setNextTimerUI('');
-  }
-
-  initTimer(){
-    this.timerList .forEach((el) => {
-      el.max = this.getMax(el.timeSet)
-    });
-    this.timerList.sort(function(a, b){return a.order - b.order});
-  }
-
-  completeContinuousTimer(){
-    this.getCurrentContinuousTimer().id = -1;
-    this.getCurrentContinuousTimer().callback = '';
-    this.isContinueMode = false;
-  }
-
-  goContinuousTimer(){
-    // avoid twice execute
-    if(this.isContinueMode) return;
-    this.isContinueMode = true;
-
-    if(this.getCurrentContinuousTimer().id == -1){
-      this.currentPosition = 0;
-      this.setNextTimerUI(this.getCurrentContinuousTimer());
-    }else{
-      this.currentPosition = this.getNextTimerPosition();
-    }
-
-    this.loop(this.timerList.length, this.currentPosition, (results)=>{
-      // complete all
-      this.completeContinuousTimer();
-    })
-  }
-
-  loop (max, currentPosition, done) {
-    // Recursion base-case
-    if (this.currentPosition >= max) return done(this.currentPosition)
-
-    this.asyncTimerActions((res) => {
-    if(this.getNextTimerPosition() == this.currentPosition){
-        this.currentPosition +=1
-      }else {
-        this.currentPosition = this.getNextTimerPosition();
-      }
-      this.setNextTimerUI(this.getCurrentContinuousTimer());
-      this.loop(max, this.currentPosition, done)
-    })
-  }
-
-  asyncTimerActions(cb): any{
-    let doc:any = document;
-    let yOffset = doc.getElementById('timerId_' + this.getCurrentContinuousTimer().id).offsetTop;
-
-    this.getCurrentContinuousTimer().callback = cb;
-    this.content.scrollTo(0, yOffset - 10, 1000)
-
-    if(this.getCurrentContinuousTimer().status != 'running'){
-      this.goTimerAction(this.getCurrentContinuousTimer());
-    }
   }
 
   getMax(timeSet: string):number{
@@ -354,15 +363,15 @@ export class TimerPage {
   }
 
   utilsBackGroundMode(enable: boolean){
-    if(this.device.uuid != null){
+    // if(this.device.uuid != null){
       if(enable){
-        this.backgroundMode.isEnabled() ? {} : this.backgroundMode.enable();
+        this.backgroundMode.enable();
         console.log('enabled backgroundMode');
       }else{
-        this.backgroundMode.isEnabled() ? this.backgroundMode.disable() : {};
+        this.backgroundMode.disable();
         console.log('disabled backgroundMode');
       }
-    }
+    // }
   }
 
   goTimerAction(item){
@@ -385,20 +394,17 @@ export class TimerPage {
       case "end":
       this.timerAction({item, status: "e"});
       item.btnStatus = "start";
-      if (item.callback != '') {
-        item.callback(this.currentPosition)
-      }else{
-        if(this.getNextTimerPosition() == 0){
-          this.completeContinuousTimer();
-        }
-      };
+      this.executeNextTimer(item);
       if(item.notification.enable) {this.popLocalNotifications(item)}
+      if(this.isAllTimerSleep()){this.utilsBackGroundMode(false)}
+      break;
     }
   }
 
   timerAction({item, status}){
     switch(status){
       case "s":
+      this.utilsBackGroundMode(true);
       item.subscribtion = item.timer.subscribe(t => {
         item.current = t;
         item.status = "running";
@@ -407,14 +413,14 @@ export class TimerPage {
           item.btnStatus = "end";
           this.goTimerAction(item);
         }
-        this.utilsBackGroundMode(true);
+        // this.utilsBackGroundMode(true);
       })
       break;
 
       case "p":
       item.status = "ready";
       item.subscribtion.unsubscribe();
-      this.utilsBackGroundMode(false);
+      // this.utilsBackGroundMode(false);
       break;
 
       case "r":
@@ -427,7 +433,7 @@ export class TimerPage {
           item.btnStatus = "end";
           this.goTimerAction(item);
         }
-        this.utilsBackGroundMode(true);
+        // this.utilsBackGroundMode(true);
       })
       break;
 
@@ -436,7 +442,8 @@ export class TimerPage {
       item.status = "complete";
       item.current = 0;
       item.timeSet= this.utilsTimerStringFormat({max: item.max, current: item.current});
-      this.utilsBackGroundMode(false);
+      // this.utilsBackGroundMode(false);
+      // item.callback()
       break;
     }
   }

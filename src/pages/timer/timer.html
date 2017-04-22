@@ -5,6 +5,9 @@
   <button ion-button color="light" (click)="goIncrease()">
     timepicker
   </button>
+  <button ion-button color="light" (click)="startContinuousTimer()">
+    async Counter
+  </button>
 
   <ion-card *ngFor="let item of timerList ; let i = index" [attr.id]="'timerId_' + item.id">
     <ion-item>
