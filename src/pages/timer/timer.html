@@ -3,12 +3,9 @@
     logout
   </button>
   <ion-card *ngFor="let item of timerList ; let i = index" [attr.id]="'timerId_' + item.id">
-    <ion-item>
-      <p>{{item.title}} November 5, 1955</p>
-    </ion-item>
-
-
-    <div class="progress-wrapper" >
+      <h1 style="margin:5px 5px 5px 5px;" [style.color]=item.color >{{item.title}}</h1>
+      <img *ngIf="item.image!=''" style="margin:0 0 15px 0" [src]=item.image>
+      <div class="progress-wrapper" >
         <i [style.color]=item.color class="icon-spin3 progress-refresh" (click)="goTimerReset(item)" ></i>
 
         <ion-icon [style.color]=item.color class="progress-current" *ngIf="item.nextTimer==true" name="radio-button-on" (click)="goNextTimerStop()"></ion-icon>
@@ -41,30 +38,30 @@
         <round-progress [style.marginRight.px]="10" [style.marginLeft.px]="10" [current]="item.current" [max]="item.max" [radius]="radius" [rounded]="rounded" [color]=item.color >
         </round-progress>
 
-    </div>
+      </div>
 
-    <ion-card-content>
+      <ion-card-content>
       <p>{{item.detail}}</p>
-    </ion-card-content>
 
-    <ion-row>
-      <ion-col>
-        <button ion-button icon-left clear small>
-          <ion-icon name="thumbs-up"></ion-icon>
-          <div>12 Likes</div>
-        </button>
-      </ion-col>
-      <ion-col>
-        <button ion-button icon-left clear small>
-          <ion-icon name="text"></ion-icon>
-          <div>4 Comments</div>
-        </button>
-      </ion-col>
-      <ion-col center text-center>
-        <ion-note>
-          11h ago
-        </ion-note>
-      </ion-col>
-    </ion-row>
+      <ion-row>
+        <ion-col>
+          <button ion-button icon-left clear small>
+            <ion-icon name="thumbs-up"></ion-icon>
+            <div>12 Likes</div>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-left clear small>
+            <ion-icon name="text"></ion-icon>
+            <div>4 Comments</div>
+          </button>
+        </ion-col>
+        <ion-col center text-center>
+          <ion-note>
+            11h ago
+          </ion-note>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
   </ion-card>
 </ion-content>

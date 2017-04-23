@@ -83,7 +83,7 @@ export class TimerPage {
   ngOnInit() {
     this.timerList = [{
       id: UUID.UUID(),
-      title:'title #1',
+      title:'운동',
       timer: Observable.timer(0, 1000),
       subscribtion: null,
       current: 0,
@@ -101,11 +101,11 @@ export class TimerPage {
         sound:'default.mp3',
         data:''
       },
-      backgroundImage: "",
+      image: "http://www.livestrong.com/wp-content/uploads/2013/05/NewTrainer_JBBlog_iStock_000017277101Medium.jpg",
       color:"#E91E63",
     },{
       id: UUID.UUID(),
-      title:'title #2',
+      title:'SPICY CAULIFLOWER WITH COCONUT RICE',
       timer: Observable.timer(0, 1000),
       subscribtion: null,
       current: 0,
@@ -123,11 +123,11 @@ export class TimerPage {
         sound:'default.mp3',
         data:''
       },
-      backgroundImage: '',
+      image: 'http://saverafoods.co.in/wp-content/uploads/2014/10/1.jpg',
       color:"#9C27B0",
     },{
       id: UUID.UUID(),
-      title:'title #3',
+      title:'SAT',
       timer: Observable.timer(0, 1000),
       subscribtion: null,
       current: 0,
@@ -145,11 +145,11 @@ export class TimerPage {
         sound:'default.mp3',
         data:''
       },
-      backgroundImage: '',
+      image: 'https://media.licdn.com/mpr/mpr/p/7/005/089/3bf/1451504.jpg',
       color:"#009688",
     },{
       id: UUID.UUID(),
-      title:'title #4',
+      title:'高考',
       timer: Observable.timer(0, 1000),
       subscribtion: null,
       current: 0,
@@ -167,7 +167,7 @@ export class TimerPage {
         sound:'default.mp3',
         data:''
       },
-      backgroundImage: '',
+      image: 'http://postfiles3.naver.net/20140926_66/haier_korea_1411694218546vXHt4_PNG/%C1%DF%B1%B9%BC%F6%B4%C9%B0%A1%BF%C0%C4%AB%BF%C0.png?type=w2',
       color:"#00B0FF",
     }
   ]
