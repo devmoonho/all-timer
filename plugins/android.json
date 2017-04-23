@@ -57,6 +57,9 @@
         },
         "de.appplant.cordova.plugin.local-notification": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-nativeaudio": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     },
     "dependent_plugins": {

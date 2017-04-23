@@ -1,6 +1,6 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
 
-import { Content, NavController, NavParams, AlertController } from 'ionic-angular';
+import { Content, NavController, NavParams, AlertController, Platform } from 'ionic-angular';
 
 // services
 import { LoginService } from '../../services/login-service';
@@ -15,6 +15,8 @@ import { DatePicker } from '@ionic-native/date-picker';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { Device } from '@ionic-native/device';
 import { UUID } from 'angular2-uuid';
+import { NativeAudio } from '@ionic-native/native-audio';
+
 
 // pages
 import { LoginPage } from '../login/login';
@@ -27,6 +29,7 @@ import { LoginPage } from '../login/login';
 
 export class TimerPage {
   @ViewChild(Content) content: Content;
+  zone: NgZone;
 
   counter: number = 0;
   current: number = 0;
@@ -55,6 +58,8 @@ export class TimerPage {
   continuousMode: boolean = false;
   continuousCallback: any;
 
+  notiAlert: any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -66,7 +71,13 @@ export class TimerPage {
     public localNotifications: LocalNotifications,
     public elRef: ElementRef,
     public device: Device,
+    public nativeAudio: NativeAudio,
+    public platform: Platform,
   ) {
+    this.nativeAudio.preloadSimple('timeout', 'assets/sound/default.mp3');
+    this.localNotifications.on("trigger", (res) =>{
+      this.notificationAlert(res.data);
+    });
   }
 
   ngOnInit() {
@@ -87,9 +98,7 @@ export class TimerPage {
       notification:{
         enable:true,
         id: 1,
-        title:'',
-        text:'',
-        sound:'',
+        sound:'default.mp3',
         data:''
       },
       backgroundImage: "",
@@ -111,9 +120,7 @@ export class TimerPage {
       notification:{
         enable:false,
         id: 1,
-        title:'',
-        text:'',
-        sound:'',
+        sound:'default.mp3',
         data:''
       },
       backgroundImage: '',
@@ -135,9 +142,7 @@ export class TimerPage {
       notification:{
         enable:true,
         id: 1,
-        title:'',
-        text:'',
-        sound:'',
+        sound:'default.mp3',
         data:''
       },
       backgroundImage: '',
@@ -159,9 +164,7 @@ export class TimerPage {
       notification:{
         enable:false,
         id: 1,
-        title:'',
-        text:'',
-        sound:'',
+        sound:'default.mp3',
         data:''
       },
       backgroundImage: '',
@@ -171,6 +174,7 @@ export class TimerPage {
 
     this.initTimer();
   }
+
   initTimer(){
     this.timerList .forEach((el) => {
       el.max = this.getMax(el.timeSet)
@@ -179,12 +183,42 @@ export class TimerPage {
   }
 
   popLocalNotifications(timer){
-    console.log('pop notification');
     this.localNotifications.schedule({
-      id: 1,
-      title:'Single Title',
-      text: 'Single ILocalNotification'
+      id: timer.notification.id,
+      title:timer.title +' '+ timer.status,
+      text: timer.detail,
+      sound:'file://assets/sound/' + timer.notification.sound,
+      data: timer.id
     });
+  }
+
+  notificationAlert(id){
+    let timer: any = this.getTimerById(id);
+    let btnConfirm: string;
+
+    if(this.platform.is('ios')){
+      this.nativeAudio.play('timeout');
+    }
+
+    this.translate.get('Common.Confirm')
+    .subscribe((res: string) => {
+      btnConfirm = res;
+    })
+    this.notiAlert = this.alertCtrl.create({
+      title: timer.title,
+      subTitle: timer.detail,
+      buttons: [
+        {
+          text: btnConfirm,
+          handler: () => {
+            this.localNotifications.clearAll();
+            this.nativeAudio.unload('timeout');
+            this.nativeAudio.preloadSimple('timeout', 'assets/sound/default.mp3');
+          }
+        }
+      ]
+    });
+    this.notiAlert.present()
   }
 
   goTimerSetting(){
@@ -267,6 +301,15 @@ export class TimerPage {
 
   doNextAction(cb){
     this.continuousCallback= cb;
+  }
+
+  getTimerById(id):any{
+    for(let _timer of this.timerList){
+      if(_timer.id == id){
+        return _timer;
+      }
+    }
+    return -1;
   }
 
   executeNextTimer(timer){
@@ -395,7 +438,9 @@ export class TimerPage {
       this.timerAction({item, status: "e"});
       item.btnStatus = "start";
       this.executeNextTimer(item);
-      if(item.notification.enable) {this.popLocalNotifications(item)}
+      if(item.notification.enable) {
+        this.popLocalNotifications(item)
+      }
       if(this.isAllTimerSleep()){this.utilsBackGroundMode(false)}
       break;
     }

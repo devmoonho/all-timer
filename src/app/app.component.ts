@@ -60,7 +60,7 @@ export class MyApp implements OnInit{
     },
     {
       name: 'Partial - Icons only',
-      page: LoginPage,
+      page: StorePage,
       params: { icons: true, titles: false }
     }
   ];

@@ -146,8 +146,17 @@
     "de.appplant.cordova.plugin.local-notification": {
         "source": {
             "type": "git",
-            "url": "https://github.com/notclive/cordova-plugin-local-notifications.git",
-            "subdir": "."
+            "url": "https://github.com/katzer/cordova-plugin-local-notifications.git",
+            "subdir": ".",
+            "ref": "fdf8470de329421370ef81c9efa12caab995c309"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-nativeaudio": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-nativeaudio"
         },
         "is_top_level": true,
         "variables": {}
