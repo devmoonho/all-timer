@@ -167,7 +167,7 @@ export class TimerPage {
         sound:'default.mp3',
         data:''
       },
-      image: 'http://postfiles3.naver.net/20140926_66/haier_korea_1411694218546vXHt4_PNG/%C1%DF%B1%B9%BC%F6%B4%C9%B0%A1%BF%C0%C4%AB%BF%C0.png?type=w2',
+      image: 'http://p1.img.cctvpic.com/photoAlbum/templet/special/PAGEa6hEmeHGH5f9GdaNVrBw160529/ELMTybetDju4MYylXRQirEyi160529_1465098233.jpg',
       color:"#00B0FF",
     }
   ]

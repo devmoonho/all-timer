@@ -5,6 +5,7 @@ import { NavController, NavParams} from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { StorePage } from '../store/store';
 import { TimerPage } from '../timer/timer';
+import { TimerListPage } from '../timer-list/timer-list';
 
 @Component({
   selector: 'page-home',
@@ -14,16 +15,17 @@ export class HomePage {
   login: any = LoginPage;
   store: any = StorePage;
   timer: any = TimerPage;
+  timerList: any = TimerListPage;
 
   showIcons: boolean = false;
   showTitles: boolean = true;
-  pageTitle: string = 'Full Example';
+  pageTitle: string = 'Timer';
 
   constructor(
     public navCtrl: NavController,
     private navParams: NavParams,
   ){
-    
+
   }
 
   onTabSelect(tab: { index: number; id: string; }) {

@@ -12,6 +12,7 @@ import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 import { StorePage } from '../pages/store/store';
 import { TimerPage } from '../pages/timer/timer';
+import { TimerListPage } from '../pages/timer-list/timer-list';
 
 // services
 import { LoginService } from '../services/login-service';
@@ -56,6 +57,7 @@ export function createTranslateLoader(http: Http) {
     SignupPage,
     StorePage,
     TimerPage,
+    TimerListPage,
   ],
   imports: [
     BrowserModule,
@@ -87,6 +89,7 @@ export function createTranslateLoader(http: Http) {
     SignupPage,
     StorePage,
     TimerPage,
+    TimerListPage,
   ],
   providers: [
     StatusBar,

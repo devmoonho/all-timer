@@ -8,7 +8,8 @@
 </ion-header>
 <ion-content no-bounce>
   <super-tabs (tabSelect)="onTabSelect($event)">
-    <super-tab [root]="timer" title="Timer page"></super-tab>
-    <super-tab [root]="store" title="Store page"></super-tab>
+    <super-tab [root]="timerList" title="My Timer"></super-tab>
+    <super-tab [root]="timer" title="Timer"></super-tab>
+    <super-tab [root]="store" title="Store"></super-tab>
   </super-tabs>
 </ion-content>

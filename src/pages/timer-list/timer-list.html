@@ -1,0 +1,35 @@
+<ion-content padding>
+  <ion-item-group>
+    <ion-item-divider color="light">#1 category</ion-item-divider>
+    <ion-item *ngFor="let item of timerList">
+      <ion-thumbnail item-left>
+        <img src="http://www.livestrong.com/wp-content/uploads/2013/05/NewTrainer_JBBlog_iStock_000017277101Medium.jpg">
+      </ion-thumbnail>
+      <h2>{{item.name}}</h2>
+      <p>{{item.summary}}</p>
+      <button ion-button clear item-right>View</button>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider color="light">#2 category</ion-item-divider>
+    <ion-item *ngFor="let item of timerList">
+      <ion-thumbnail item-left>
+        <img src="http://saverafoods.co.in/wp-content/uploads/2014/10/1.jpg">
+      </ion-thumbnail>
+      <h2>{{item.name}}</h2>
+      <p>{{item.summary}}</p>
+      <button ion-button clear item-right>View</button>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider color="light">#3 category</ion-item-divider>
+    <ion-item *ngFor="let item of timerList">
+      <ion-thumbnail item-left>
+        <img src="http://p1.img.cctvpic.com/photoAlbum/templet/special/PAGEa6hEmeHGH5f9GdaNVrBw160529/ELMTybetDju4MYylXRQirEyi160529_1465098233.jpg">
+      </ion-thumbnail>
+      <h2>{{item.name}}</h2>
+      <p>{{item.summary}}</p>
+      <button ion-button clear item-right>View</button>
+    </ion-item>
+  </ion-item-group>
+</ion-content>
