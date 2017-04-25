@@ -13,6 +13,7 @@ import { SignupPage } from '../pages/signup/signup';
 import { StorePage } from '../pages/store/store';
 import { TimerPage } from '../pages/timer/timer';
 import { TimerListPage } from '../pages/timer-list/timer-list';
+import { TimerEditorPage } from '../pages/timer-editor/timer-editor';
 
 // services
 import { LoginService } from '../services/login-service';
@@ -58,6 +59,7 @@ export function createTranslateLoader(http: Http) {
     StorePage,
     TimerPage,
     TimerListPage,
+    TimerEditorPage,
   ],
   imports: [
     BrowserModule,
@@ -90,6 +92,7 @@ export function createTranslateLoader(http: Http) {
     StorePage,
     TimerPage,
     TimerListPage,
+    TimerEditorPage,
   ],
   providers: [
     StatusBar,

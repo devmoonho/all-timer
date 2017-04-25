@@ -6,6 +6,7 @@ import { LoginPage } from '../login/login';
 import { StorePage } from '../store/store';
 import { TimerPage } from '../timer/timer';
 import { TimerListPage } from '../timer-list/timer-list';
+import { TimerEditorPage } from '../timer-editor/timer-editor';
 
 @Component({
   selector: 'page-home',
@@ -16,6 +17,7 @@ export class HomePage {
   store: any = StorePage;
   timer: any = TimerPage;
   timerList: any = TimerListPage;
+  timerEditor: any = TimerEditorPage;
 
   showIcons: boolean = false;
   showTitles: boolean = true;
