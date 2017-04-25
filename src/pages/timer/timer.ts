@@ -470,6 +470,7 @@ export class TimerPage {
 
       case "r":
       let _current = item.current;
+      this.utilsBackGroundMode(true);
       item.subscribtion = item.timer.subscribe(t => {
         item.current = t + _current;
         item.status = "running";
