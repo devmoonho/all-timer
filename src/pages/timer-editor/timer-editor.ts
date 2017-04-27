@@ -10,26 +10,20 @@ import { Observable } from 'rxjs/Rx';
   selector: 'page-timer-editor',
   templateUrl: 'timer-editor.html',
   animations: [
-    trigger('timerItemsInputMode', [
+    trigger('timerAnimationMode', [
     state('shown' , style({opacity: 1 })),
     state('hidden', style({opacity: 0, 'display':'none' })),
     transition('hidden => shown', animate('.5s'))]),
-
-    // trigger('timerItemsInputMode', [
-    // state('shown' , style({opacity: 1} )),
-    // state('hidden', style({opacity: 0, 'display':'none' } )),
-    // transition('hidden => shown', animate('.5s'))])
   ]
 })
 export class TimerEditorPage{
-  timerItemsMode: string = 'hidden';
+  viewMode: string = 'shown';
+  inputMode: string = 'hidden';
+  colorMode: string = 'hidden';
+
+  selectedColor: string = '#000000';
+
   currentTimer: any;
-  //
-  // inputTimer: any = {
-  //   title: '',
-  //   detail: '',
-  //   timeSet: ''
-  // }
 
   timerItems: any;
   templateTimer: any = {
@@ -197,8 +191,43 @@ export class TimerEditorPage{
     return -1;
   }
 
-  onCancelTimeSet(){
+  setMode(mode){
+    switch (mode){
+      case 'view':
+        this.inputMode = 'hidden';
+        this.colorMode = 'hidden';
+        this.viewMode= 'shown';
+      break;
+      case 'input':
+        this.inputMode= 'shown';
+        this.colorMode = 'hidden';
+        this.viewMode= 'hidden';
+      break;
+      case 'color':
+        this.inputMode = 'hidden';
+        this.colorMode = 'shown';
+        this.viewMode= 'hidden';
+      break;
+      default:
+        this.inputMode = 'hidden';
+        this.colorMode = 'hidden';
+        this.viewMode= 'shown';
+      break;
+    }
+  }
 
+  onColorPicker(){
+    this.setMode('color');
+  }
+
+  onSetColor(event, color){
+    event.stopPropagation();
+    this.selectedColor = color;
+    this.setMode('input');
+  }
+
+  onCancelTimeSet(){
+    this.setMode('input');
   }
 
   onChangeTimeSet(){
@@ -233,7 +262,7 @@ export class TimerEditorPage{
     event.stopPropagation();
     console.log(timer);
     this.currentTimer = timer;
-    this.timerItemsMode = 'shown';
+    this.setMode('input');
   }
 
   goSaveTimerItems(title, detail){
@@ -241,12 +270,12 @@ export class TimerEditorPage{
     _timer.title = title;
     _timer.detail = detail;
 
-    this.timerItemsMode = 'hidden';
+    this.setMode('view');
   }
 
   goCancelTimerItems(title, detail){
     title = detail = '';
-    this.timerItemsMode = 'hidden';
+    this.setMode('view');
   }
 
   goReorderItems(evt){
