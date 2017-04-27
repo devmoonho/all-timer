@@ -14,6 +14,11 @@ import { Observable } from 'rxjs/Rx';
     state('shown' , style({opacity: 1 })),
     state('hidden', style({opacity: 0, 'display':'none' })),
     transition('hidden => shown', animate('.5s'))]),
+
+    trigger('removeAnimationMode', [
+    state('shown' , style({opacity: 1 })),
+    state('hidden', style({opacity: 0, 'display':'none' })),
+    transition('hidden => shown', animate('.5s'))]),
   ]
 })
 export class TimerEditorPage{
@@ -22,6 +27,8 @@ export class TimerEditorPage{
   colorMode: string = 'hidden';
 
   selectedColor: string = '#000000';
+
+  removeMode: string = 'hidden';
 
   currentTimer: any;
 
@@ -47,7 +54,7 @@ export class TimerEditorPage{
       data:''
     },
     image: '',
-    color:"#E91E63",
+    color:"#000000",
   }
 
   timer: any = [
@@ -141,30 +148,28 @@ export class TimerEditorPage{
     {
       name: 'WROK OUT',
       value:'workout',
-      defaultImage: '',
-      defaultSound: ''
+      defaultImage: 'assets/image/default.jpg',
+      defaultSound: 'assets/sound/default.mp3'
     },
     {
       name: 'FOOD',
       value:'food',
-      defaultImage: '',
-      defaultSound: ''
+      defaultImage: 'assets/image/default.jpg',
+      defaultSound: 'assets/sound/default.mp3'
     },
     {
       name: 'STUDY',
       value:'study',
-      defaultImage: '',
-      defaultSound: ''
+      defaultImage: 'assets/image/default.jpg',
+      defaultSound: 'assets/sound/default.mp3'
     },
     {
       name: 'ETC',
       value:'etc',
-      defaultImage: '',
-      defaultSound: ''
+      defaultImage: 'assets/image/default.jpg',
+      defaultSound: 'assets/sound/default.mp3'
     }
   ];
-
-  removeMode: boolean = false;
 
   constructor() {
    }
@@ -189,6 +194,10 @@ export class TimerEditorPage{
       cnt +=1;
     }
     return -1;
+  }
+
+  getCurrentTimer(){
+    return this.timerItems[this.utilsGetTimerPositionByTimer(this.currentTimer)];
   }
 
   setMode(mode){
@@ -222,7 +231,9 @@ export class TimerEditorPage{
 
   onSetColor(event, color){
     event.stopPropagation();
-    this.selectedColor = color;
+
+    let _timer: any = this.getCurrentTimer();
+    _timer.color= color;
     this.setMode('input');
   }
 
@@ -231,7 +242,7 @@ export class TimerEditorPage{
   }
 
   onChangeTimeSet(){
-    let _timer: any = this.timerItems[this.utilsGetTimerPositionByTimer(this.currentTimer)];
+    let _timer: any = this.getCurrentTimer();
     _timer.timeSet= this.currentTimer.timeSet;
     _timer.defaultTimeSet = this.currentTimer.timeSet;
   }
@@ -243,7 +254,7 @@ export class TimerEditorPage{
   }
 
   goToggleRemove(){
-    this.removeMode = (this.removeMode == true) ? false : true;
+    this.removeMode = (this.removeMode == 'shown') ? 'hidden': 'shown';
   }
 
   goRemoveTimer(event,timer){
@@ -266,7 +277,7 @@ export class TimerEditorPage{
   }
 
   goSaveTimerItems(title, detail){
-    let _timer: any = this.timerItems[this.utilsGetTimerPositionByTimer(this.currentTimer)];
+    let _timer: any = this.getCurrentTimer();
     _timer.title = title;
     _timer.detail = detail;
 

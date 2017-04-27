@@ -18,6 +18,7 @@ import { TimerEditorPage } from '../pages/timer-editor/timer-editor';
 
 // services
 import { LoginService } from '../services/login-service';
+import { TimerService } from '../services/timer-service';
 import { Globals } from './globals';
 
 // Utils
@@ -101,6 +102,7 @@ export function createTranslateLoader(http: Http) {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginService,
+    TimerService,
     Globals,
     ScreenOrientation,
     TranslateService,

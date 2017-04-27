@@ -7,6 +7,10 @@ export class Globals{
   public SERVER_PATH_USER_PROFILE: any = '/profile/';
   public SERVER_PATH_TIMER: any = '/timer/';
 
+  public SERVER_PATH_APP: any = '/app/';
+  public SERVER_PATH_TIMER_CATEGORY: any = '/timer-category/';
+  public SERVER_PATH_TIMER_TEMPLATE: any = '/timer-template/';
+
   // for local storage
   public LOCAL_STORAGE_KEY_USER_INFO: any = 'userInfo';
 
