@@ -1,14 +1,37 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { trigger, state, style, transition, animate } from '@angular/animations'
+import { reorderArray } from 'ionic-angular';
 import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs/Rx';
 
+//pages
+
 @Component({
   selector: 'page-timer-editor',
-  templateUrl: 'timer-editor.html'
+  templateUrl: 'timer-editor.html',
+  animations: [
+    trigger('timerItemsInputMode', [
+    state('shown' , style({opacity: 1 })),
+    state('hidden', style({opacity: 0, 'display':'none' })),
+    transition('hidden => shown', animate('.5s'))]),
+
+    // trigger('timerItemsInputMode', [
+    // state('shown' , style({opacity: 1} )),
+    // state('hidden', style({opacity: 0, 'display':'none' } )),
+    // transition('hidden => shown', animate('.5s'))])
+  ]
 })
 export class TimerEditorPage{
+  timerItemsMode: string = 'hidden';
+  currentTimer: any;
+  //
+  // inputTimer: any = {
+  //   title: '',
+  //   detail: '',
+  //   timeSet: ''
+  // }
 
+  timerItems: any;
   templateTimer: any = {
     id: '',
     title:'Please enter',
@@ -39,7 +62,7 @@ export class TimerEditorPage{
     name: 'sample',
     summary: 'sample Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     category: '',
-    timerItem:[
+    timerItems:[
       {
         id: UUID.UUID(),
         title:'운동',
@@ -52,7 +75,7 @@ export class TimerEditorPage{
         status: 'ready',
         btnStatus: 'start',
         detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-        order: 2,
+        order: 1,
         nextTimer: false,
         notification:{
           enable:true,
@@ -75,7 +98,7 @@ export class TimerEditorPage{
         status: 'ready',
         btnStatus: 'start',
         detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-        order:4,
+        order:0,
         nextTimer: false,
         notification:{
           enable:false,
@@ -92,7 +115,7 @@ export class TimerEditorPage{
       name: 'sample',
       summary: 'sample Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       category: '',
-      timerItem:[
+      timerItems:[
         {
           id: UUID.UUID(),
           title:'高考',
@@ -149,12 +172,45 @@ export class TimerEditorPage{
 
   removeMode: boolean = false;
 
-  constructor() { }
+  constructor() {
+   }
+
+  ngOnInit(){
+    // this.currentTimer = this.templateTimer;
+    this.timerItems = this.timer[0].timerItems;
+    this.currentTimer = this.templateTimer;
+    this.utilsSortByOrder(this.timerItems)
+  }
+
+  utilsSortByOrder(timerItems){
+    timerItems.sort(function(a, b){return a.order - b.order});
+  }
+
+  utilsGetTimerPositionByTimer(timer){
+    let cnt: number = 0;
+    for(let _timer of this.timerItems){
+      if(_timer == timer){
+        return cnt;
+      }
+      cnt +=1;
+    }
+    return -1;
+  }
+
+  onCancelTimeSet(){
+
+  }
+
+  onChangeTimeSet(){
+    let _timer: any = this.timerItems[this.utilsGetTimerPositionByTimer(this.currentTimer)];
+    _timer.timeSet= this.currentTimer.timeSet;
+    _timer.defaultTimeSet = this.currentTimer.timeSet;
+  }
 
   goAddTimer(){
     let _timer = Object.assign({}, this.templateTimer)
     _timer.id = UUID.UUID();
-    this.timer[0].timerItem.push(_timer);
+    this.timerItems.push(_timer);
   }
 
   goToggleRemove(){
@@ -164,7 +220,7 @@ export class TimerEditorPage{
   goRemoveTimer(event,timer){
     event.stopPropagation();
     console.log(timer);
-    this.timer[0].timerItem = this.timer[0].timerItem.filter((jsonObject) => {
+    this.timerItems = this.timerItems.filter((jsonObject) => {
         return jsonObject.id != timer.id;
     });
   }
@@ -176,9 +232,24 @@ export class TimerEditorPage{
   goTimerEdit(event, timer){
     event.stopPropagation();
     console.log(timer);
+    this.currentTimer = timer;
+    this.timerItemsMode = 'shown';
+  }
+
+  goSaveTimerItems(title, detail){
+    let _timer: any = this.timerItems[this.utilsGetTimerPositionByTimer(this.currentTimer)];
+    _timer.title = title;
+    _timer.detail = detail;
+
+    this.timerItemsMode = 'hidden';
+  }
+
+  goCancelTimerItems(title, detail){
+    title = detail = '';
+    this.timerItemsMode = 'hidden';
   }
 
   goReorderItems(evt){
-    console.log(evt);
+    this.timerItems = reorderArray(this.timerItems, evt);
   }
 }

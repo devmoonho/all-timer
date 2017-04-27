@@ -3,4 +3,17 @@ page-timer-editor{
   border-color: #ccc;
   background-color: #D9D9D9;
   }
+  .toolbar-title {
+    color: #FF6E40;
+  }
+  .flex_button_group{
+      margin: 0 16px 0 16px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+  }
+  .flex_button_item{
+      margin: 0 5px 0 5px;
+      font-weight: bold;
+  }
 }
