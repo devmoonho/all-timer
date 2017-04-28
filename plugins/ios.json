@@ -61,6 +61,17 @@
         },
         "cordova-plugin-nativeaudio": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "com.synconset.imagepicker": {
+            "PHOTO_LIBRARY_USAGE_DESCRIPTION": " ",
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-image-picker": {
+            "PHOTO_LIBRARY_USAGE_DESCRIPTION": " ",
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-imagepicker": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     },
     "dependent_plugins": {
