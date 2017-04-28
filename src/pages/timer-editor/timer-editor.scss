@@ -34,4 +34,11 @@ page-timer-editor{
     border-left: 15px solid;
     background-color: lightgrey;
   }
+  ion-footer {
+    padding-bottom: 12px;
+    background-color: white;
+  }
+  .list-header-md, .list-header-ios {
+    border: none;
+  }
 }

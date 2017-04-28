@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations'
+import { Component, ViewChild } from '@angular/core';
+import { Content } from 'ionic-angular';
+import { trigger, state, style, transition, animate } from '@angular/core'
 import { reorderArray } from 'ionic-angular';
 import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs/Rx';
+import { ImagePicker } from '@ionic-native/image-picker';
 
 //pages
 
@@ -22,11 +24,14 @@ import { Observable } from 'rxjs/Rx';
   ]
 })
 export class TimerEditorPage{
+  @ViewChild(Content) content: Content;
+
   viewMode: string = 'shown';
   inputMode: string = 'hidden';
   colorMode: string = 'hidden';
 
   selectedColor: string = '#000000';
+  selectedImage: string = 'assets/image/timer-default.png';
 
   removeMode: string = 'hidden';
 
@@ -171,8 +176,9 @@ export class TimerEditorPage{
     }
   ];
 
-  constructor() {
-   }
+  constructor(public imagePicker: ImagePicker) {
+
+  }
 
   ngOnInit(){
     // this.currentTimer = this.templateTimer;
@@ -225,6 +231,41 @@ export class TimerEditorPage{
     }
   }
 
+  onOpenImagePicker(){
+    let options: any = {
+      maximumImagesCount: 1,
+      width: 400,
+      height: 400,
+      quality: 100,
+      outputType: 0
+    };
+
+    this.imagePicker.hasReadPermission()
+    .then((res)=>{
+      console.log('hasReadPermission:', res);
+    })
+
+    this.imagePicker.requestReadPermission()
+    .then((res)=>{
+      console.log('requestReadPermission:', res);
+    })
+
+    this.imagePicker.getPictures(options)
+    .then((results) => {
+      for (var i = 0; i < results.length; i++) {
+        console.log('Image URI: ' + results[i]);
+      }
+      if(results[0]=='' || results[0]==undefined){
+        this.selectedImage = 'assets/image/timer-default.png';
+      }else{
+        this.selectedImage = results[0]
+      }
+    }, (err) => {
+      this.selectedImage = 'assets/image/timer-default.png';
+      console.log('Image err:', err);
+    });
+  }
+
   onColorPicker(){
     this.setMode('color');
   }
@@ -251,6 +292,7 @@ export class TimerEditorPage{
     let _timer = Object.assign({}, this.templateTimer)
     _timer.id = UUID.UUID();
     this.timerItems.push(_timer);
+    this.content.scrollTo(0, this.content.getContentDimensions().scrollHeight, 1000);
   }
 
   goToggleRemove(){
@@ -274,6 +316,7 @@ export class TimerEditorPage{
     console.log(timer);
     this.currentTimer = timer;
     this.setMode('input');
+    this.content.scrollTo(0, 0, 0);
   }
 
   goSaveTimerItems(title, detail){
