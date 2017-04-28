@@ -7,6 +7,10 @@
         "files": {}
     },
     "installed_plugins": {
+        "com.synconset.imagepicker": {
+            "PHOTO_LIBRARY_USAGE_DESCRIPTION": " ",
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
         "cordova-plugin-background-mode": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
@@ -34,6 +38,9 @@
             "REVERSED_CLIENT_ID": "com.googleusercontent.apps.902931259626-nbckc9j7b2p10dqok55ovkpmkbc1c3o4",
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
+        "cordova-plugin-nativeaudio": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
         "cordova-plugin-screen-orientation": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
@@ -57,20 +64,6 @@
         },
         "twitter-connect-plugin": {
             "FABRIC_KEY": "540aa44ce61b01d83d12783716a90d6d93e1bcf6",
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "cordova-plugin-nativeaudio": {
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "com.synconset.imagepicker": {
-            "PHOTO_LIBRARY_USAGE_DESCRIPTION": " ",
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "cordova-plugin-image-picker": {
-            "PHOTO_LIBRARY_USAGE_DESCRIPTION": " ",
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "cordova-plugin-imagepicker": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     },

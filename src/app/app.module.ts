@@ -6,6 +6,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // App
 import { MyApp } from './app.component';
 
+// Pipe
+import { CategoryPipe } from '../pipes/category-pipe';
+
 // Pages
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
@@ -63,6 +66,7 @@ export function createTranslateLoader(http: Http) {
     TimerPage,
     TimerListPage,
     TimerEditorPage,
+    CategoryPipe,
   ],
   imports: [
     BrowserModule,

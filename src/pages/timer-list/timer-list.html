@@ -1,35 +1,12 @@
 <ion-content padding>
-  <ion-item-group>
-    <ion-item-divider color="light">#1 category</ion-item-divider>
-    <ion-item *ngFor="let item of timerList">
-      <ion-thumbnail item-left>
-        <img src="https://firebasestorage.googleapis.com/v0/b/all-timer.appspot.com/o/timer-image%2Ftimer-default-image.jpg?alt=media&token=c80c3d14-bf13-4920-a22c-db2652613c15">
-      </ion-thumbnail>
-      <h2>{{item.name}}</h2>
-      <p>{{item.summary}}</p>
-      <button ion-button clear item-right>View</button>
-    </ion-item>
-  </ion-item-group>
-  <ion-item-group>
-    <ion-item-divider color="light">#2 category</ion-item-divider>
-    <ion-item *ngFor="let item of timerList">
-      <ion-thumbnail item-left>
-        <img src="http://saverafoods.co.in/wp-content/uploads/2014/10/1.jpg">
-      </ion-thumbnail>
-      <h2>{{item.name}}</h2>
-      <p>{{item.summary}}</p>
-      <button ion-button clear item-right>View</button>
-    </ion-item>
-  </ion-item-group>
-  <ion-item-group>
-    <ion-item-divider color="light">#3 category</ion-item-divider>
-    <ion-item *ngFor="let item of timerList">
-      <ion-thumbnail item-left>
-        <img src="http://p1.img.cctvpic.com/photoAlbum/templet/special/PAGEa6hEmeHGH5f9GdaNVrBw160529/ELMTybetDju4MYylXRQirEyi160529_1465098233.jpg">
-      </ion-thumbnail>
-      <h2>{{item.name}}</h2>
-      <p>{{item.summary}}</p>
-      <button ion-button clear item-right>View</button>
-    </ion-item>
-  </ion-item-group>
+    <ion-item-group *ngFor="let item of category; let i = index">
+        <ion-item-divider color="light">{{item.name}}</ion-item-divider>
+        <ion-item *ngFor="let timer of timerList | categoryPipe:{category:item.value}; let j = index">
+            <ion-avatar item-left>
+                <h1 class="avatar-text" [style.background-color]="getRandomColor(i+j)" text-center>{{timer.name | slice:0:2}}</h1>
+            </ion-avatar>
+            <h2>{{timer.name}}</h2>
+            <p>{{timer.summary}}</p>
+        </ion-item>
+    </ion-item-group>
 </ion-content>

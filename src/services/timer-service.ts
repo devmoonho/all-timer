@@ -25,8 +25,9 @@ export class TimerService {
     .then(()=>{
       return this.loadTimerDataFromServer();
     })
-    .then(()=>{
+    .then((res)=>{
       console.log("---- serviceTimerData done ----");
+      return res.val();
     })
   }
 
@@ -35,8 +36,9 @@ export class TimerService {
     .then(()=>{
       return this.loadTimerTemplateDataFromServer();
     })
-    .then(()=>{
+    .then((res)=>{
       console.log("---- serviceTimerTemplateData done ----");
+      return res.val();
     })
   }
 
@@ -45,8 +47,9 @@ export class TimerService {
     .then(()=>{
       return this.loadCategoryDataFromServer();
     })
-    .then(()=>{
+    .then((res)=>{
       console.log("---- serviceLoadCategoryData done ----");
+      return res.val();
     })
   }
 
