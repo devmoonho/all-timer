@@ -35,10 +35,13 @@ page-timer-editor{
     background-color: lightgrey;
   }
   ion-footer {
-    padding-bottom: 12px;
-    background-color: white;
+    // padding-bottom: 12px;
+    // background-color: white;
   }
   .list-header-md, .list-header-ios {
     border: none;
+  }
+  .invalid {
+    border-bottom: 3px solid #ea6153;
   }
 }

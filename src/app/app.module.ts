@@ -23,6 +23,7 @@ import { TimerEditorPage } from '../pages/timer-editor/timer-editor';
 import { LoginService } from '../services/login-service';
 import { TimerService } from '../services/timer-service';
 import { Globals } from './globals';
+import { Config } from './config';
 
 // Utils
 import { StatusBar } from '@ionic-native/status-bar';
@@ -109,6 +110,7 @@ export function createTranslateLoader(http: Http) {
     LoginService,
     TimerService,
     Globals,
+    Config,
     ScreenOrientation,
     TranslateService,
     Keyboard,

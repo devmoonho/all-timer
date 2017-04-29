@@ -8,4 +8,11 @@ page-timer-list{
     height: 50px;
     width: 50px;
   }
+  ion-footer {
+    // padding-bottom: 12px;
+    // background-color: white;
+  }
+  .invalid {
+    border: 1px solid #ea6153;
+  }
 }

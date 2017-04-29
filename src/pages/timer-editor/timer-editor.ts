@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
 import { Content } from 'ionic-angular';
 import { trigger, state, style, transition, animate } from '@angular/core'
 import { reorderArray } from 'ionic-angular';
@@ -6,10 +7,18 @@ import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs/Rx';
 import { ImagePicker } from '@ionic-native/image-picker';
 
-//pages
+// validator
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+// services
+import { TimerService } from '../../services/timer-service';
+import { Config } from '../../app/config';
+
+// pages
 
 @Component({
   selector: 'page-timer-editor',
+  providers: [TimerService],
   templateUrl: 'timer-editor.html',
   animations: [
     trigger('timerAnimationMode', [
@@ -21,170 +30,74 @@ import { ImagePicker } from '@ionic-native/image-picker';
     state('shown' , style({opacity: 1 })),
     state('hidden', style({opacity: 0, 'display':'none' })),
     transition('hidden => shown', animate('.5s'))]),
-  ]
+  ],
+  inputs: ['inputSelectedTimer']
 })
 export class TimerEditorPage{
   @ViewChild(Content) content: Content;
 
+  timerMainForm: FormGroup;
+  timerForm: FormGroup;
+
   viewMode: string = 'shown';
   inputMode: string = 'hidden';
   colorMode: string = 'hidden';
+  removeMode: string = 'hidden';
 
   selectedColor: string = '#000000';
   selectedImage: string = 'assets/image/timer-default.png';
 
-  removeMode: string = 'hidden';
+  timer: any;
 
   currentTimer: any;
 
   timerItems: any;
-  templateTimer: any = {
-    id: '',
-    title:'Please enter',
-    timer: Observable.timer(0, 1000),
-    subscribtion: null,
-    current: 0,
-    max:0,
-    defaultTimeSet:'00:00:00',
-    timeSet:'00:00:00',
-    status: 'ready',
-    btnStatus: 'start',
-    detail:  'Please enter',
-    order: 1,
-    nextTimer: false,
-    notification:{
-      enable:true,
-      id: 1,
-      sound:'default.mp3',
-      data:''
-    },
-    image: '',
-    color:"#000000",
+
+  categoryList: any;
+
+  constructor(
+    public imagePicker: ImagePicker,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public formBuilder: FormBuilder,
+    public timerService: TimerService,
+    public config: Config,
+  ){
+    this.initValidator()
   }
 
-  timer: any = [
-  {
-    timerId :UUID.UUID(),
-    name: 'sample',
-    summary: 'sample Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    category: '',
-    timerItems:[
-      {
-        id: UUID.UUID(),
-        title:'운동',
-        timer: Observable.timer(0, 1000),
-        subscribtion: null,
-        current: 0,
-        max:0,
-        defaultTimeSet:'00:00:10',
-        timeSet:'00:00:10',
-        status: 'ready',
-        btnStatus: 'start',
-        detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-        order: 1,
-        nextTimer: false,
-        notification:{
-          enable:true,
-          id: 1,
-          sound:'default.mp3',
-          data:''
-        },
-        image: "http://www.livestrong.com/wp-content/uploads/2013/05/NewTrainer_JBBlog_iStock_000017277101Medium.jpg",
-        color:"#E91E63",
-      },
-      {
-        id: UUID.UUID(),
-        title:'高考',
-        timer: Observable.timer(0, 1000),
-        subscribtion: null,
-        current: 0,
-        max:0,
-        defaultTimeSet:'00:00:07',
-        timeSet:'00:00:07',
-        status: 'ready',
-        btnStatus: 'start',
-        detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-        order:0,
-        nextTimer: false,
-        notification:{
-          enable:false,
-          id: 1,
-          sound:'default.mp3',
-          data:''
-        },
-        image: 'http://p1.img.cctvpic.com/photoAlbum/templet/special/PAGEa6hEmeHGH5f9GdaNVrBw160529/ELMTybetDju4MYylXRQirEyi160529_1465098233.jpg',
-        color:"#00B0FF",
-      }]
-    },
-    {
-      timerId :UUID.UUID(),
-      name: 'sample',
-      summary: 'sample Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      category: '',
-      timerItems:[
-        {
-          id: UUID.UUID(),
-          title:'高考',
-          timer: Observable.timer(0, 1000),
-          subscribtion: null,
-          current: 0,
-          max:0,
-          defaultTimeSet:'00:00:07',
-          timeSet:'00:00:07',
-          status: 'ready',
-          btnStatus: 'start',
-          detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-          order:4,
-          nextTimer: false,
-          notification:{
-            enable:false,
-            id: 1,
-            sound:'default.mp3',
-            data:''
-          },
-          image: 'http://p1.img.cctvpic.com/photoAlbum/templet/special/PAGEa6hEmeHGH5f9GdaNVrBw160529/ELMTybetDju4MYylXRQirEyi160529_1465098233.jpg',
-          color:"#00B0FF",
-        }
-      ]
-    }
-  ];
-
-  categoryList: any = [
-    {
-      name: 'WROK OUT',
-      value:'workout',
-      defaultImage: 'assets/image/default.jpg',
-      defaultSound: 'assets/sound/default.mp3'
-    },
-    {
-      name: 'FOOD',
-      value:'food',
-      defaultImage: 'assets/image/default.jpg',
-      defaultSound: 'assets/sound/default.mp3'
-    },
-    {
-      name: 'STUDY',
-      value:'study',
-      defaultImage: 'assets/image/default.jpg',
-      defaultSound: 'assets/sound/default.mp3'
-    },
-    {
-      name: 'ETC',
-      value:'etc',
-      defaultImage: 'assets/image/default.jpg',
-      defaultSound: 'assets/sound/default.mp3'
-    }
-  ];
-
-  constructor(public imagePicker: ImagePicker) {
-
+  initValidator(){
+    this.timerMainForm= this.formBuilder.group({
+      "timerName":["",Validators.required],
+      "category":["",Validators.required],
+    })
+    this.timerForm= this.formBuilder.group({
+      "title":["",Validators.required],
+      "settime":["",Validators.required],
+      "detail":["",Validators.required],
+    })
   }
 
   ngOnInit(){
-    // this.currentTimer = this.templateTimer;
-    this.timerItems = this.timer[0].timerItems;
-    this.currentTimer = this.templateTimer;
+    this.timer = this.config.DEFAULT_TIMER[0]
+    this.categoryList = this.config.CATETGORY;
+    this.currentTimer = this.config.TEMPLATE;
+
+    this.timerItems = this.config.DEFAULT_TIMER[0].timerItems;
     this.utilsSortByOrder(this.timerItems)
+
+    this.setDefaultData(this.timer);
+  }
+
+  setDefaultData(timer){
+    if(this.navParams.get('mode') === 'create'){
+      timer.timerId = UUID.UUID();
+      timer.name = 'Please enter';
+      timer.summary = 'Please enter';
+      timer.timerItems[0].id = UUID.UUID();
+      timer.timerItems[0].title = 'Please enter';
+      timer.timerItems[0].detail = 'Please enter';
+    }
   }
 
   utilsSortByOrder(timerItems){
@@ -289,7 +202,7 @@ export class TimerEditorPage{
   }
 
   goAddTimer(){
-    let _timer = Object.assign({}, this.templateTimer)
+    let _timer = Object.assign({}, this.config.TEMPLATE)
     _timer.id = UUID.UUID();
     this.timerItems.push(_timer);
     this.content.scrollTo(0, this.content.getContentDimensions().scrollHeight, 1000);
@@ -305,10 +218,6 @@ export class TimerEditorPage{
     this.timerItems = this.timerItems.filter((jsonObject) => {
         return jsonObject.id != timer.id;
     });
-  }
-
-  goSave(){
-    console.log('save');
   }
 
   goTimerEdit(event, timer){
@@ -335,4 +244,13 @@ export class TimerEditorPage{
   goReorderItems(evt){
     this.timerItems = reorderArray(this.timerItems, evt);
   }
+
+  onSaveMain(validator){
+    console.log('onSaveMain', validator, this.timerMainForm.valid);
+  }
+
+  onSaveTimer(validator){
+    console.log('onSaveTimer', validator, this.timerForm.valid);
+  }
+
 }
