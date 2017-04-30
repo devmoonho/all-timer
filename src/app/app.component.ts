@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
-import { Platform, NavController, AlertController } from 'ionic-angular';
+import { Platform, Nav, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -8,10 +8,13 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { Device } from '@ionic-native/device';
 
 import { Globals } from './globals';
+import { Config } from './config';
 
 // page
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
+import { StorePage } from '../pages/store/store';
+import { LoginPage } from '../pages/login/login';
 
 // utils
 import { TranslateService } from '@ngx-translate/core';
@@ -19,18 +22,56 @@ import * as firebase from 'firebase';
 import * as moment from 'moment';
 import { Firebase } from '@ionic-native/firebase';
 
+// services
+
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
 })
 export class MyApp implements OnInit{
-  @ViewChild('rootNav') navCtrl: NavController
+  @ViewChild(Nav) nav: Nav;
+
   rootPage: any = null;
+  rootParams: any;
   zone: NgZone;
+
+  menuItems: any[] = [
+    {
+      name: 'Full page',
+      page: LoginPage,
+      params: { icons: true, titles: true, pageTitle: 'Full page' }
+    },
+    {
+      name: 'Full - Title only',
+      page: LoginPage,
+      params: { icons: false, titles: true }
+    },
+    {
+      name: 'Full - Icons only',
+      page: LoginPage,
+      params: { icons: true, titles: false }
+    },
+    {
+      name: 'Partial nav',
+      page: LoginPage,
+      params: { icons: true, titles: true }
+    },
+    {
+      name: 'Partial - Title only',
+      page: LoginPage,
+      params: { icons: false, titles: true }
+    },
+    {
+      name: 'Partial - Icons only',
+      page: StorePage,
+      params: { icons: true, titles: false }
+    }
+  ];
 
   constructor(public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public globals: Globals,
+    public config: Config,
     public alertCtrl: AlertController,
     public screenOrientation: ScreenOrientation,
     public translate: TranslateService,
@@ -118,11 +159,62 @@ export class MyApp implements OnInit{
           this.rootPage = StartPage ;
         } else {
           console.log(user)
-          this.updateLastConnection();
-          this.rootPage = HomePage;
+          // this.rootPage = HomePage;
+          this.updateLastConnection()
         }
+        //if network available
+        this.updateConfig();
       });
     });
+  }
+
+  private updateConfig(){
+    let user = firebase.auth().currentUser;
+
+    return Promise.resolve()
+    .then(()=>{
+      if(!user){
+        return;
+      }else{
+        return this.loadTimerDataFromServer();
+      }
+    })
+    .then((res)=>{
+      let _res:any = res;
+      if(!_res){
+        this.config.MY_TIMER = this.config.DEFAULT_TIMER;
+      }else{
+        this.config.MY_TIMER = _res.val();
+      }
+      return this.loadTimerTemplateDataFromServer()
+    })
+    .then((res)=>{
+      let _res:any = res;
+      this.config.TEMP_TIMER = _res.val();
+      return this.loadCategoryDataFromServer();
+    })
+    .then((res)=>{
+      let _res:any = res;
+      this.config.CATETGORY= _res.val();
+      return ;
+    })
+    .then(()=>{
+      this.rootPage = HomePage;
+      console.log("---- updateConfig done ----");
+    });
+  }
+
+  private loadCategoryDataFromServer(){
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_CATEGORY).once('value')
+  }
+
+  private loadTimerTemplateDataFromServer(){
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_TEMPLATE).once('value')
+  }
+
+  private loadTimerDataFromServer(){
+    let user = firebase.auth().currentUser;
+    return firebase.database().ref(this.globals.SERVER_PATH_USERS + user.uid + this.globals.SERVER_PATH_TIMER).once('value')
   }
 
   private updateLastConnection(): void {
@@ -130,5 +222,10 @@ export class MyApp implements OnInit{
     firebase.database().ref(this.globals.SERVER_PATH_USERS + user.uid + this.globals.SERVER_PATH_USER_PROFILE).update({
       lastConnect: moment().format('YYYYMMDDHHmmss')
     });
+  }
+
+  openPage(page) {
+    page.params.pageTitle = page.name;
+    this.nav.push(page.page, page.params);
   }
 }

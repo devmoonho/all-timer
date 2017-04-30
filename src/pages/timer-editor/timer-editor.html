@@ -1,0 +1,274 @@
+<!-- <ion-header>
+  <ion-navbar>
+    <ion-title>
+      Timer Editor
+    </ion-title>
+  </ion-navbar>
+</ion-header> -->
+
+<ion-content padding >
+  <form [formGroup]="timerMainForm" (ngSubmit)="onSaveMain(timerInputForm.value)">
+    <div [@timerAnimationMode]="viewMode">
+      <ion-item>
+        <ion-label stacked style="color:#FF6E40;">
+          {{'TimerEditor.timer-name' | translate }}
+          </ion-label>
+        <ion-input placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{timer.name}}" #name required="required" type="text" formControlName="timerName" clearInput="true"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked style="color:#FF6E40;">
+          {{'TimerEditor.summary' | translate }}
+        </ion-label>
+        <ion-textarea placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{ timer.summary | translate }}" #summary clearInput="true"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked style="color:#FF6E40;">
+          {{'TimerEditor.category' | translate }}
+        </ion-label>
+        <ion-select formControlName="category" required="required" [(ngModel)]="timer.category">
+          <span *ngFor="let item of categoryList">
+            <ion-option  value="{{item.value}}" >{{'TimerEditor.category-list.'+item.value | translate}}</ion-option>
+          </span>
+        </ion-select>
+      </ion-item>
+
+      <div class="spacer" style="width: 300px; height: 15px;"></div>
+
+      <ion-list>
+        <ion-list-header stacked style="color:#FF6E40;">
+          {{'TimerEditor.timer-list' | translate }}
+          <button item-right ion-button color="DeepOrange" Clear icon-only type="button" (click)="goAddTimer()">
+            <ion-icon name="add-circle"></ion-icon>
+          </button>
+          <button  item-right ion-button color="DeepOrange" Clear icon-only type="button" (click)="goToggleRemove()">
+            <ion-icon name="remove-circle"></ion-icon>
+          </button>
+        </ion-list-header>
+
+        <ion-item-group reorder="true" (ionItemReorder)="goReorderItems($event);">
+
+          <button type="button" ion-item *ngFor="let item of timer.timerItems" (click)="goTimerEdit($event, item)">
+            <ion-icon [@removeAnimationMode]="removeMode" style="margin-top:4%;" item-left  name="remove-circle" color="DeepOrange" (click)="goRemoveTimer($event, item)"></ion-icon>
+            <ion-avatar item-left>
+              <img src="assets/image/timer-default.png">
+            </ion-avatar>
+            <h2 [style.color]=item.color>{{item.title}}</h2>
+            <h3>{{item.defaultTimeSet}}</h3>
+            <p>{{item.detail}}</p>
+          </button>
+
+        </ion-item-group>
+      </ion-list>
+    </div>
+  </form>
+
+  <form [formGroup]="timerForm" (ngSubmit)="onSaveTimer(timerForm.value)">
+    <div [@timerAnimationMode]="inputMode" >
+      <ion-item>
+        <ion-label stacked style="color:#FF6E40;">
+          {{'TimerEditor.title' | translate }}
+        </ion-label>
+        <ion-input placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{currentTimer.title}}" #title type="text" clearInput="true"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked style="color:#FF6E40;">
+          {{'TimerEditor.set-time' | translate }}
+        </ion-label>
+        <ion-datetime displayFormat="HH:mm:ss" (ionCancel)="onCancelTimeSet()" (ionChange)="onChangeTimeSet()" [(ngModel)]="currentTimer.timeSet" [ngModelOptions]="{standalone: true}">
+        </ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked style="color:#FF6E40;">
+          {{'TimerEditor.detail' | translate }}
+        </ion-label>
+        <ion-textarea placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{currentTimer.detail}}" #detail type="text" clearInput="true" ></ion-textarea>
+      </ion-item>
+      <div class="color-container">
+        <div class="color-item">
+          {{'TimerEditor.choose-color' | translate }}
+        </div>
+        <div class="color-item" ion-button type="button" [style.border-left-color]="currentTimer.color" [style.color]="selectedColor" block (click)="onColorPicker()">
+          {{'TimerEditor.color' | translate }}
+        </div>
+      </div>
+      <div class="spacer" style="width: 300px; height: 5px;"></div>
+      <div class="color-container">
+        <div class="color-item">
+          {{'TimerEditor.choose-picture' | translate }}
+        </div>
+        <div class="color-item" (click)="onOpenImagePicker()">
+          <img [src]="selectedImage">
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div [@timerAnimationMode]="colorMode" >
+    <ion-title>
+      {{'TimerEditor.Couleur' | translate }}
+    </ion-title>
+
+    <div class="spacer" style="width: 300px; height: 15px;"></div>
+    <ion-grid>
+      <ion-row>
+        <ion-col style="background:#330000" (click)="onSetColor($event,'#330000')"><div>col</div></ion-col>
+        <ion-col style="background:#331900" (click)="onSetColor($event,'#331900')">&nbsp;</ion-col>
+        <ion-col style="background:#333300" (click)="onSetColor($event,'#333300')">&nbsp;</ion-col>
+        <ion-col style="background:#193300" (click)="onSetColor($event,'#193300')">&nbsp;</ion-col>
+        <ion-col style="background:#003300" (click)="onSetColor($event,'#003300')">&nbsp;</ion-col>
+        <ion-col style="background:#003319" (click)="onSetColor($event,'#003319')">&nbsp;</ion-col>
+        <ion-col style="background:#003333" (click)="onSetColor($event,'#003333')">&nbsp;</ion-col>
+        <ion-col style="background:#001933" (click)="onSetColor($event,'#001933')">&nbsp;</ion-col>
+        <ion-col style="background:#000033" (click)="onSetColor($event,'#000033')">&nbsp;</ion-col>
+        <ion-col style="background:#190033" (click)="onSetColor($event,'#190033')">&nbsp;</ion-col>
+        <ion-col style="background:#330033" (click)="onSetColor($event,'#330033')">&nbsp;</ion-col>
+        <ion-col style="background:#330019" (click)="onSetColor($event,'#330019')">&nbsp;</ion-col>
+        <ion-col style="background:#000000" (click)="onSetColor($event,'#000000')">&nbsp;</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col style="background:#660000" (click)="onSetColor($event,'#660000')">&nbsp;</ion-col>
+        <ion-col style="background:#663300" (click)="onSetColor($event,'#663300')">&nbsp;</ion-col>
+        <ion-col style="background:#666600" (click)="onSetColor($event,'#666600')">&nbsp;</ion-col>
+        <ion-col style="background:#336600" (click)="onSetColor($event,'#336600')">&nbsp;</ion-col>
+        <ion-col style="background:#006600" (click)="onSetColor($event,'#006600')">&nbsp;</ion-col>
+        <ion-col style="background:#006633" (click)="onSetColor($event,'#006633')">&nbsp;</ion-col>
+        <ion-col style="background:#006666" (click)="onSetColor($event,'#006666')">&nbsp;</ion-col>
+        <ion-col style="background:#003366" (click)="onSetColor($event,'#003366')">&nbsp;</ion-col>
+        <ion-col style="background:#000066" (click)="onSetColor($event,'#000066')">&nbsp;</ion-col>
+        <ion-col style="background:#330066" (click)="onSetColor($event,'#330066')">&nbsp;</ion-col>
+        <ion-col style="background:#660066" (click)="onSetColor($event,'#660066')">&nbsp;</ion-col>
+        <ion-col style="background:#660033" (click)="onSetColor($event,'#660033')">&nbsp;</ion-col>
+        <ion-col style="background:#202020" (click)="onSetColor($event,'#202020')">&nbsp;</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col style="background:#990000" (click)="onSetColor($event,'#990000')">&nbsp;</ion-col>
+        <ion-col style="background:#994C00" (click)="onSetColor($event,'#994C00')">&nbsp;</ion-col>
+        <ion-col style="background:#999900" (click)="onSetColor($event,'#999900')">&nbsp;</ion-col>
+        <ion-col style="background:#4C9900" (click)="onSetColor($event,'#4C9900')">&nbsp;</ion-col>
+        <ion-col style="background:#009900" (click)="onSetColor($event,'#009900')">&nbsp;</ion-col>
+        <ion-col style="background:#00994C" (click)="onSetColor($event,'#00994C')">&nbsp;</ion-col>
+        <ion-col style="background:#009999" (click)="onSetColor($event,'#009999')">&nbsp;</ion-col>
+        <ion-col style="background:#004C99" (click)="onSetColor($event,'#004C99')">&nbsp;</ion-col>
+        <ion-col style="background:#000099" (click)="onSetColor($event,'#000099')">&nbsp;</ion-col>
+        <ion-col style="background:#4C0099" (click)="onSetColor($event,'#4C0099')">&nbsp;</ion-col>
+        <ion-col style="background:#990099" (click)="onSetColor($event,'#990099')">&nbsp;</ion-col>
+        <ion-col style="background:#99004C" (click)="onSetColor($event,'#99004C')">&nbsp;</ion-col>
+        <ion-col style="background:#404040" (click)="onSetColor($event,'#404040')">&nbsp;</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col style="background:#CC0000" (click)="onSetColor($event,'#CC0000')">&nbsp;</ion-col>
+        <ion-col style="background:#CC6600" (click)="onSetColor($event,'#CC6600')">&nbsp;</ion-col>
+        <ion-col style="background:#CCCC00" (click)="onSetColor($event,'#CCCC00')">&nbsp;</ion-col>
+        <ion-col style="background:#66CC00" (click)="onSetColor($event,'#66CC00')">&nbsp;</ion-col>
+        <ion-col style="background:#00CC00" (click)="onSetColor($event,'#00CC00')">&nbsp;</ion-col>
+        <ion-col style="background:#00CC66" (click)="onSetColor($event,'#00CC66')">&nbsp;</ion-col>
+        <ion-col style="background:#00CCCC" (click)="onSetColor($event,'#00CCCC')">&nbsp;</ion-col>
+        <ion-col style="background:#0066CC" (click)="onSetColor($event,'#0066CC')">&nbsp;</ion-col>
+        <ion-col style="background:#0000CC" (click)="onSetColor($event,'#0000CC')">&nbsp;</ion-col>
+        <ion-col style="background:#6600CC" (click)="onSetColor($event,'#6600CC')">&nbsp;</ion-col>
+        <ion-col style="background:#CC00CC" (click)="onSetColor($event,'#CC00CC')">&nbsp;</ion-col>
+        <ion-col style="background:#CC0066" (click)="onSetColor($event,'#CC0066')">&nbsp;</ion-col>
+        <ion-col style="background:#606060" (click)="onSetColor($event,'#606060')">&nbsp;</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col style="background:#FF0000" (click)="onSetColor($event,'#FF0000')">&nbsp;</ion-col>
+        <ion-col style="background:#FF8000" (click)="onSetColor($event,'#FF8000')">&nbsp;</ion-col>
+        <ion-col style="background:#FFFF00" (click)="onSetColor($event,'#FFFF00')">&nbsp;</ion-col>
+        <ion-col style="background:#80FF00" (click)="onSetColor($event,'#80FF00')">&nbsp;</ion-col>
+        <ion-col style="background:#00FF00" (click)="onSetColor($event,'#00FF00')">&nbsp;</ion-col>
+        <ion-col style="background:#00FF80" (click)="onSetColor($event,'#00FF80')">&nbsp;</ion-col>
+        <ion-col style="background:#00FFFF" (click)="onSetColor($event,'#00FFFF')">&nbsp;</ion-col>
+        <ion-col style="background:#0080FF" (click)="onSetColor($event,'#0080FF')">&nbsp;</ion-col>
+        <ion-col style="background:#0000FF" (click)="onSetColor($event,'#0000FF')">&nbsp;</ion-col>
+        <ion-col style="background:#7F00FF" (click)="onSetColor($event,'#7F00FF')">&nbsp;</ion-col>
+        <ion-col style="background:#FF00FF" (click)="onSetColor($event,'#FF00FF')">&nbsp;</ion-col>
+        <ion-col style="background:#FF007F" (click)="onSetColor($event,'#FF007F')">&nbsp;</ion-col>
+        <ion-col style="background:#808080" (click)="onSetColor($event,'#808080')">&nbsp;</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col style="background:#FF3333" (click)="onSetColor($event,'#FF3333')">&nbsp;</ion-col>
+        <ion-col style="background:#FF9933" (click)="onSetColor($event,'#FF9933')">&nbsp;</ion-col>
+        <ion-col style="background:#FFFF33" (click)="onSetColor($event,'#FFFF33')">&nbsp;</ion-col>
+        <ion-col style="background:#99FF33" (click)="onSetColor($event,'#99FF33')">&nbsp;</ion-col>
+        <ion-col style="background:#33FF33" (click)="onSetColor($event,'#33FF33')">&nbsp;</ion-col>
+        <ion-col style="background:#33FF99" (click)="onSetColor($event,'#33FF99')">&nbsp;</ion-col>
+        <ion-col style="background:#33FFFF" (click)="onSetColor($event,'#33FFFF')">&nbsp;</ion-col>
+        <ion-col style="background:#3399FF" (click)="onSetColor($event,'#3399FF')">&nbsp;</ion-col>
+        <ion-col style="background:#3333FF" (click)="onSetColor($event,'#3333FF')">&nbsp;</ion-col>
+        <ion-col style="background:#9933FF" (click)="onSetColor($event,'#9933FF')">&nbsp;</ion-col>
+        <ion-col style="background:#FF33FF" (click)="onSetColor($event,'#FF33FF')">&nbsp;</ion-col>
+        <ion-col style="background:#FF3399" (click)="onSetColor($event,'#FF3399')">&nbsp;</ion-col>
+        <ion-col style="background:#A0A0A0" (click)="onSetColor($event,'#A0A0A0')">&nbsp;</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col style="background:#FF6666" (click)="onSetColor($event,'#FF6666')">&nbsp;</ion-col>
+        <ion-col style="background:#FFB266" (click)="onSetColor($event,'#FFB266')">&nbsp;</ion-col>
+        <ion-col style="background:#FFFF66" (click)="onSetColor($event,'#FFFF66')">&nbsp;</ion-col>
+        <ion-col style="background:#B2FF66" (click)="onSetColor($event,'#B2FF66')">&nbsp;</ion-col>
+        <ion-col style="background:#66FF66" (click)="onSetColor($event,'#66FF66')">&nbsp;</ion-col>
+        <ion-col style="background:#66FFB2" (click)="onSetColor($event,'#66FFB2')">&nbsp;</ion-col>
+        <ion-col style="background:#66FFFF" (click)="onSetColor($event,'#66FFFF')">&nbsp;</ion-col>
+        <ion-col style="background:#66B2FF" (click)="onSetColor($event,'#66B2FF')">&nbsp;</ion-col>
+        <ion-col style="background:#6666FF" (click)="onSetColor($event,'#6666FF')">&nbsp;</ion-col>
+        <ion-col style="background:#B266FF" (click)="onSetColor($event,'#B266FF')">&nbsp;</ion-col>
+        <ion-col style="background:#FF66FF" (click)="onSetColor($event,'#FF66FF')">&nbsp;</ion-col>
+        <ion-col style="background:#FF66B2" (click)="onSetColor($event,'#FF66B2')">&nbsp;</ion-col>
+        <ion-col style="background:#C0C0C0" (click)="onSetColor($event,'#C0C0C0')">&nbsp;</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col style="background:#FF9999" (click)="onSetColor($event,'#FF9999')">&nbsp;</ion-col>
+        <ion-col style="background:#FFCC99" (click)="onSetColor($event,'#FFCC99')">&nbsp;</ion-col>
+        <ion-col style="background:#FFFF99" (click)="onSetColor($event,'#FFFF99')">&nbsp;</ion-col>
+        <ion-col style="background:#CCFF99" (click)="onSetColor($event,'#CCFF99')">&nbsp;</ion-col>
+        <ion-col style="background:#99FF99" (click)="onSetColor($event,'#99FF99')">&nbsp;</ion-col>
+        <ion-col style="background:#99FFCC" (click)="onSetColor($event,'#99FFCC')">&nbsp;</ion-col>
+        <ion-col style="background:#99FFFF" (click)="onSetColor($event,'#99FFFF')">&nbsp;</ion-col>
+        <ion-col style="background:#99CCFF" (click)="onSetColor($event,'#99CCFF')">&nbsp;</ion-col>
+        <ion-col style="background:#9999FF" (click)="onSetColor($event,'#9999FF')">&nbsp;</ion-col>
+        <ion-col style="background:#CC99FF" (click)="onSetColor($event,'#CC99FF')">&nbsp;</ion-col>
+        <ion-col style="background:#FF99FF" (click)="onSetColor($event,'#FF99FF')">&nbsp;</ion-col>
+        <ion-col style="background:#FF99CC" (click)="onSetColor($event,'#FF99CC')">&nbsp;</ion-col>
+        <ion-col style="background:#E0E0E0" (click)="onSetColor($event,'#E0E0E0')">&nbsp;</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col style="background:#FFCCCC" (click)="onSetColor($event,'#FFCCCC')">&nbsp;</ion-col>
+        <ion-col style="background:#FFE5CC" (click)="onSetColor($event,'#FFE5CC')">&nbsp;</ion-col>
+        <ion-col style="background:#FFFFCC" (click)="onSetColor($event,'#FFFFCC')">&nbsp;</ion-col>
+        <ion-col style="background:#E5FFCC" (click)="onSetColor($event,'#E5FFCC')">&nbsp;</ion-col>
+        <ion-col style="background:#CCFFCC" (click)="onSetColor($event,'#CCFFCC')">&nbsp;</ion-col>
+        <ion-col style="background:#CCFFE5" (click)="onSetColor($event,'#CCFFE5')">&nbsp;</ion-col>
+        <ion-col style="background:#CCFFFF" (click)="onSetColor($event,'#CCFFFF')">&nbsp;</ion-col>
+        <ion-col style="background:#CCE5FF" (click)="onSetColor($event,'#CCE5FF')">&nbsp;</ion-col>
+        <ion-col style="background:#CCCCFF" (click)="onSetColor($event,'#CCCCFF')">&nbsp;</ion-col>
+        <ion-col style="background:#E5CCFF" (click)="onSetColor($event,'#E5CCFF')">&nbsp;</ion-col>
+        <ion-col style="background:#FFCCFF" (click)="onSetColor($event,'#FFCCFF')">&nbsp;</ion-col>
+        <ion-col style="background:#FFCCE5" (click)="onSetColor($event,'#FFCCE5')">&nbsp;</ion-col>
+        <ion-col style="background:#FFFFFF" (click)="onSetColor($event,'#FFFFFF')">&nbsp;</ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+
+<ion-footer padding>
+  <div [@timerAnimationMode]="viewMode" >
+    <div class="flex_button_group" >
+      <button ion-button class="flex_button_item" type="submit" block [color]="'Yellow'" (click)="onSaveMain(timerMainForm.value, name.value, summary.value)">
+        {{'Common.Save' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div [@timerAnimationMode]="inputMode">
+    <div class="flex_button_group">
+      <button ion-button class="flex_button_item" type="button"  block  [color]="'Yellow'" (click)="goSaveTimerItems(title.value, detail.value)">
+        {{'Common.Save' | translate }}
+      </button>
+      <button ion-button class="flex_button_item" type="button"  block  [color]="'Yellow'" (click)="goCancelTimerItems(title.value, detail.value)">
+        {{'Common.Cancel' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div [@timerAnimationMode]="colorMode" >
+  </div>
+</ion-footer>

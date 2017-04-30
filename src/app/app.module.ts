@@ -1,9 +1,14 @@
 // Core
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // App
 import { MyApp } from './app.component';
+
+// Pipe
+import { CategoryPipe } from '../pipes/category-pipe';
+import { PlaceholderPipe } from '../pipes/placeholder-pipe';
 
 // Pages
 import { StartPage } from '../pages/start/start';
@@ -12,10 +17,14 @@ import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 import { StorePage } from '../pages/store/store';
 import { TimerPage } from '../pages/timer/timer';
+import { TimerListPage } from '../pages/timer-list/timer-list';
+import { TimerEditorPage } from '../pages/timer-editor/timer-editor';
 
 // services
 import { LoginService } from '../services/login-service';
+import { TimerService } from '../services/timer-service';
 import { Globals } from './globals';
+import { Config } from './config';
 
 // Utils
 import { StatusBar } from '@ionic-native/status-bar';
@@ -39,7 +48,10 @@ import { BackgroundMode } from '@ionic-native/background-mode';
 import { DatePicker } from '@ionic-native/date-picker';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { UUID } from 'angular2-uuid';
+
 import { SuperTabsModule } from 'ionic2-super-tabs';
+import { NativeAudio } from '@ionic-native/native-audio';
+import { ImagePicker } from '@ionic-native/image-picker';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -52,9 +64,16 @@ export function createTranslateLoader(http: Http) {
     StartPage,
     LoginPage,
     SignupPage,
+    StorePage,
+    TimerPage,
+    TimerListPage,
+    TimerEditorPage,
+    CategoryPipe,
+    PlaceholderPipe,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     IonicModule.forRoot(MyApp, {
       platforms : {
         ios : {
@@ -72,7 +91,7 @@ export function createTranslateLoader(http: Http) {
       }
     }),
     RoundProgressModule,
-    SuperTabsModule
+    SuperTabsModule.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -81,13 +100,19 @@ export function createTranslateLoader(http: Http) {
     StartPage,
     LoginPage,
     SignupPage,
+    StorePage,
+    TimerPage,
+    TimerListPage,
+    TimerEditorPage,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginService,
+    TimerService,
     Globals,
+    Config,
     ScreenOrientation,
     TranslateService,
     Keyboard,
@@ -98,6 +123,8 @@ export function createTranslateLoader(http: Http) {
     LocalNotifications,
     Device,
     UUID,
+    NativeAudio,
+    ImagePicker,
   ]
 })
 export class AppModule {}

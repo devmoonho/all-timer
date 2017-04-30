@@ -1,7 +1,7 @@
 {
   "IntroSlider": {
     "Slider1" :{
-      "Title": "월드 타이머",
+      "Title": "슈퍼 타이머",
       "Description": "필요한 모든 타이머를 생성, 등록, 실행 할 수 있으며 타인과 공유가능합니다."
     },
     "Slider2" :{
@@ -73,6 +73,26 @@
     "SuccessCreateUser":"가입을 축하드립니다. 3초 후 홈으로 이동 합니다.",
     "SuccessLogin":"반갑습니다."
   },
+  "TimerEditor":{
+    "timer-name":"타이머 이름",
+    "summary":"요약",
+    "category":"분류",
+    "timer-list":"타이머 리스트",
+    "please-enter":"입력해주세요 ",
+    "category":{
+      "workout":"운동",
+      "study":"공부",
+      "food":"음식",
+      "etc":"기타"
+    },
+    "title":"제목",
+    "set-time":"타임설정",
+    "detail":"상세",
+    "choose-color":"색 선택",
+    "color":"색",
+    "choose-picture":"사진 선택",
+    "Couleur":"색깔"
+  },
   "Common":{
     "AlertTitle":{
         "Information":"정보",
@@ -81,6 +101,7 @@
         "Error":"에러"
     },
     "Ok":"예",
+    "Save":"저장",
     "Cancel":"취소",
     "Yes":"예",
     "No":"아니오",

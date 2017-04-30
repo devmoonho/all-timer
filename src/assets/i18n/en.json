@@ -73,6 +73,26 @@
     "SuccessCreateUser":"Congratulations on your joining us.Go home after 3 seconds.",
     "SuccessLogin":"Welcome to All timer"
   },
+  "TimerEditor":{
+    "timer-name":"TIMER NAME",
+    "summary":"SUMMARY",
+    "category":"CATEGORY",
+    "timer-list":"TIMER LIST",
+    "please-enter":"Please enter",
+    "category-list":{
+      "workout":"Work Out",
+      "study":"Study",
+      "food":"Food",
+      "etc":"Etc"
+    },
+    "title":"TITLE",
+    "set-time":"SET TIME",
+    "detail":"DETAIL",
+    "choose-color":"CHOOSE COLOR",
+    "color":"COLOR",
+    "choose-picture":"CHOOSE PICTURE",
+    "Couleur":"COULEUR"
+  },
   "Common":{
     "AlertTitle":{
         "Information":"Information",
@@ -80,6 +100,7 @@
         "Notification":"Notification",
         "Error":"Error"
     },
+    "Save":"SAVE",
     "Ok":"OK",
     "Cancel":"Cancel",
     "Yes":"Yes",
