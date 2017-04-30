@@ -8,6 +8,7 @@ import { MyApp } from './app.component';
 
 // Pipe
 import { CategoryPipe } from '../pipes/category-pipe';
+import { PlaceholderPipe } from '../pipes/placeholder-pipe';
 
 // Pages
 import { StartPage } from '../pages/start/start';
@@ -68,6 +69,7 @@ export function createTranslateLoader(http: Http) {
     TimerListPage,
     TimerEditorPage,
     CategoryPipe,
+    PlaceholderPipe,
   ],
   imports: [
     BrowserModule,
