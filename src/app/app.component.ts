@@ -166,7 +166,6 @@ export class MyApp implements OnInit{
         this.updateConfig();
       });
     });
-
   }
 
   private updateConfig(){
@@ -191,7 +190,7 @@ export class MyApp implements OnInit{
     })
     .then((res)=>{
       let _res:any = res;
-      this.config.TEMPLATE = _res.val();
+      this.config.TEMP_TIMER = _res.val();
       return this.loadCategoryDataFromServer();
     })
     .then((res)=>{
