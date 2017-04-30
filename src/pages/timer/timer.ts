@@ -88,6 +88,7 @@ export class TimerPage {
       subscribtion: null,
       current: 0,
       max:0,
+      needToUpdateTimer:false,
       defaultTimeSet:'00:00:10',
       timeSet:'00:00:10',
       status: 'ready',
@@ -110,6 +111,7 @@ export class TimerPage {
       subscribtion: null,
       current: 0,
       max:0,
+      needToUpdateTimer:false,
       defaultTimeSet:'00:00:08',
       timeSet:'00:00:08',
       status: 'ready',
@@ -132,6 +134,7 @@ export class TimerPage {
       subscribtion: null,
       current: 0,
       max:0,
+      needToUpdateTimer:false,
       defaultTimeSet:'00:00:05',
       timeSet:'00:00:05',
       status: 'ready',
@@ -154,6 +157,7 @@ export class TimerPage {
       subscribtion: null,
       current: 0,
       max:0,
+      needToUpdateTimer:false,
       defaultTimeSet:'00:00:07',
       timeSet:'00:00:07',
       status: 'ready',
@@ -242,7 +246,7 @@ export class TimerPage {
   }
 
   goTimerReset(timer){
-    timer.timeSet = timer.defaultTimeSet;
+    // timer.timeSet = timer.defaultTimeSet;
     let day:number = 0;
     let hour:number = moment(timer.timeSet, "HH:mm:ss").hour();
     let minunt:number = moment(timer.timeSet, "HH:mm:ss").minute();
@@ -372,7 +376,16 @@ export class TimerPage {
     return this.utilsConvertSecond({day, hour, minunt, seconds});
   }
 
-  onCancelTimeSet(item:any){
+  onCancelTimeSet(timer:any){
+    timer.needToUpdateTimer = false;
+  }
+
+  onPopDataTimePicker(timer: any){
+    timer.needToUpdateTimer = true;
+    if(timer.status == 'running'){
+      timer.btnStatus = 'pause';
+      this.goTimerAction(timer)
+    }
   }
 
   onChangeTimeSet(item:any): void{
@@ -383,17 +396,13 @@ export class TimerPage {
     let seconds:number = moment(item.timeSet, "HH:mm:ss").second();
 
     this.setTimer({timer: item, day, hour, minunt, seconds})
+    item.needToUpdateTimer = false;
   }
 
   setTimer({timer, day, hour, minunt, seconds}){
     let convertSeconds = this.utilsConvertSecond({day, hour, minunt, seconds});
     timer.max = convertSeconds;
     timer.current = 0;
-
-    if(timer.status == 'running'){
-      timer.btnStatus = 'pause';
-      this.goTimerAction(timer)
-    }
   }
 
   utilsTimerStringFormat({max, current}):string{
@@ -420,6 +429,7 @@ export class TimerPage {
   goTimerAction(item){
     switch(item.btnStatus){
       case "start":
+      if(item.needToUpdateTimer){ this.onChangeTimeSet(item); }
       this.timerAction({item, status: "s"});
       item.btnStatus= "pause";
       break;
@@ -430,6 +440,7 @@ export class TimerPage {
       break;
 
       case "resume":
+      if(item.needToUpdateTimer){ this.onChangeTimeSet(item); }
       this.timerAction({item, status: "r"});
       item.btnStatus = "pause";
       break;

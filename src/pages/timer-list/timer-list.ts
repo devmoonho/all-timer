@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs/Rx';
 
@@ -35,8 +35,14 @@ export class TimerListPage {
     public navParams: NavParams,
     public timerService: TimerService,
     public config: Config,
+    public events: Events,
   ){
     this.rootNavCtrl = navParams.get('rootNavCtrl');
+
+    events.subscribe('timer:update-list', () => {
+      console.log('timer:update-list');
+      this.updateTimerList();
+    });
   }
 
   ngOnInit(){
@@ -50,9 +56,23 @@ export class TimerListPage {
   }
 
   onCreateTimer(){
-    this.rootNavCtrl.push(TimerEditorPage, {
+    this.navCtrl.push(TimerEditorPage, {
       mode: 'create',
-      timer: ''
+      timer: '',
     });
+  }
+
+  onSelectTimer(_timer){
+    this.navCtrl.push(TimerEditorPage, {
+      mode: 'edit',
+      timer: _timer,
+    });
+  }
+
+  updateTimerList(){
+    this.timerService.serviceTimerData()
+    .then((res)=>{
+      this.timerList = res;
+    })
   }
 }

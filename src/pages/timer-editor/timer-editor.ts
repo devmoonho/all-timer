@@ -1,10 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { Content } from 'ionic-angular';
 import { trigger, state, style, transition, animate } from '@angular/core'
 import { reorderArray } from 'ionic-angular';
 import { UUID } from 'angular2-uuid';
-import { Observable } from 'rxjs/Rx';
 import { ImagePicker } from '@ionic-native/image-picker';
 
 // validator
@@ -15,6 +14,11 @@ import { TimerService } from '../../services/timer-service';
 import { Config } from '../../app/config';
 
 // pages
+
+// utils
+import { TranslateService } from '@ngx-translate/core';
+
+// pipe
 
 @Component({
   selector: 'page-timer-editor',
@@ -62,6 +66,8 @@ export class TimerEditorPage{
     public formBuilder: FormBuilder,
     public timerService: TimerService,
     public config: Config,
+    public translate: TranslateService,
+    public events: Events,
   ){
     this.initValidator()
   }
@@ -79,25 +85,22 @@ export class TimerEditorPage{
   }
 
   ngOnInit(){
-    this.timer = this.config.DEFAULT_TIMER[0]
     this.categoryList = this.config.CATETGORY;
     this.currentTimer = this.config.TEMPLATE;
-
-    this.timerItems = this.config.DEFAULT_TIMER[0].timerItems;
-    this.utilsSortByOrder(this.timerItems)
-
-    this.setDefaultData(this.timer);
+    this.setDefaultTimerData();
   }
 
-  setDefaultData(timer){
+  setDefaultTimerData(){
     if(this.navParams.get('mode') === 'create'){
-      timer.timerId = UUID.UUID();
-      timer.name = 'Please enter';
-      timer.summary = 'Please enter';
-      timer.timerItems[0].id = UUID.UUID();
-      timer.timerItems[0].title = 'Please enter';
-      timer.timerItems[0].detail = 'Please enter';
+      this.timer = this.config.CREATE_TIMER;
+      // this.timer.timerId = UUID.UUID();
+      // this.timer.timerItems[0].id = UUID.UUID();
+    }else{
+      // edit mode
+      this.timer = this.navParams.get('timer');
+      this.utilsSortByOrder(this.timer.timerItems)
     }
+
   }
 
   utilsSortByOrder(timerItems){
@@ -106,7 +109,7 @@ export class TimerEditorPage{
 
   utilsGetTimerPositionByTimer(timer){
     let cnt: number = 0;
-    for(let _timer of this.timerItems){
+    for(let _timer of this.timer.timerItems){
       if(_timer == timer){
         return cnt;
       }
@@ -116,7 +119,7 @@ export class TimerEditorPage{
   }
 
   getCurrentTimer(){
-    return this.timerItems[this.utilsGetTimerPositionByTimer(this.currentTimer)];
+    return this.timer.timerItems[this.utilsGetTimerPositionByTimer(this.currentTimer)];
   }
 
   setMode(mode){
@@ -204,7 +207,7 @@ export class TimerEditorPage{
   goAddTimer(){
     let _timer = Object.assign({}, this.config.TEMPLATE)
     _timer.id = UUID.UUID();
-    this.timerItems.push(_timer);
+    this.timer.timerItems.push(_timer);
     this.content.scrollTo(0, this.content.getContentDimensions().scrollHeight, 1000);
   }
 
@@ -215,7 +218,7 @@ export class TimerEditorPage{
   goRemoveTimer(event,timer){
     event.stopPropagation();
     console.log(timer);
-    this.timerItems = this.timerItems.filter((jsonObject) => {
+    this.timer.timerItems = this.timer.timerItems.filter((jsonObject) => {
         return jsonObject.id != timer.id;
     });
   }
@@ -242,15 +245,40 @@ export class TimerEditorPage{
   }
 
   goReorderItems(evt){
-    this.timerItems = reorderArray(this.timerItems, evt);
+    this.timer.timerItems = reorderArray(this.timer.timerItems, evt);
   }
 
-  onSaveMain(validator){
+  onSaveMain(validator, _name, _summary){
     console.log('onSaveMain', validator, this.timerMainForm.valid);
+    this.setTimerData({name:_name, summary:_summary});
+    this.saveTimerDataToServer();
   }
 
   onSaveTimer(validator){
     console.log('onSaveTimer', validator, this.timerForm.valid);
   }
 
+  setTimerData({name, summary}){
+    this.timer.name = name;
+    this.timer.summary = summary;
+    let cnt: number = 0;
+    for(let _timer of this.timer.timerItems){
+      _timer.order = cnt;
+      cnt +=1;
+    }
+  }
+
+  saveTimerDataToServer(){
+    if(this.navParams.get('mode') == 'create'){
+      this.timerService.serviceAddTimer(this.timer)
+      .then((res)=>{
+        this.events.publish('timer:update-list');
+      });
+    }else{
+      this.timerService.serviceUpdateTimer(this.timer)
+      .then((res)=>{
+        this.events.publish('timer:update-list');
+      });
+    }
+  }
 }

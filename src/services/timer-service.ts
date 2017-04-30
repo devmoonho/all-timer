@@ -20,6 +20,30 @@ export class TimerService {
     this.fireDatabase = firebase.database();
   }
 
+  public serviceUpdateTimer(timer):any{
+    return Promise.resolve()
+    .then(()=>{
+        return this.updateTimerDataToServer(timer);
+    })
+    .then(()=>{
+      console.log("---- serviceUpdateTimer done ----");
+    })
+  }
+
+  public serviceAddTimer(timer): any{
+    return Promise.resolve()
+    .then(()=>{
+        return this.saveTimerDataToServer(timer);
+    })
+    .then(()=>{
+      console.log("---- serviceAddTimer done ----");
+    })
+  }
+
+  public serviceRemoveTimer(): any{
+
+  }
+
   public serviceTimerData(): any{
     return Promise.resolve()
     .then(()=>{
@@ -47,10 +71,25 @@ export class TimerService {
     .then(()=>{
       return this.loadCategoryDataFromServer();
     })
-    .then((res)=>{
-      console.log("---- serviceLoadCategoryData done ----");
-      return res.val();
+    .then(()=>{
+      console.log("---- serviceTimerCategoryData done ----");
     })
+  }
+
+  private updateTimerDataToServer(timer){
+    let user = this.fireAuth.currentUser;
+    return this.fireDatabase.ref(this.globals.SERVER_PATH_USERS +  user.uid + this.globals.SERVER_PATH_TIMER + timer.timerId).update(timer);
+  }
+
+  private saveTimerDataToServer(timer){
+    let user = this.fireAuth.currentUser;
+    let ref = firebase.database().ref(this.globals.SERVER_PATH_USERS +  user.uid + this.globals.SERVER_PATH_TIMER);
+    var newPostKey = ref.push().key;
+    var updates = {};
+
+    timer.timerId = newPostKey;
+    updates[newPostKey] = timer;
+    return ref.update(updates);
   }
 
   private loadCategoryDataFromServer(){

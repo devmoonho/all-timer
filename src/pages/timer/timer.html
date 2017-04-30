@@ -2,7 +2,7 @@
   <button ion-button color="light" (click)="goLogout()">
     logout
   </button>
-  <ion-card *ngFor="let item of timerList ; let i = index" [attr.id]="'timerId_' + item.id">
+  <ion-card *ngFor="let item of timerList  ; let i = index" [attr.id]="'timerId_' + item.id">
       <h1 style="margin:5px 5px 5px 5px;" [style.color]=item.color >{{item.title}}</h1>
       <img *ngIf="item.image!=''" style="margin:0 0 15px 0" [src]=item.image>
       <div class="progress-wrapper" >
@@ -22,7 +22,7 @@
 
         <div class="progress-default-text"> {{item.defaultTimeSet}} </div>
         <div class="progress-text">
-          <ion-datetime [style.color]=item.color displayFormat="HH:mm:ss" (ionCancel)="onCancelTimeSet(item)" (ionChange)="onChangeTimeSet(item)" [(ngModel)]="item.timeSet">
+          <ion-datetime [style.color]=item.color displayFormat="HH:mm:ss" (ionCancel)="onCancelTimeSet(item)" (click)="onPopDataTimePicker(item)" [(ngModel)]="item.timeSet">
           </ion-datetime>
         </div>
 
