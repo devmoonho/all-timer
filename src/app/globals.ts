@@ -8,6 +8,8 @@ export class Globals{
   public SERVER_PATH_TIMER: any = '/timer/';
 
   public SERVER_PATH_APP: any = '/app/';
+  public SERVER_PATH_DEFAULT: any = '/default/';
+  public SERVER_PATH_TIMER_DEFAULT: any = '/timer-default/';
   public SERVER_PATH_TIMER_CATEGORY: any = '/timer-category/';
   public SERVER_PATH_TIMER_TEMPLATE: any = '/timer-template/';
 
