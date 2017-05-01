@@ -21,6 +21,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as firebase from 'firebase';
 import * as moment from 'moment';
 import { Firebase } from '@ionic-native/firebase';
+import { Network } from '@ionic-native/network';
 
 // services
 
@@ -79,6 +80,7 @@ export class MyApp implements OnInit{
     public keyboard: Keyboard,
     public cordovaFirebase: Firebase,
     public device: Device,
+    public network: Network,
   ){
     translate.addLangs(["en", "ko"]);
     translate.setDefaultLang('en');
@@ -101,8 +103,28 @@ export class MyApp implements OnInit{
         screenOrientation.lock('portrait');
         this.initGlobalization();
         this.initNavFirebase();
+        this.initNetwork();
       }
     });//platform.ready()
+  }
+
+  initNetwork(){
+    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+      console.log('network was disconnected :-(');
+    });
+    // stop disconnect watch
+    // disconnectSubscription.unsubscribe();
+
+    let connectSubscription = this.network.onConnect().subscribe(() => {
+      console.log('network connected!'); 
+      setTimeout(() => {
+        if (this.network.type === 'wifi') {
+          console.log('we got a wifi connection, woohoo!');
+        }
+      }, 3000);
+    });
+    // stop connect watch
+    // connectSubscription.unsubscribe();
   }
 
   initFirebase(){
@@ -160,10 +182,9 @@ export class MyApp implements OnInit{
         } else {
           console.log(user)
           // this.rootPage = HomePage;
+          this.updateConfig();
           this.updateLastConnection()
         }
-        //if network available
-        this.updateConfig();
       });
     });
   }
@@ -202,6 +223,14 @@ export class MyApp implements OnInit{
       this.rootPage = HomePage;
       console.log("---- updateConfig done ----");
     });
+  }
+
+  private anonymousLogin(){
+
+  }
+
+  private checkNetworkAvaiable(){
+
   }
 
   private loadCategoryDataFromServer(){
