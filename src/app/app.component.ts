@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
-import { Platform, Nav, AlertController } from 'ionic-angular';
+import { Platform, Nav, AlertController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -21,6 +21,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as firebase from 'firebase';
 import * as moment from 'moment';
 import { Firebase } from '@ionic-native/firebase';
+import { Network } from '@ionic-native/network';
 
 // services
 
@@ -79,6 +80,8 @@ export class MyApp implements OnInit{
     public keyboard: Keyboard,
     public cordovaFirebase: Firebase,
     public device: Device,
+    public network: Network,
+    public events: Events,
   ){
     translate.addLangs(["en", "ko"]);
     translate.setDefaultLang('en');
@@ -102,7 +105,25 @@ export class MyApp implements OnInit{
         this.initGlobalization();
         this.initNavFirebase();
       }
+      this.initNetwork();
     });//platform.ready()
+
+  }
+
+  initNetwork(){
+    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+      console.log('network was disconnected :-(', this.network.type);
+      this.events.publish('network:disconnected');
+    });
+    // stop disconnect watch
+    // disconnectSubscription.unsubscribe();
+
+    let connectSubscription = this.network.onConnect().subscribe(() => {
+      console.log('network connected!', this.network.type); 
+      this.events.publish('network:connected');
+      });
+    // stop connect watch
+    // connectSubscription.unsubscribe();
   }
 
   initFirebase(){
@@ -159,53 +180,66 @@ export class MyApp implements OnInit{
           this.rootPage = StartPage ;
         } else {
           console.log(user)
-          // this.rootPage = HomePage;
-          this.updateLastConnection()
+          this.loadingProcess();
         }
-        //if network available
-        this.updateConfig();
       });
     });
   }
 
-  private updateConfig(){
-    let user = firebase.auth().currentUser;
+  private loadingProcess(){
+    this.zone.run(() => {
+      Promise.resolve()
+      .then(()=>{
+        return this.isFirstAccess();
+      })
+      .then((res:any)=>{
+        if(res.val()===null){
+          console.log('first access')
+          return this.loadDefaultTimerFromServer()
+          .then((res:any)=>{
+            console.log('res.val()', res.val());
+            return this.copyDefaultTimer(res.val());
+          })
+          .then(()=>{
+            console.log('#3')
+            return this.loadTimerDataFromServer();
+          })
+        }else{
+          console.log('not first access')
+          return this.loadTimerDataFromServer();
+        }
+      })
+      .then((res:any)=>{
+        this.config.MY_TIMER = res.val()
+        this.events.publish('timer:update-list');
+        this.rootPage = HomePage;
+      })
+    })
+  }
 
-    return Promise.resolve()
-    .then(()=>{
-      if(!user){
-        return;
-      }else{
-        return this.loadTimerDataFromServer();
-      }
-    })
-    .then((res)=>{
-      let _res:any = res;
-      if(!_res){
-        this.config.MY_TIMER = this.config.DEFAULT_TIMER;
-      }else{
-        this.config.MY_TIMER = _res.val();
-      }
-      return this.loadTimerTemplateDataFromServer()
-    })
-    .then((res)=>{
-      let _res:any = res;
-      this.config.TEMP_TIMER = _res.val();
-      return this.loadCategoryDataFromServer();
-    })
-    .then((res)=>{
-      let _res:any = res;
-      this.config.CATETGORY= _res.val();
-      return ;
-    })
-    .then(()=>{
-      this.rootPage = HomePage;
-      console.log("---- updateConfig done ----");
-    });
+  private isFirstAccess(){
+    let user = firebase.auth().currentUser;
+    return firebase.database().ref(this.globals.SERVER_PATH_USERS + user.uid ).once('value');
   }
 
   private loadCategoryDataFromServer(){
     return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_CATEGORY).once('value')
+  }
+
+  private loadDefaultTimerFromServer(): any{
+    console.log('#1')
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_DEFAULT + this.globals.SERVER_PATH_DEFAULT).once('value')
+  }
+
+  private copyDefaultTimer(timer): any{
+    console.log('#2')
+    let user = firebase.auth().currentUser;
+    let ref = firebase.database().ref(this.globals.SERVER_PATH_USERS +  user.uid + this.globals.SERVER_PATH_TIMER);
+    let newPostKey = ref.push().key;
+    let updates = {};
+    timer.timerId = newPostKey;
+    updates[newPostKey] = timer;
+    return ref.update(updates);
   }
 
   private loadTimerTemplateDataFromServer(){

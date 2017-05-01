@@ -27,6 +27,30 @@ export class LoginService {
     this.fireDatabase = firebase.database();
   }
 
+  public serviceAuthStateChanged(state){
+    console.log('serviceAuthStateChanged', state);
+    // 1. login
+    // 1-1.
+    // 2. logout
+    // 2-1.
+  }
+
+  public serviceCurrentUser():any{
+    let user = this.fireAuth.currentUser;
+    return user;
+  }
+
+  public serviceAnonymousLogin(): any{
+    return Promise.resolve()
+    .then(()=>{
+      return this.anonymousLogin();
+    })
+    .then(()=>{
+      console.log("---- anonymousLogin done ----");
+    })
+  }
+
+
   public serviceTwitterLogin(): any{
     return Promise.resolve()
     .then(()=>{
@@ -156,6 +180,10 @@ export class LoginService {
     .then(() => {
       console.log(" ---- serviceSignup done ----");
     });
+  }
+
+  private anonymousLogin(){
+    return this.fireAuth.signInAnonymously();
   }
 
   private firebaseTwitterCredentialLogin(res: any): any{

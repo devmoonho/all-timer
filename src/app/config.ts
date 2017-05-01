@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class Config{
-
   public CATETGORY = [{
     name: 'WORK OUT',
     value:'workout',
@@ -64,125 +63,56 @@ export class Config{
   public DEFAULT_TIMER =
   [{
     timerId :'',
-    name: '',
-    summary: '',
+    name: 'super-timer',
+    summary: 'This timer is sample',
     category: 'etc',
     timerItems:
     [{
       id:'',
-      title:'',
+      title:'Timer #1',
       timer: '',
       subscribtion: null,
       current: 0,
       max:0,
       needToUpdateTimer:false,
-      defaultTimeSet:'00:00:00',
-      timeSet:'00:00:00',
+      defaultTimeSet:'00:00:10',
+      timeSet:'00:00:10',
       status: 'ready',
       btnStatus: 'start',
-      detail:  "",
+      detail:  "Timer 1",
       order: 1,
       nextTimer: false,
       notification:{
         enable:true,
         id: 1,
-        sound:'default.mp3',
+        sound:'assets/sound/default.mp3',
         data:''
       },
-      image: "",
+      image: "assets/image/timer-default.png",
       color:"",
-    }]
-  },
-  {
-    timerId :'',
-    name: '',
-    summary: '',
-    category: 'food',
-    timerItems:
-    [{
+    },
+    {
       id:'',
-      title:'',
+      title:'Timer #2',
       timer: '',
       subscribtion: null,
       current: 0,
       max:0,
       needToUpdateTimer:false,
-      defaultTimeSet:'00:00:00',
-      timeSet:'00:00:00',
+      defaultTimeSet:'00:00:10',
+      timeSet:'00:00:10',
       status: 'ready',
       btnStatus: 'start',
-      detail:  "",
+      detail:  "Timer 2",
       order: 1,
       nextTimer: false,
       notification:{
         enable:true,
         id: 1,
-        sound:'default.mp3',
+        sound:'assets/sound/default.mp3',
         data:''
       },
-      image: "",
-      color:"",
-    }]
-  },
-  {
-    timerId :'',
-    name: '',
-    summary: '',
-    category: 'study',
-    timerItems:
-    [{
-      id:'',
-      title:'',
-      timer: '',
-      subscribtion: null,
-      current: 0,
-      max:0,
-      needToUpdateTimer:false,
-      defaultTimeSet:'00:00:00',
-      timeSet:'00:00:00',
-      status: 'ready',
-      btnStatus: 'start',
-      detail:  "",
-      order: 1,
-      nextTimer: false,
-      notification:{
-        enable:true,
-        id: 1,
-        sound:'default.mp3',
-        data:''
-      },
-      image: "",
-      color:"",
-    }]
-  },
-  {
-    timerId :'',
-    name: '',
-    summary: '',
-    category: 'workout',
-    timerItems:
-    [{
-      id:'',
-      title:'',
-      timer: '',
-      subscribtion: null,
-      current: 0,
-      max:0,
-      needToUpdateTimer:false,
-      defaultTimeSet:'00:00:00',
-      timeSet:'00:00:00',
-      status: 'ready',
-      btnStatus: 'start',
-      detail:  "",
-      order: 1,
-      nextTimer: false,
-      notification:{
-        enable:true,
-        id: 1,
-        sound:'default.mp3',
-        data:''
-      },
-      image: "",
+      image: "assets/image/timer-default.png",
       color:"",
     }]
   }];
