@@ -188,6 +188,9 @@ export class MyApp implements OnInit{
 
   private loadingProcess(){
     this.zone.run(() => {
+      let _timer:any;
+      let _items:any;
+
       Promise.resolve()
       .then(()=>{
         return this.isFirstAccess();
@@ -195,13 +198,17 @@ export class MyApp implements OnInit{
       .then((res:any)=>{
         if(res.val()===null){
           console.log('first access')
-          return this.loadDefaultTimerFromServer()
+          return this.loadTemplateTimerFromServer()
           .then((res:any)=>{
-            console.log('res.val()', res.val());
-            return this.copyDefaultTimer(res.val());
+            _timer = res.val();
+            return this.loadTemplateItemsFromServer();
+          })
+          .then((res:any)=>{
+            _items = res.val();
+            return this.copyDefaultTimer(_timer, _items);
           })
           .then(()=>{
-            console.log('#3')
+            console.log('#end')
             return this.loadTimerDataFromServer();
           })
         }else{
@@ -222,24 +229,94 @@ export class MyApp implements OnInit{
     return firebase.database().ref(this.globals.SERVER_PATH_USERS + user.uid ).once('value');
   }
 
-  private loadCategoryDataFromServer(){
-    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_CATEGORY).once('value')
-  }
-
-  private loadDefaultTimerFromServer(): any{
+  private loadTemplateTimerFromServer(): any{
     console.log('#1')
-    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_DEFAULT + this.globals.SERVER_PATH_DEFAULT).once('value')
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_TEMPLATE ).once('value')
   }
 
-  private copyDefaultTimer(timer): any{
+  private loadTemplateItemsFromServer(): any{
     console.log('#2')
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_TEMPLATE_ITEMS ).once('value')
+  }
+
+  private copyDefaultTimer(_timer, _items): any{
+    console.log('#3', _timer, _items);
     let user = firebase.auth().currentUser;
     let ref = firebase.database().ref(this.globals.SERVER_PATH_USERS +  user.uid + this.globals.SERVER_PATH_TIMER);
-    let newPostKey = ref.push().key;
+    let newPostTimerKey = ref.push().key;
+    let newPostItemsKey = ref.push().key;
+
     let updates = {};
-    timer.timerId = newPostKey;
-    updates[newPostKey] = timer;
+    let timerItems = {};
+
+    _items['id'] = newPostItemsKey;
+    timerItems[newPostItemsKey] = _items;
+    _timer['timerItems'] = timerItems;
+    _timer['timerId'] = newPostTimerKey;
+
+    _timer = this.defaultDataForFirstAccess(_timer);
+
+    // first default timer
+    updates[newPostTimerKey] = _timer;
     return ref.update(updates);
+  }
+
+  private defaultDataForFirstAccess(_timer): any{
+    let englishDefault:any ={
+      name:"Super Timer",
+      summary:"This is a sample timer",
+      title:"Timer #1",
+      detail:"This is first timer, Let's set time"
+    }
+
+    this.translate.get('Default.Timer.Name')
+    .subscribe((res: string) => {
+      if(res === 'Default.Timer.Name'){
+        _timer.name = englishDefault.name;
+      }else{
+        _timer.name = res;
+      }
+    })
+    this.translate.get('Default.Timer.Summary')
+    .subscribe((res: string) => {
+      if(res === 'Default.Timer.Summary'){
+        _timer.summary = englishDefault.summary;
+      }else{
+        _timer.summary = res;
+      }
+    })
+    this.translate.get('Default.Timer.Title')
+    .subscribe((res: string) => {
+      if(res === 'Default.Timer.Title'){
+        for(let key in _timer.timerItems){
+          _timer.timerItems[key]['title'] = englishDefault.title;
+        }
+      }else{
+        for(let key in _timer.timerItems){
+          _timer.timerItems[key]['title'] = res;
+        }
+      }
+
+    })
+    this.translate.get('Default.Timer.detail')
+    .subscribe((res: string) => {
+      if(res === 'Default.Timer.detail'){
+        for(let key in _timer.timerItems){
+          _timer.timerItems[key]['detail'] = englishDefault.detail;
+        }
+      }else{
+        for(let key in _timer.timerItems){
+          _timer.timerItems[key]['detail'] = res;
+        }
+      }
+    })
+
+    return _timer;
+  }
+
+
+  private loadCategoryDataFromServer(){
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_CATEGORY).once('value')
   }
 
   private loadTimerTemplateDataFromServer(){

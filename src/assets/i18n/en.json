@@ -102,11 +102,20 @@
     },
     "Save":"SAVE",
     "Ok":"OK",
-    "Cancel":"Cancel",
-    "Yes":"Yes",
-    "No":"No",
-    "Confirm":"Confirm",
-    "Agree":"Agree",
-    "Disagree":"Disagree"
+    "Cancel":"CANCEL",
+    "Remove":"REMOVE",
+    "Yes":"YES",
+    "No":"NO",
+    "Confirm":"CONFIRM",
+    "Agree":"AGREE",
+    "Disagree":"DISAGREE"
+  },
+  "Default":{
+    "Timer":{
+      "Name":"Super Timer",
+      "Summary":"This is a sample timer",
+      "Title":"Timer #1",
+      "Detail":"This is first timer, Let's set time"
+    }
   }
 }
