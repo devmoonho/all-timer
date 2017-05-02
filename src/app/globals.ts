@@ -9,9 +9,9 @@ export class Globals{
 
   public SERVER_PATH_APP: any = '/app/';
   public SERVER_PATH_DEFAULT: any = '/default/';
-  public SERVER_PATH_TIMER_DEFAULT: any = '/timer-default/';
   public SERVER_PATH_TIMER_CATEGORY: any = '/timer-category/';
   public SERVER_PATH_TIMER_TEMPLATE: any = '/timer-template/';
+  public SERVER_PATH_TIMER_TEMPLATE_ITEMS: any = '/timer-template-items/';
 
   // for local storage
   public LOCAL_STORAGE_KEY_USER_INFO: any = 'userInfo';
