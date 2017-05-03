@@ -59,6 +59,17 @@
       "CreateUserErrorTitle":"Create User Error"
     }
   },
+  "Main" :{
+    "workout": "WORK OUT",
+    "workout-detail": "WORK OUT",
+    "cooking": "COOKING",
+    "cooking-detail": "COOKING",
+    "study": "STUDY",
+    "study-detail": "STUDY",
+    "etc": "ETC",
+    "etc-detail": "ETC",
+    "listings": "Listings"
+  },
   "FirebaseMessage":{
     "auth/account-exists-with-different-credential": "An account already exists with the same email addr",
     "auth/user-not-found": "Unable to find registered user.",
@@ -76,13 +87,13 @@
   "TimerEditor":{
     "timer-name":"TIMER NAME",
     "summary":"SUMMARY",
-    "category":"CATEGORY",
+    "category-title":"CATEGORY",
     "timer-list":"TIMER LIST",
     "please-enter":"Please enter",
     "category-list":{
       "workout":"Work Out",
       "study":"Study",
-      "food":"Food",
+      "cooking":"Cooking",
       "etc":"Etc"
     },
     "title":"TITLE",
@@ -108,7 +119,9 @@
     "No":"NO",
     "Confirm":"CONFIRM",
     "Agree":"AGREE",
-    "Disagree":"DISAGREE"
+    "Disagree":"DISAGREE",
+    "Create":"CREATE",
+    "Back":"BACK"
   },
   "Default":{
     "Timer":{

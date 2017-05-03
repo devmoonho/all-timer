@@ -1,10 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, Events } from 'ionic-angular';
 import { Content } from 'ionic-angular';
-import { trigger, state, style, transition, animate } from '@angular/core'
 import { reorderArray } from 'ionic-angular';
 import { UUID } from 'angular2-uuid';
 import { ImagePicker } from '@ionic-native/image-picker';
+
+// animation
+import { trigger, state, style, transition, animate } from '@angular/core'
 
 // validator
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -103,7 +105,6 @@ export class TimerEditorPage{
       this.utilsSortByOrder(this.timerItems)
     }
   }
-
 
   getCurrentTimer(){
     return this.timerItems[this.utilsGetTimerPositionByTimer(this.currentTimer)];

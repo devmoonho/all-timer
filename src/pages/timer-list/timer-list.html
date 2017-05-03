@@ -1,18 +1,39 @@
+<ion-content no-bounce >
+<!-- <div [@mainCardAnimation]='' *ngIf="categoryMode" class="card-background-page"> -->
+<div [@mainCardAnimation]="categoryView" class="card-background-page">
+  <ion-card *ngFor="let item of category; let idx = index;" (click)="onSelectCard(idx)">
+    <img [src]="item.defaultImage">
+    <div class="card-title">{{ 'Main.' + item.value | translate}}</div>
+    <div class="card-subtitle">{{ (timerList | categoryPipe:{category:category[idx].value}).length }} {{'Main.listings' | translate}}</div>
+    <ion-icon class="card-icon" name="arrow-forward"></ion-icon>
+  </ion-card>
+</div>
 
-<ion-content padding>
-    <ion-item-group *ngFor="let item of category; let i = index">
-        <ion-item-divider color="light">{{item.name}}</ion-item-divider>
-        <ion-item *ngFor="let timer of timerList | categoryPipe:{category:item.value}; let j = index" (click)="onSelectTimer(timer)">
-            <ion-avatar item-left>
-                <h1 class="avatar-text" [style.background-color]="getRandomColor(i+j)" text-center>{{timer.name | slice:0:2}}</h1>
-            </ion-avatar>
-            <h2>{{timer.name}}</h2>
-            <p>{{timer.summary}}</p>
-        </ion-item>
-    </ion-item-group>
+<div [@mainCardAnimation]="categoryDetail">
+  <div  class="card-background-page">
+    <ion-card style="height:100px">
+      <img [src]="currentCategory.defaultImage">
+      <div class="card-title">{{ 'Main.' + currentCategory.value | translate}}</div>
+      <div class="card-subtitle">{{(timerList | categoryPipe:{category:currentCategory.value}).length}} {{'Main.listings' | translate}}</div>
+    </ion-card>
+  </div>
+  <ion-item *ngFor="let timer of timerList | categoryPipe:{category:currentCategory.value}; let j = index" (click)="onSelectTimer(timer)">
+    <ion-avatar item-left>
+      <h1 class="avatar-text" [style.background-color]="getRandomColor(j)" text-center>{{timer.name | slice:0:2}}</h1>
+    </ion-avatar>
+    <h2>{{timer.name}}</h2>
+    <p>{{timer.summary}}</p>
+  </ion-item>
+</div>
 </ion-content>
-<ion-footer padding>
-    <button ion-button type="button" block [color]="'Yellow'" (click)="onCreateTimer()">
-        Create
+
+<ion-footer>
+  <div class="flex_button_group">
+    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onCreateTimer()">
+        {{'Common.Create' | translate }}
     </button>
+    <button [@mainCardAnimation]="categoryDetail" ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onBackCategory()">
+        {{'Common.Back' | translate }}
+    </button>
+  </div>
 </ion-footer>

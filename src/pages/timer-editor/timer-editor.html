@@ -23,7 +23,7 @@
       </ion-item>
       <ion-item>
         <ion-label stacked style="color:#FF6E40;">
-          {{'TimerEditor.category' | translate }}
+          {{'TimerEditor.category-title' | translate }}
         </ion-label>
         <ion-select formControlName="category" required="required" [(ngModel)]="timer.category">
           <span *ngFor="let item of categoryList">
@@ -249,16 +249,19 @@
   </div>
 </ion-content>
 
-<ion-footer padding>
+<ion-footer >
   <div [@timerAnimationMode]="viewMode" >
     <div class="flex_button_group" >
-      <button ion-button class="flex_button_item" type="submit" block [color]="'Yellow'" (click)="onSaveMain(timerMainForm.value, name.value, summary.value)">
+      <button ion-button class="flex_button_item" type="submit" clear [color]="'Yellow'" (click)="onSaveMain(timerMainForm.value, name.value, summary.value)">
         {{'Common.Save' | translate }}
       </button>
-      <button *ngIf="editMode" ion-button class="flex_button_item" type="submit" block [color]="'Yellow'" (click)="onRemoveMain()">
+      <button *ngIf="editMode" ion-button class="flex_button_item" type="submit" clear [color]="'Yellow'" (click)="onRemoveMain()">
         {{'Common.Remove' | translate }}
       </button>
-      <button *ngIf="!editMode" ion-button class="flex_button_item" type="submit" block [color]="'Yellow'" (click)="onCancelMain()">
+      <button *ngIf="editMode" ion-button class="flex_button_item" type="submit" clear [color]="'Yellow'" (click)="onCancelMain()">
+        {{'Common.Cancel' | translate }}
+      </button>
+      <button *ngIf="!editMode" ion-button class="flex_button_item" type="submit" clear [color]="'Yellow'" (click)="onCancelMain()">
         {{'Common.Cancel' | translate }}
       </button>
     </div>
@@ -266,10 +269,10 @@
 
   <div [@timerAnimationMode]="inputMode">
     <div class="flex_button_group">
-      <button ion-button class="flex_button_item" type="button"  block  [color]="'Yellow'" (click)="goSaveTimerItems(title.value, detail.value)">
+      <button ion-button class="flex_button_item" type="button"  clear  [color]="'Yellow'" (click)="goSaveTimerItems(title.value, detail.value)">
         {{'Common.Save' | translate }}
       </button>
-      <button ion-button class="flex_button_item" type="button"  block  [color]="'Yellow'" (click)="goCancelTimerItems(title.value, detail.value)">
+      <button ion-button class="flex_button_item" type="button"  clear  [color]="'Yellow'" (click)="goCancelTimerItems(title.value, detail.value)">
         {{'Common.Cancel' | translate }}
       </button>
     </div>

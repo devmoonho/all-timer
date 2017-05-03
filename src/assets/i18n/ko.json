@@ -59,6 +59,17 @@
       "CreateUserErrorTitle":"사용자생성 에러"
     }
   },
+  "Main" :{
+    "workout": "운동",
+    "workout-detail": "WORK OUT",
+    "cooking": "요리",
+    "cooking-detail": "COOKING",
+    "study": "공부",
+    "study-detail": "STUDY",
+    "etc": "기타",
+    "etc-detail": "ETC",
+    "listings": "리스팅"
+  },
   "FirebaseMessage":{
     "auth/account-exists-with-different-credential": "이미 등록된 동일한 이메일이 있습니다.",
     "auth/user-not-found": "등록된 사용자를 찾을 수 없습니다.",
@@ -76,13 +87,13 @@
   "TimerEditor":{
     "timer-name":"타이머 이름",
     "summary":"요약",
-    "category":"분류",
+    "category-title":"분류",
     "timer-list":"타이머 리스트",
     "please-enter":"입력해주세요 ",
-    "category":{
+    "category-list":{
       "workout":"운동",
       "study":"공부",
-      "food":"음식",
+      "cooking":"요리",
       "etc":"기타"
     },
     "title":"제목",
@@ -108,7 +119,9 @@
     "No":"아니오",
     "Confirm":"확인",
     "Agree":"동의",
-    "Disagree":"반대"
+    "Disagree":"반대",
+    "Create":"만들기",
+    "Back":"뒤로"
   },
   "Default":{
     "Timer":{

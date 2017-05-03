@@ -14,6 +14,7 @@ page-timer-editor{
   }
   .flex_button_item{
       margin: 0 5px 0 5px;
+      width: 100%;
       font-weight: bold;
   }
   .color-container{
@@ -33,10 +34,6 @@ page-timer-editor{
     flex-basis: 60%;
     border-left: 15px solid;
     background-color: lightgrey;
-  }
-  ion-footer {
-    // padding-bottom: 12px;
-    // background-color: white;
   }
   .list-header-md, .list-header-ios {
     border: none;

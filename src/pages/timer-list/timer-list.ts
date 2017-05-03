@@ -3,6 +3,9 @@ import { NavController, NavParams, Events } from 'ionic-angular';
 import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs/Rx';
 
+// animatin
+import { trigger, state, style, transition, animate, keyframes} from '@angular/core'
+
 // services
 import { TimerService } from '../../services/timer-service';
 import { Config } from '../../app/config';
@@ -17,9 +20,36 @@ import { TimerEditorPage } from '../timer-editor/timer-editor';
   selector: 'page-timer-list',
   providers:[TimerService],
   templateUrl: 'timer-list.html',
+  animations: [
+    trigger('mainCardAnimation', [
+    state('shown' , style({opacity: 1 })),
+    state('hidden', style({opacity: 0, 'display':'none' })),
+    transition('hidden => shown', animate('.5s'))]),]
+  // animations: [
+  //   trigger('mainCardAnimation', [
+  //     state('inactive' , style({opacity: 0, transform: 'translateX(50px) scale(1.5)'})),
+  //     state('active', style({opacity: 1, transform: 'translateX(0) scale(1)'})),
+  //     state('click', style({})),
+  //     transition('inactive => active', animate('.5s')),
+  //     transition('active <=> click',
+  //     animate(500, keyframes([
+  //       style({opacity: 1, transform: 'scale(1)',     offset: 0}),
+  //       style({opacity: 1, transform: 'scale(1.2)',     offset: 0.5}),
+  //       style({opacity: 1, transform: 'scale(1)',     offset: 1}),
+  //       ])
+  //     ))
+  //   ]),
+  // ],
 })
+
 export class TimerListPage {
   rootNavCtrl: NavController;
+  // cardsAnimationState: string[]  = ['inactive', 'inactive', 'inactive', 'inactive'];
+  categoryView: string  = 'shown';
+  categoryDetail: string  = 'hidden';
+
+  categoryMode: any = true;
+  currentCategory: any;
 
   timerList: any;
   category: any;
@@ -48,11 +78,37 @@ export class TimerListPage {
   ngOnInit(){
     this.timerList = this.config.MY_TIMER;
     this.category = this.config.CATETGORY;
+    this.currentCategory = this.config.CATETGORY[0];
   }
+
+  // ionViewWillLeave(){
+  //   this.cardsAnimationState.forEach((el, idx)=>{
+  //       this.cardsAnimationState[idx] = 'inactive';
+  //   })
+  // }
+  //
+  // ionViewDidEnter(){
+  //   let idx:number = 0;
+  //   let timerId = setInterval(() => {
+  //     this.cardsAnimationState[idx++]= 'active';
+  //     if(idx >= this.cardsAnimationState.length){clearInterval(timerId);}
+  //   }, 100);
+  // }
 
   getRandomColor(index: number): string {
     let idx = (index) % this.randomColor.length
     return this.randomColor[idx];
+  }
+
+  onSelectCard(idx){
+    this.categoryView = 'hidden';
+    this.categoryDetail = 'shown';
+    this.currentCategory = this.category[idx];
+  }
+
+  onBackCategory(){
+    this.categoryView = 'shown';
+    this.categoryDetail = 'hidden';
   }
 
   onCreateTimer(){
@@ -69,10 +125,36 @@ export class TimerListPage {
     });
   }
 
+  onCounterCategory(_category): number{
+  //   let cnt=0;
+  //   if(_category !== undefined){
+  //     this.timerList.forEach((le, idx)=>{
+  //       if(le.value === _category.value){
+  //         cnt +=1
+  //       }
+  //     })
+  //     return cnt;
+  //   }
+    return 0;
+  }
+
   updateTimerList(){
     this.timerService.serviceTimerData()
     .then((res)=>{
       this.timerList = res;
     })
+  }
+
+  utilsArrayToObject(arr){
+    let _obj:any = {};
+    for(let item of arr){
+      item.id = UUID.UUID();
+      _obj[item.id] = item;
+    }
+    return _obj;
+  }
+
+  utilsObjectToArray(obj){
+    return Object.keys(obj).map((k) => obj[k])
   }
 }

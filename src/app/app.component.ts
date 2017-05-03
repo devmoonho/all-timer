@@ -169,6 +169,7 @@ export class MyApp implements OnInit{
       let userLang = res.value.split('-')[0];
       userLang = /(en|ko)/gi.test(userLang) ? userLang : 'en';
       this.translate.use(userLang);
+      // this.translate.use('ko');
     })
   }
 
@@ -217,7 +218,12 @@ export class MyApp implements OnInit{
         }
       })
       .then((res:any)=>{
-        this.config.MY_TIMER = res.val()
+        this.config.MY_TIMER = res.val();
+        return this.loadCategoryDataFromServer();
+      })
+      .then((res:any)=>{
+        console.log('#end',res.val())
+        this.config.CATETGORY = res.val();
         this.events.publish('timer:update-list');
         this.rootPage = HomePage;
       })
