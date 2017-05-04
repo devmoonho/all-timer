@@ -1,15 +1,14 @@
 <ion-content no-bounce >
-<!-- <div [@mainCardAnimation]='' *ngIf="categoryMode" class="card-background-page"> -->
-<div [@mainCardAnimation]="categoryView" class="card-background-page">
-  <ion-card *ngFor="let item of category; let idx = index;" (click)="onSelectCard(idx)">
-    <img [src]="item.defaultImage">
+<div *ngIf="categoryView=='shown'" class="card-background-page">
+  <ion-card *ngFor="let item of category; let idx = index;" (click)="onSelectCard(idx)" tappable>
+    <img [src]="item.defaultImage" (click)="onSelectCard(idx)">
     <div class="card-title">{{ 'Main.' + item.value | translate}}</div>
     <div class="card-subtitle">{{ (timerList | categoryPipe:{category:category[idx].value}).length }} {{'Main.listings' | translate}}</div>
     <ion-icon class="card-icon" name="arrow-forward"></ion-icon>
   </ion-card>
 </div>
 
-<div [@mainCardAnimation]="categoryDetail">
+<div *ngIf="categoryDetail=='shown'">
   <div  class="card-background-page">
     <ion-card style="height:100px">
       <img [src]="currentCategory.defaultImage">
@@ -32,7 +31,7 @@
     <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onCreateTimer()">
         {{'Common.Create' | translate }}
     </button>
-    <button [@mainCardAnimation]="categoryDetail" ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onBackCategory()">
+    <button *ngIf="categoryDetail=='shown'" ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onBackCategory()">
         {{'Common.Back' | translate }}
     </button>
   </div>

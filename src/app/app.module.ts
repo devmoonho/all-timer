@@ -20,6 +20,9 @@ import { TimerPage } from '../pages/timer/timer';
 import { TimerListPage } from '../pages/timer-list/timer-list';
 import { TimerEditorPage } from '../pages/timer-editor/timer-editor';
 
+// Modals
+import { ColorPickerModal } from '../modals/color-picker/color-picker';
+
 // services
 import { LoginService } from '../services/login-service';
 import { TimerService } from '../services/timer-service';
@@ -71,6 +74,7 @@ export function createTranslateLoader(http: Http) {
     TimerEditorPage,
     CategoryPipe,
     PlaceholderPipe,
+    ColorPickerModal, 
   ],
   imports: [
     BrowserModule,
@@ -105,6 +109,7 @@ export function createTranslateLoader(http: Http) {
     TimerPage,
     TimerListPage,
     TimerEditorPage,
+    ColorPickerModal,
   ],
   providers: [
     StatusBar,

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { NavController, NavParams, Events, ModalController, ViewController } from 'ionic-angular';
 import { Content } from 'ionic-angular';
 import { reorderArray } from 'ionic-angular';
 import { UUID } from 'angular2-uuid';
@@ -16,6 +16,9 @@ import { TimerService } from '../../services/timer-service';
 import { Config } from '../../app/config';
 
 // pages
+
+// modals
+import { ColorPickerModal } from '../../modals/color-picker/color-picker';
 
 // utils
 import { TranslateService } from '@ngx-translate/core';
@@ -49,7 +52,6 @@ export class TimerEditorPage{
 
   viewMode: string = 'shown';
   inputMode: string = 'hidden';
-  colorMode: string = 'hidden';
   removeMode: string = 'hidden';
 
   selectedColor: string = '#000000';
@@ -71,6 +73,7 @@ export class TimerEditorPage{
     public config: Config,
     public translate: TranslateService,
     public events: Events,
+    public modalCtrl: ModalController,
   ){
     this.initValidator()
   }
@@ -98,6 +101,8 @@ export class TimerEditorPage{
       this.timer = Object.assign({}, this.config.TEMP_TIMER)
       this.timerItems.push(Object.assign({}, this.config.TEMP_TIMER_ITEMS));
       this.currentTimer = this.timerItems[0];
+      this.timer.category = this.navParams.get('category').value;
+
     }else{
       this.timer = this.navParams.get('timer');
       this.timerItems = this.utilsObjectToArray(this.timer.timerItems);
@@ -114,22 +119,18 @@ export class TimerEditorPage{
     switch (mode){
       case 'view':
         this.inputMode = 'hidden';
-        this.colorMode = 'hidden';
         this.viewMode= 'shown';
       break;
       case 'input':
         this.inputMode= 'shown';
-        this.colorMode = 'hidden';
         this.viewMode= 'hidden';
       break;
       case 'color':
         this.inputMode = 'hidden';
-        this.colorMode = 'shown';
         this.viewMode= 'hidden';
       break;
       default:
         this.inputMode = 'hidden';
-        this.colorMode = 'hidden';
         this.viewMode= 'shown';
       break;
     }
@@ -171,7 +172,12 @@ export class TimerEditorPage{
   }
 
   onColorPicker(){
-    this.setMode('color');
+    let colorPickerModal = this.modalCtrl.create(ColorPickerModal);
+    colorPickerModal.onDidDismiss(data => {
+      this.getCurrentTimer().color = data.color;
+      console.log(data);
+    });
+    colorPickerModal.present();
   }
 
   onSetColor(event, color){

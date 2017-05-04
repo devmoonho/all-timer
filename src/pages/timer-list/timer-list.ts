@@ -20,11 +20,11 @@ import { TimerEditorPage } from '../timer-editor/timer-editor';
   selector: 'page-timer-list',
   providers:[TimerService],
   templateUrl: 'timer-list.html',
-  animations: [
-    trigger('mainCardAnimation', [
-    state('shown' , style({opacity: 1 })),
-    state('hidden', style({opacity: 0, 'display':'none' })),
-    transition('hidden => shown', animate('.5s'))]),]
+  // animations: [
+  //   trigger('mainCardAnimation', [
+  //   state('shown' , style({opacity: 1 })),
+  //   state('hidden', style({opacity: 0, 'display':'none' })),
+  //   transition('hidden => shown', animate('.1s'))]),]
   // animations: [
   //   trigger('mainCardAnimation', [
   //     state('inactive' , style({opacity: 0, transform: 'translateX(50px) scale(1.5)'})),
@@ -115,6 +115,7 @@ export class TimerListPage {
     this.navCtrl.push(TimerEditorPage, {
       mode: 'create',
       timer: '',
+      category: this.currentCategory,
     });
   }
 
@@ -122,20 +123,8 @@ export class TimerListPage {
     this.navCtrl.push(TimerEditorPage, {
       mode: 'edit',
       timer: _timer,
+      category: this.currentCategory,
     });
-  }
-
-  onCounterCategory(_category): number{
-  //   let cnt=0;
-  //   if(_category !== undefined){
-  //     this.timerList.forEach((le, idx)=>{
-  //       if(le.value === _category.value){
-  //         cnt +=1
-  //       }
-  //     })
-  //     return cnt;
-  //   }
-    return 0;
   }
 
   updateTimerList(){
