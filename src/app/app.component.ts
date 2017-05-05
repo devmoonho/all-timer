@@ -11,6 +11,7 @@ import { Globals } from './globals';
 import { Config } from './config';
 
 // page
+import { TabsPage } from '../pages/tabs/tabs';
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
 import { StorePage } from '../pages/store/store';
@@ -62,8 +63,8 @@ export class MyApp implements OnInit{
       params: { icons: false, titles: true }
     },
     {
-      name: 'Partial - Icons only',
-      page: StorePage,
+      name: 'Logout',
+      page: StartPage,
       params: { icons: true, titles: false }
     }
   ];
@@ -225,7 +226,7 @@ export class MyApp implements OnInit{
         console.log('#end',res.val())
         this.config.CATETGORY = res.val();
         this.events.publish('timer:update-list');
-        this.rootPage = HomePage;
+        this.rootPage = TabsPage;
       })
     })
   }

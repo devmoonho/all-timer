@@ -1,10 +1,15 @@
 <ion-content padding>
-  <button ion-button color="light" (click)="goLogout()">
+
+<!--   <button ion-button color="light" (click)="goLogout()">
     logout
   </button>
-  <ion-card *ngFor="let item of timerList  ; let i = index" [attr.id]="'timerId_' + item.id">
+  <button ion-button color="light" (click)="onEdit()">
+    edit
+  </button>
+   -->
+  <ion-card *ngFor="let item of timerItems  ; let i = index" [attr.id]="'timerId_' + item.id">
       <h1 style="margin:5px 5px 5px 5px;" [style.color]=item.color >{{item.title}}</h1>
-      <img *ngIf="item.image!=''" style="margin:0 0 15px 0" [src]=item.image>
+      <img class="cover" *ngIf="item.image!=''" style="margin:0 0 15px 0" [src]=item.image>
       <div class="progress-wrapper" >
         <i [style.color]=item.color class="icon-spin3 progress-refresh" (click)="goTimerReset(item)" ></i>
 
@@ -43,25 +48,16 @@
       <ion-card-content>
       <p>{{item.detail}}</p>
 
-      <ion-row>
-        <ion-col>
-          <button ion-button icon-left clear small>
-            <ion-icon name="thumbs-up"></ion-icon>
-            <div>12 Likes</div>
-          </button>
-        </ion-col>
-        <ion-col>
-          <button ion-button icon-left clear small>
-            <ion-icon name="text"></ion-icon>
-            <div>4 Comments</div>
-          </button>
-        </ion-col>
-        <ion-col center text-center>
-          <ion-note>
-            11h ago
-          </ion-note>
-        </ion-col>
-      </ion-row>
     </ion-card-content>
   </ion-card>
 </ion-content>
+<ion-footer>
+  <div class="flex_button_group">
+   <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onBack()">
+        {{'Common.Back' | translate }}
+    </button>
+    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onStartAllTimer()">
+        {{'Common.Start' | translate }}
+    </button>
+  </div>
+</ion-footer>

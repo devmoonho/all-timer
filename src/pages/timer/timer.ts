@@ -20,6 +20,7 @@ import { NativeAudio } from '@ionic-native/native-audio';
 
 // pages
 import { LoginPage } from '../login/login';
+import { TimerEditorPage } from '../timer-editor/timer-editor';
 
 @Component({
   selector: 'page-timer',
@@ -53,7 +54,7 @@ export class TimerPage {
   btnState: string = "start"
 
   subscribtion: any;
-  timerList: any;
+  timerItems: any;
 
   continuousMode: boolean = false;
   continuousCallback: any;
@@ -81,109 +82,154 @@ export class TimerPage {
   }
 
   ngOnInit() {
-    this.timerList = [{
-      id: UUID.UUID(),
-      title:'운동',
-      timer: Observable.timer(0, 1000),
-      subscribtion: null,
-      current: 0,
-      max:0,
-      needToUpdateTimer:false,
-      defaultTimeSet:'00:00:10',
-      timeSet:'00:00:10',
-      status: 'ready',
-      btnStatus: 'start',
-      detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-      order: 2,
-      nextTimer: false,
-      notification:{
-        enable:true,
-        id: 1,
-        sound:'default.mp3',
-        data:''
-      },
-      image: "http://www.livestrong.com/wp-content/uploads/2013/05/NewTrainer_JBBlog_iStock_000017277101Medium.jpg",
-      color:"#E91E63",
-    },{
-      id: UUID.UUID(),
-      title:'SPICY CAULIFLOWER WITH COCONUT RICE',
-      timer: Observable.timer(0, 1000),
-      subscribtion: null,
-      current: 0,
-      max:0,
-      needToUpdateTimer:false,
-      defaultTimeSet:'00:00:08',
-      timeSet:'00:00:08',
-      status: 'ready',
-      btnStatus: 'start',
-      detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-      order:1,
-      nextTimer: false,
-      notification:{
-        enable:false,
-        id: 1,
-        sound:'default.mp3',
-        data:''
-      },
-      image: 'http://saverafoods.co.in/wp-content/uploads/2014/10/1.jpg',
-      color:"#9C27B0",
-    },{
-      id: UUID.UUID(),
-      title:'SAT',
-      timer: Observable.timer(0, 1000),
-      subscribtion: null,
-      current: 0,
-      max:0,
-      needToUpdateTimer:false,
-      defaultTimeSet:'00:00:05',
-      timeSet:'00:00:05',
-      status: 'ready',
-      btnStatus: 'start',
-      detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-      order:3,
-      nextTimer: false,
-      notification:{
-        enable:true,
-        id: 1,
-        sound:'default.mp3',
-        data:''
-      },
-      image: 'https://media.licdn.com/mpr/mpr/p/7/005/089/3bf/1451504.jpg',
-      color:"#009688",
-    },{
-      id: UUID.UUID(),
-      title:'高考',
-      timer: Observable.timer(0, 1000),
-      subscribtion: null,
-      current: 0,
-      max:0,
-      needToUpdateTimer:false,
-      defaultTimeSet:'00:00:07',
-      timeSet:'00:00:07',
-      status: 'ready',
-      btnStatus: 'start',
-      detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-      order:4,
-      nextTimer: false,
-      notification:{
-        enable:false,
-        id: 1,
-        sound:'default.mp3',
-        data:''
-      },
-      image: 'http://p1.img.cctvpic.com/photoAlbum/templet/special/PAGEa6hEmeHGH5f9GdaNVrBw160529/ELMTybetDju4MYylXRQirEyi160529_1465098233.jpg',
-      color:"#00B0FF",
-    }
-  ]
+    this.timerItems = this.utilsObjectToArray(this.navParams.get('timer').timerItems);
+
+    // [{
+    //   id: UUID.UUID(),
+    //   title:'운동',
+    //   timer: Observable.timer(0, 1000),
+    //   subscribtion: null,
+    //   current: 0,
+    //   max:0,
+    //   needToUpdateTimer:false,
+    //   defaultTimeSet:'00:00:10',
+    //   timeSet:'00:00:10',
+    //   status: 'ready',
+    //   btnStatus: 'start',
+    //   detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
+    //   order: 2,
+    //   nextTimer: false,
+    //   notification:{
+    //     enable:true,
+    //     id: 1,
+    //     sound:'default.mp3',
+    //     data:''
+    //   },
+    //   image: "http://www.livestrong.com/wp-content/uploads/2013/05/NewTrainer_JBBlog_iStock_000017277101Medium.jpg",
+    //   color:"#E91E63",
+    // },{
+    //   id: UUID.UUID(),
+    //   title:'SPICY CAULIFLOWER WITH COCONUT RICE',
+    //   timer: Observable.timer(0, 1000),
+    //   subscribtion: null,
+    //   current: 0,
+    //   max:0,
+    //   needToUpdateTimer:false,
+    //   defaultTimeSet:'00:00:08',
+    //   timeSet:'00:00:08',
+    //   status: 'ready',
+    //   btnStatus: 'start',
+    //   detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
+    //   order:1,
+    //   nextTimer: false,
+    //   notification:{
+    //     enable:false,
+    //     id: 1,
+    //     sound:'default.mp3',
+    //     data:''
+    //   },
+    //   image: 'http://saverafoods.co.in/wp-content/uploads/2014/10/1.jpg',
+    //   color:"#9C27B0",
+    // },{
+    //   id: UUID.UUID(),
+    //   title:'SAT',
+    //   timer: Observable.timer(0, 1000),
+    //   subscribtion: null,
+    //   current: 0,
+    //   max:0,
+    //   needToUpdateTimer:false,
+    //   defaultTimeSet:'00:00:05',
+    //   timeSet:'00:00:05',
+    //   status: 'ready',
+    //   btnStatus: 'start',
+    //   detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
+    //   order:3,
+    //   nextTimer: false,
+    //   notification:{
+    //     enable:true,
+    //     id: 1,
+    //     sound:'default.mp3',
+    //     data:''
+    //   },
+    //   image: 'https://media.licdn.com/mpr/mpr/p/7/005/089/3bf/1451504.jpg',
+    //   color:"#009688",
+    // },{
+    //   id: UUID.UUID(),
+    //   title:'高考',
+    //   timer: Observable.timer(0, 1000),
+    //   subscribtion: null,
+    //   current: 0,
+    //   max:0,
+    //   needToUpdateTimer:false,
+    //   defaultTimeSet:'00:00:07',
+    //   timeSet:'00:00:07',
+    //   status: 'ready',
+    //   btnStatus: 'start',
+    //   detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
+    //   order:4,
+    //   nextTimer: false,
+    //   notification:{
+    //     enable:false,
+    //     id: 1,
+    //     sound:'default.mp3',
+    //     data:''
+    //   },
+    //   image: 'http://p1.img.cctvpic.com/photoAlbum/templet/special/PAGEa6hEmeHGH5f9GdaNVrBw160529/ELMTybetDju4MYylXRQirEyi160529_1465098233.jpg',
+    //   color:"#00B0FF",
+    // }
+  // ]
 
     this.initTimer();
   }
 
   initTimer(){
-    this.timerList .forEach((el) => {
-      el.max = this.getMax(el.timeSet)
+    let category = this.navParams.get('category');
+
+    this.timerItems.forEach((el) => {
+      el.max = this.getMax(el.timeSet);
+      el.max = el.max==0?1:el.max;
+      el.timer = Observable.timer(0, 1000);
+      el.image = el.image===''?category.defaultTimerImage:el.image;
+      el.color = el.color==''?'#3F51B5': el.color;
     });
-    this.timerList.sort(function(a, b){return a.order - b.order});
+
+    this.timerItems.sort(function(a, b){return a.order - b.order});
+  }
+
+  onStartAllTimer(){
+    let _timer = this.timerItems[0];
+    this.setNextTimerUI(_timer);
+
+    switch(_timer.btnStatus){
+      case 'start':
+      _timer.btnStatus = 'start';
+      this.goTimerAction(_timer);
+      this.setPositionForTimer(_timer);
+      break;
+      case 'pause':
+      break;
+      case 'resume':
+      this.goTimerAction(_timer);
+      break;
+      case 'end':
+      _timer.btnStatus = 'start';
+      this.setPositionForTimer(_timer);
+      this.goTimerAction(_timer);
+      break;
+    }
+  }
+
+  onBack(){
+    this.navCtrl.pop();
+  }
+
+  onEdit(){
+    let _timer = this.navParams.get('timer');
+    this.navCtrl.push(TimerEditorPage, {
+      mode: 'edit',
+      timer: _timer,
+      category: _timer.category
+    });
   }
 
   popLocalNotifications(timer){
@@ -265,7 +311,7 @@ export class TimerPage {
   isAllTimerSleep(): boolean{
     if(this.isContinuousMode()) {return false;}
 
-    for(let _timer of this.timerList){
+    for(let _timer of this.timerItems){
       if(_timer.status == 'running'){
         return false;
       }
@@ -277,7 +323,7 @@ export class TimerPage {
     if(this.isContinuousMode()) return;
     this.setContinuousMode(true);
 
-    this.loopTimer(this.timerList.length, 0, (res)=>{
+    this.loopTimer(this.timerItems.length, 0, (res)=>{
         this.setNextTimerUI('');
         this.setContinuousMode(false);
         console.log('done', res);
@@ -289,11 +335,13 @@ export class TimerPage {
       if(max <= res){
         return done(res);
       }
-      let timer =this.timerList[res];
-      let doc:any = document;
-      let yOffset = doc.getElementById('timerId_' + timer.id).offsetTop;
+      let timer =this.timerItems[res];
+      // let doc:any = document;
+      // let yOffset = doc.getElementById('timerId_' + timer.id).offsetTop;
 
-      this.content.scrollTo(0, yOffset - 10, 1000)
+      // this.content.scrollTo(0, yOffset - 10, 1000)
+      this.setPositionForTimer(timer);
+
       if(timer.status != 'running'){
         this.goTimerAction(timer);
       }
@@ -303,12 +351,18 @@ export class TimerPage {
     })
   }
 
+  setPositionForTimer(timer){
+    let doc:any = document;
+    let yOffset = doc.getElementById('timerId_' + timer.id).offsetTop;
+    this.content.scrollTo(0, yOffset - 10, 1000)
+  }
+
   doNextAction(cb){
     this.continuousCallback= cb;
   }
 
   getTimerById(id):any{
-    for(let _timer of this.timerList){
+    for(let _timer of this.timerItems){
       if(_timer.id == id){
         return _timer;
       }
@@ -330,28 +384,28 @@ export class TimerPage {
 
   getTimerPostion(timer): number{
     let pos: number = 0;
-    for(let _timer of this.timerList){
+    for(let _timer of this.timerItems){
       if(_timer == timer){
         return pos;
       }
       pos +=1;
     }
-    return this.timerList.length == pos ? -1 : pos;
+    return this.timerItems.length == pos ? -1 : pos;
   }
 
   getNextTimerPosition(): number{
     let pos: number = 0;
-    for(let _timer of this.timerList){
+    for(let _timer of this.timerItems){
       if(_timer.nextTimer == true){
         return pos;
       }
       pos +=1;
     }
-    return this.timerList.length == pos ? -1 : pos;
+    return this.timerItems.length == pos ? -1 : pos;
   }
 
   setNextTimerUI(timer){
-    for(let _timer of this.timerList){
+    for(let _timer of this.timerItems){
       if(timer == _timer){
         _timer.nextTimer= true;
       }else{
@@ -561,5 +615,17 @@ export class TimerPage {
     });
 
     alert.present();
+  }
+  utilsArrayToObject(arr){
+    let _obj:any = {};
+    for(let item of arr){
+      item.id = UUID.UUID();
+      _obj[item.id] = item;
+    }
+    return _obj;
+  }
+
+  utilsObjectToArray(obj){
+    return Object.keys(obj).map((k) => obj[k])
   }
 }

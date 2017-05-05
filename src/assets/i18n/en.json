@@ -121,7 +121,8 @@
     "Agree":"AGREE",
     "Disagree":"DISAGREE",
     "Create":"CREATE",
-    "Back":"BACK"
+    "Back":"BACK",
+    "Start":"START"
   },
   "Default":{
     "Timer":{

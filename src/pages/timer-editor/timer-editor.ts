@@ -50,8 +50,8 @@ export class TimerEditorPage{
 
   editMode: boolean = false;
 
-  viewMode: string = 'shown';
-  inputMode: string = 'hidden';
+  timerEditMode: string = 'shown';
+  timerItemsEditMode: string = 'hidden';
   removeMode: string = 'hidden';
 
   selectedColor: string = '#000000';
@@ -91,23 +91,21 @@ export class TimerEditorPage{
   }
 
   ngOnInit(){
-    this.editMode = this.navParams.get('mode')==='edit'? true:false;
     this.categoryList = this.config.CATETGORY;
     this.setDefaultTimerData();
   }
 
   setDefaultTimerData(){
-    if(this.editMode === false){
-      this.timer = Object.assign({}, this.config.TEMP_TIMER)
-      this.timerItems.push(Object.assign({}, this.config.TEMP_TIMER_ITEMS));
-      this.currentTimer = this.timerItems[0];
-      this.timer.category = this.navParams.get('category').value;
-
-    }else{
+    if(this.navParams.get('mode') === 'edit'){
       this.timer = this.navParams.get('timer');
       this.timerItems = this.utilsObjectToArray(this.timer.timerItems);
-      this.currentTimer = this.timerItems[0];
       this.utilsSortByOrder(this.timerItems)
+      this.currentTimer = this.timerItems[0];
+     }else{
+      this.timer = Object.assign({}, this.config.TEMP_TIMER)
+      this.timer.category = this.navParams.get('category').value;
+      this.timerItems.push(Object.assign({}, this.config.TEMP_TIMER_ITEMS));
+      this.currentTimer = this.timerItems[0];
     }
   }
 
@@ -117,21 +115,21 @@ export class TimerEditorPage{
 
   setMode(mode){
     switch (mode){
-      case 'view':
-        this.inputMode = 'hidden';
-        this.viewMode= 'shown';
+      case 'timerEdit':
+        this.timerItemsEditMode = 'hidden';
+        this.timerEditMode= 'shown';
       break;
-      case 'input':
-        this.inputMode= 'shown';
-        this.viewMode= 'hidden';
+      case 'timerItemsEdit':
+        this.timerItemsEditMode= 'shown';
+        this.timerEditMode= 'hidden';
       break;
       case 'color':
-        this.inputMode = 'hidden';
-        this.viewMode= 'hidden';
+        this.timerItemsEditMode = 'hidden';
+        this.timerEditMode= 'hidden';
       break;
       default:
-        this.inputMode = 'hidden';
-        this.viewMode= 'shown';
+        this.timerItemsEditMode = 'hidden';
+        this.timerEditMode= 'shown';
       break;
     }
   }
@@ -185,11 +183,11 @@ export class TimerEditorPage{
 
     let _timer: any = this.getCurrentTimer();
     _timer.color= color;
-    this.setMode('input');
+    this.setMode('timerItemsEdit');
   }
 
   onCancelTimeSet(){
-    this.setMode('input');
+    this.setMode('timerItemsEdit');
   }
 
   onChangeTimeSet(){
@@ -220,13 +218,16 @@ export class TimerEditorPage{
     event.stopPropagation();
     console.log(timer);
     this.currentTimer = timer;
-    this.setMode('input');
+    this.setMode('timerItemsEdit');
     this.content.scrollTo(0, 0, 0);
+  }
+
+  onSaveTimerMain(name, summary){
+    this.saveTimerDataToServer({name, summary});
   }
 
   onSaveMain(validator, name, summary){
     console.log('onSaveMain', validator, this.timerMainForm.valid);
-    this.saveTimerDataToServer({name, summary});
   }
 
   saveTimerDataToServer({name, summary}){
@@ -235,13 +236,13 @@ export class TimerEditorPage{
     if(this.editMode === false){
       this.timerService.serviceAddTimer(this.timer)
       .then((res)=>{
-        this.events.publish('timer:update-list');
+        this.events.publish('timer:update-list', this.timer.category );
         this.navCtrl.pop();
       });
     }else{
       this.timerService.serviceUpdateTimer(this.timer)
       .then((res)=>{
-        this.events.publish('timer:update-list');
+        this.events.publish('timer:update-list', this.timer.category);
         this.navCtrl.pop();
       }); }
   }
@@ -252,6 +253,7 @@ export class TimerEditorPage{
     let cnt: number = 0;
     for(let _timer of this.timerItems){
       _timer.order = cnt;
+      _timer.timer = '';
       cnt +=1;
     }
     this.timer.timerItems = this.utilsArrayToObject(this.timerItems);
@@ -262,12 +264,12 @@ export class TimerEditorPage{
     _timer.title = title;
     _timer.detail = detail;
 
-    this.setMode('view');
+    this.setMode('timerEdit');
   }
 
   goCancelTimerItems(title, detail){
     title = detail = '';
-    this.setMode('view');
+    this.setMode('timerEdit');
   }
 
   goReorderItems(evt){
@@ -277,7 +279,7 @@ export class TimerEditorPage{
   onRemoveMain(){
     this.timerService.serviceRemoveTimer(this.timer)
     .then((res)=>{
-      this.events.publish('timer:update-list');
+      this.events.publish('timer:update-list', this.timer.category);
       this.navCtrl.pop();
     });
   }

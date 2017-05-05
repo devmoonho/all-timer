@@ -1,11 +1,12 @@
 <ion-content padding >
-  <form [formGroup]="timerMainForm" (ngSubmit)="onSaveMain(timerInputForm.value)">
-    <div [@timerAnimationMode]="viewMode">
+  <!-- <form [formGroup]="timerMainForm" (ngSubmit)="onSaveMain(timerInputForm.value)"> -->
+  <form [formGroup]="timerMainForm">
+    <div [@timerAnimationMode]="timerEditMode">
       <ion-item>
         <ion-label stacked style="color:#FF6E40;">
           {{'TimerEditor.timer-name' | translate }}
           </ion-label>
-        <ion-input placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{timer.name}}" #name required="required" type="text" formControlName="timerName" clearInput="true"></ion-input>
+        <ion-input placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{timer.name}}" #name type="text" clearInput="true"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label stacked style="color:#FF6E40;">
@@ -54,8 +55,9 @@
     </div>
   </form>
 
-  <form [formGroup]="timerForm" (ngSubmit)="onSaveTimer(timerForm.value)">
-    <div [@timerAnimationMode]="inputMode" >
+  <!-- <form [formGroup]="timerForm" (ngSubmit)="onSaveTimer(timerForm.value)"> -->
+  <form [formGroup]="timerForm" >
+    <div [@timerAnimationMode]="timerItemsEditMode" >
       <ion-item>
         <ion-label stacked style="color:#FF6E40;">
           {{'TimerEditor.title' | translate }}
@@ -97,24 +99,24 @@
 </ion-content>
 
 <ion-footer >
-  <div [@timerAnimationMode]="viewMode" >
+  <div [@timerAnimationMode]="timerEditMode" >
     <div class="flex_button_group" >
-      <button ion-button class="flex_button_item" type="submit" clear [color]="'Yellow'" (click)="onSaveMain(timerMainForm.value, name.value, summary.value)">
+      <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onSaveTimerMain(name.value, summary.value)">
         {{'Common.Save' | translate }}
       </button>
-      <button *ngIf="editMode" ion-button class="flex_button_item" type="submit" clear [color]="'Yellow'" (click)="onRemoveMain()">
+      <button *ngIf="editMode" ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onRemoveMain()">
         {{'Common.Remove' | translate }}
       </button>
-      <button *ngIf="editMode" ion-button class="flex_button_item" type="submit" clear [color]="'Yellow'" (click)="onCancelMain()">
+      <button *ngIf="editMode" ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onCancelMain()">
         {{'Common.Cancel' | translate }}
       </button>
-      <button *ngIf="!editMode" ion-button class="flex_button_item" type="submit" clear [color]="'Yellow'" (click)="onCancelMain()">
+      <button *ngIf="!editMode" ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onCancelMain()">
         {{'Common.Cancel' | translate }}
       </button>
     </div>
   </div>
 
-  <div [@timerAnimationMode]="inputMode">
+  <div [@timerAnimationMode]="timerItemsEditMode">
     <div class="flex_button_group">
       <button ion-button class="flex_button_item" type="button"  clear  [color]="'Yellow'" (click)="goSaveTimerItems(title.value, detail.value)">
         {{'Common.Save' | translate }}

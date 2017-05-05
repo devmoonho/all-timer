@@ -11,6 +11,7 @@ import { CategoryPipe } from '../pipes/category-pipe';
 import { PlaceholderPipe } from '../pipes/placeholder-pipe';
 
 // Pages
+import { TabsPage } from '../pages/tabs/tabs';
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
@@ -65,6 +66,7 @@ export function createTranslateLoader(http: Http) {
   declarations: [
     MyApp,
     HomePage,
+    TabsPage,
     StartPage,
     LoginPage,
     SignupPage,
@@ -102,6 +104,7 @@ export function createTranslateLoader(http: Http) {
   entryComponents: [
     MyApp,
     HomePage,
+    TabsPage,
     StartPage,
     LoginPage,
     SignupPage,

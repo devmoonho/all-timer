@@ -1,29 +1,19 @@
-<ion-content no-bounce >
-<div *ngIf="categoryView=='shown'" class="card-background-page">
-  <ion-card *ngFor="let item of category; let idx = index;" (click)="onSelectCard(idx)" tappable>
-    <img [src]="item.defaultImage" (click)="onSelectCard(idx)">
-    <div class="card-title">{{ 'Main.' + item.value | translate}}</div>
-    <div class="card-subtitle">{{ (timerList | categoryPipe:{category:category[idx].value}).length }} {{'Main.listings' | translate}}</div>
-    <ion-icon class="card-icon" name="arrow-forward"></ion-icon>
-  </ion-card>
-</div>
-
-<div *ngIf="categoryDetail=='shown'">
-  <div  class="card-background-page">
-    <ion-card style="height:100px">
+<ion-content>
+  <div class="card-background-page">
+    <ion-card class="card-detail" (tap)="onBackCategory()" tappable>
       <img [src]="currentCategory.defaultImage">
       <div class="card-title">{{ 'Main.' + currentCategory.value | translate}}</div>
       <div class="card-subtitle">{{(timerList | categoryPipe:{category:currentCategory.value}).length}} {{'Main.listings' | translate}}</div>
+      <ion-icon class="card-icon-back" name="arrow-back"></ion-icon>
     </ion-card>
   </div>
-  <ion-item *ngFor="let timer of timerList | categoryPipe:{category:currentCategory.value}; let j = index" (click)="onSelectTimer(timer)">
+  <ion-item *ngFor="let timer of timerList | categoryPipe:{category:currentCategory.value}; let j = index" (click)="onSelectTimer(timer)" tappable>
     <ion-avatar item-left>
       <h1 class="avatar-text" [style.background-color]="getRandomColor(j)" text-center>{{timer.name | slice:0:2}}</h1>
     </ion-avatar>
     <h2>{{timer.name}}</h2>
     <p>{{timer.summary}}</p>
   </ion-item>
-</div>
 </ion-content>
 
 <ion-footer>
@@ -31,7 +21,7 @@
     <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onCreateTimer()">
         {{'Common.Create' | translate }}
     </button>
-    <button *ngIf="categoryDetail=='shown'" ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onBackCategory()">
+    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onBackCategory()">
         {{'Common.Back' | translate }}
     </button>
   </div>
