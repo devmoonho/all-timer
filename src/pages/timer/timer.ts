@@ -152,8 +152,11 @@ export class TimerPage {
     let cnt = 0; 
     let btnConfirm: string; 
 
-    // this.nativeAudio.preloadSimple('timeout', timer.notification.sound);
-    this.nativeAudio.preloadSimple('timeout','assets/sound/alarm.mp3') 
+    this.nativeAudio.preloadSimple(timer.id, timer.notification.sound)
+    .then(()=>{
+      this.nativeAudio.play(timer.id);
+    });
+
     let interval = setInterval(() => {
       this.vibration.vibrate(1000);
       if(cnt >= times){
@@ -162,7 +165,6 @@ export class TimerPage {
       cnt +=1;
     }, 2000);
 
-   this.nativeAudio.play('timeout');
 
    this.translate.get('Common.Confirm')
    .subscribe((res: string) => {
@@ -176,9 +178,7 @@ export class TimerPage {
        text: btnConfirm,
        handler: () => {
          clearInterval(interval);
-         this.nativeAudio.unload('timeout');
-         this.nativeAudio.preloadSimple('timeout','assets/sound/alarm.mp3') 
-         // this.nativeAudio.preloadSimple('timeout', timer.notification.sound);
+         this.nativeAudio.unload(timer.id);
        }
      }]
    });
