@@ -57,6 +57,7 @@ import { SuperTabsModule } from 'ionic2-super-tabs';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Network } from '@ionic-native/network';
+import { Vibration } from '@ionic-native/vibration';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -135,6 +136,7 @@ export function createTranslateLoader(http: Http) {
     NativeAudio,
     ImagePicker,
     Network,
+    Vibration,
   ]
 })
 export class AppModule {}

@@ -122,13 +122,14 @@
     "Disagree":"DISAGREE",
     "Create":"CREATE",
     "Back":"BACK",
+    "Edit":"EDIT",
     "Start":"START"
   },
   "Default":{
     "Timer":{
       "Name":"Super Timer",
       "Summary":"This is a sample timer",
-      "Title":"Timer #1",
+      "Title":"Timer",
       "Detail":"This is first timer, Let's set time"
     }
   }

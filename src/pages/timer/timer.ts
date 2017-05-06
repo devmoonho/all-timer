@@ -1,8 +1,9 @@
 import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
 
-import { Content, NavController, NavParams, AlertController, Platform } from 'ionic-angular';
+import { Content, NavController, NavParams, AlertController, Platform, Events } from 'ionic-angular';
 
 // services
+import { TimerService } from '../../services/timer-service';
 import { LoginService } from '../../services/login-service';
 
 // utils
@@ -16,6 +17,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 import { Device } from '@ionic-native/device';
 import { UUID } from 'angular2-uuid';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { Vibration } from '@ionic-native/vibration';
 
 
 // pages
@@ -54,6 +56,7 @@ export class TimerPage {
   btnState: string = "start"
 
   subscribtion: any;
+  timer:any;
   timerItems: any;
 
   continuousMode: boolean = false;
@@ -74,111 +77,23 @@ export class TimerPage {
     public device: Device,
     public nativeAudio: NativeAudio,
     public platform: Platform,
+    public events : Events,
+    public timerService: TimerService,
+    public vibration: Vibration,
   ) {
-    this.nativeAudio.preloadSimple('timeout', 'assets/sound/default.mp3');
-    this.localNotifications.on("trigger", (res) =>{
-      this.notificationAlert(res.data);
+    events.subscribe('timer:update-list', (_category) => {
+      console.log('timer:update-list');
+      this.updateTimerList();
+    });
+
+    events.subscribe('timer:remove-list', () => {
+      this.navCtrl.pop();
     });
   }
 
   ngOnInit() {
+    this.timer = this.navParams.get('timer')
     this.timerItems = this.utilsObjectToArray(this.navParams.get('timer').timerItems);
-
-    // [{
-    //   id: UUID.UUID(),
-    //   title:'운동',
-    //   timer: Observable.timer(0, 1000),
-    //   subscribtion: null,
-    //   current: 0,
-    //   max:0,
-    //   needToUpdateTimer:false,
-    //   defaultTimeSet:'00:00:10',
-    //   timeSet:'00:00:10',
-    //   status: 'ready',
-    //   btnStatus: 'start',
-    //   detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-    //   order: 2,
-    //   nextTimer: false,
-    //   notification:{
-    //     enable:true,
-    //     id: 1,
-    //     sound:'default.mp3',
-    //     data:''
-    //   },
-    //   image: "http://www.livestrong.com/wp-content/uploads/2013/05/NewTrainer_JBBlog_iStock_000017277101Medium.jpg",
-    //   color:"#E91E63",
-    // },{
-    //   id: UUID.UUID(),
-    //   title:'SPICY CAULIFLOWER WITH COCONUT RICE',
-    //   timer: Observable.timer(0, 1000),
-    //   subscribtion: null,
-    //   current: 0,
-    //   max:0,
-    //   needToUpdateTimer:false,
-    //   defaultTimeSet:'00:00:08',
-    //   timeSet:'00:00:08',
-    //   status: 'ready',
-    //   btnStatus: 'start',
-    //   detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-    //   order:1,
-    //   nextTimer: false,
-    //   notification:{
-    //     enable:false,
-    //     id: 1,
-    //     sound:'default.mp3',
-    //     data:''
-    //   },
-    //   image: 'http://saverafoods.co.in/wp-content/uploads/2014/10/1.jpg',
-    //   color:"#9C27B0",
-    // },{
-    //   id: UUID.UUID(),
-    //   title:'SAT',
-    //   timer: Observable.timer(0, 1000),
-    //   subscribtion: null,
-    //   current: 0,
-    //   max:0,
-    //   needToUpdateTimer:false,
-    //   defaultTimeSet:'00:00:05',
-    //   timeSet:'00:00:05',
-    //   status: 'ready',
-    //   btnStatus: 'start',
-    //   detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-    //   order:3,
-    //   nextTimer: false,
-    //   notification:{
-    //     enable:true,
-    //     id: 1,
-    //     sound:'default.mp3',
-    //     data:''
-    //   },
-    //   image: 'https://media.licdn.com/mpr/mpr/p/7/005/089/3bf/1451504.jpg',
-    //   color:"#009688",
-    // },{
-    //   id: UUID.UUID(),
-    //   title:'高考',
-    //   timer: Observable.timer(0, 1000),
-    //   subscribtion: null,
-    //   current: 0,
-    //   max:0,
-    //   needToUpdateTimer:false,
-    //   defaultTimeSet:'00:00:07',
-    //   timeSet:'00:00:07',
-    //   status: 'ready',
-    //   btnStatus: 'start',
-    //   detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-    //   order:4,
-    //   nextTimer: false,
-    //   notification:{
-    //     enable:false,
-    //     id: 1,
-    //     sound:'default.mp3',
-    //     data:''
-    //   },
-    //   image: 'http://p1.img.cctvpic.com/photoAlbum/templet/special/PAGEa6hEmeHGH5f9GdaNVrBw160529/ELMTybetDju4MYylXRQirEyi160529_1465098233.jpg',
-    //   color:"#00B0FF",
-    // }
-  // ]
-
     this.initTimer();
   }
 
@@ -223,7 +138,7 @@ export class TimerPage {
     this.navCtrl.pop();
   }
 
-  onEdit(){
+  onEditTimer(){
     let _timer = this.navParams.get('timer');
     this.navCtrl.push(TimerEditorPage, {
       mode: 'edit',
@@ -233,45 +148,44 @@ export class TimerPage {
   }
 
   popLocalNotifications(timer){
-    this.localNotifications.schedule({
-      id: timer.notification.id,
-      title:timer.title +' '+ timer.status,
-      text: timer.detail,
-      sound:'file://assets/sound/' + timer.notification.sound,
-      data: timer.id
-    });
+    let times = 10;
+    let cnt = 0; 
+    let btnConfirm: string; 
+
+    // this.nativeAudio.preloadSimple('timeout', timer.notification.sound);
+    this.nativeAudio.preloadSimple('timeout','assets/sound/alarm.mp3') 
+    let interval = setInterval(() => {
+      this.vibration.vibrate(1000);
+      if(cnt >= times){
+        clearInterval(interval);
+      }
+      cnt +=1;
+    }, 2000);
+
+   this.nativeAudio.play('timeout');
+
+   this.translate.get('Common.Confirm')
+   .subscribe((res: string) => {
+     btnConfirm = res;
+   })
+
+   this.notiAlert = this.alertCtrl.create({
+     title: timer.title,
+     subTitle: timer.detail,
+     buttons: [{
+       text: btnConfirm,
+       handler: () => {
+         clearInterval(interval);
+         this.nativeAudio.unload('timeout');
+         this.nativeAudio.preloadSimple('timeout','assets/sound/alarm.mp3') 
+         // this.nativeAudio.preloadSimple('timeout', timer.notification.sound);
+       }
+     }]
+   });
+   this.notiAlert.present();
   }
 
-  notificationAlert(id){
-    let timer: any = this.getTimerById(id);
-    let btnConfirm: string;
-
-    if(this.platform.is('ios')){
-      this.nativeAudio.play('timeout');
-    }
-
-    this.translate.get('Common.Confirm')
-    .subscribe((res: string) => {
-      btnConfirm = res;
-    })
-    this.notiAlert = this.alertCtrl.create({
-      title: timer.title,
-      subTitle: timer.detail,
-      buttons: [
-        {
-          text: btnConfirm,
-          handler: () => {
-            this.localNotifications.clearAll();
-            this.nativeAudio.unload('timeout');
-            this.nativeAudio.preloadSimple('timeout', 'assets/sound/default.mp3');
-          }
-        }
-      ]
-    });
-    this.notiAlert.present()
-  }
-
-  goTimerSetting(){
+  onTimerSetting(_item){
     console.log('timer setting');
   }
 
@@ -289,15 +203,6 @@ export class TimerPage {
       date => console.log('Got date: ', date),
       err => console.log('Error occurred while getting date: ', err)
     );
-  }
-
-  goTimerReset(timer){
-    // timer.timeSet = timer.defaultTimeSet;
-    let day:number = 0;
-    let hour:number = moment(timer.timeSet, "HH:mm:ss").hour();
-    let minunt:number = moment(timer.timeSet, "HH:mm:ss").minute();
-    let seconds:number = moment(timer.timeSet, "HH:mm:ss").second();
-    this.setTimer({timer, day, hour, minunt, seconds})
   }
 
   setContinuousMode(enabled: boolean){
@@ -336,10 +241,6 @@ export class TimerPage {
         return done(res);
       }
       let timer =this.timerItems[res];
-      // let doc:any = document;
-      // let yOffset = doc.getElementById('timerId_' + timer.id).offsetTop;
-
-      // this.content.scrollTo(0, yOffset - 10, 1000)
       this.setPositionForTimer(timer);
 
       if(timer.status != 'running'){
@@ -353,7 +254,9 @@ export class TimerPage {
 
   setPositionForTimer(timer){
     let doc:any = document;
-    let yOffset = doc.getElementById('timerId_' + timer.id).offsetTop;
+    let el:any = doc.getElementById('timerId_' + timer.id);
+    if(el === null || this.content._scroll === null) {return;}
+    let yOffset = el.offsetTop;
     this.content.scrollTo(0, yOffset - 10, 1000)
   }
 
@@ -442,18 +345,29 @@ export class TimerPage {
     }
   }
 
+  onResetTimer(timer){
+    if(timer.status == 'running'){
+      timer.btnStatus = 'pause';
+      this.goTimerAction(timer)
+    }
+    timer.timeSet = timer.defaultTimeSet;
+
+    this.setTimer(timer)
+    timer.needToUpdateTimer = false;
+  }
+
   onChangeTimeSet(item:any): void{
     item.defaultTimeSet = item.timeSet;
-    let day:number = 0;
-    let hour:number = moment(item.timeSet, "HH:mm:ss").hour();
-    let minunt:number = moment(item.timeSet, "HH:mm:ss").minute();
-    let seconds:number = moment(item.timeSet, "HH:mm:ss").second();
-
-    this.setTimer({timer: item, day, hour, minunt, seconds})
+    this.setTimer(item);
     item.needToUpdateTimer = false;
   }
 
-  setTimer({timer, day, hour, minunt, seconds}){
+  setTimer(timer){
+    let day:number = 0;
+    let hour:number = moment(timer.timeSet, "HH:mm:ss").hour();
+    let minunt:number = moment(timer.timeSet, "HH:mm:ss").minute();
+    let seconds:number = moment(timer.timeSet, "HH:mm:ss").second();
+
     let convertSeconds = this.utilsConvertSecond({day, hour, minunt, seconds});
     timer.max = convertSeconds;
     timer.current = 0;
@@ -627,5 +541,13 @@ export class TimerPage {
 
   utilsObjectToArray(obj){
     return Object.keys(obj).map((k) => obj[k])
+  }
+
+  updateTimerList(){
+    this.timerService.serviceTimerData()
+    .then((res)=>{
+      this.timerItems = this.utilsObjectToArray(res[this.timer.timerId].timerItems);
+      this.initTimer();
+    })
   }
 }

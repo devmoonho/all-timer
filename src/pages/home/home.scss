@@ -32,11 +32,12 @@ home-page{
     }
 
     .card-subtitle {
-      font-size: 1.0em;
+      font-size: 1.1em;
       position: absolute;
       top: 58%;
       width: 100%;
       color: #fff;
+      font-weight: 800;
     }
 
     .card-icon{
@@ -49,7 +50,7 @@ home-page{
 
     img{
       transform: scale(1.1);
-      filter: blur(1.5px) grayscale(0.4) brightness(0.7) contrast(1.05);
+      filter: blur(1.5px) grayscale(1) brightness(0.8) contrast(1.05);
     }
   }
 

@@ -92,10 +92,12 @@ export class TimerEditorPage{
 
   ngOnInit(){
     this.categoryList = this.config.CATETGORY;
-    this.setDefaultTimerData();
+    this.intDefaultTimerData();
   }
 
-  setDefaultTimerData(){
+  intDefaultTimerData(){
+    this.editMode = this.navParams.get('mode')==='edit'?true:false;
+
     if(this.navParams.get('mode') === 'edit'){
       this.timer = this.navParams.get('timer');
       this.timerItems = this.utilsObjectToArray(this.timer.timerItems);
@@ -104,9 +106,30 @@ export class TimerEditorPage{
      }else{
       this.timer = Object.assign({}, this.config.TEMP_TIMER)
       this.timer.category = this.navParams.get('category').value;
-      this.timerItems.push(Object.assign({}, this.config.TEMP_TIMER_ITEMS));
+      this.timerItems.push(this.getDefaultTimerItemsData());
       this.currentTimer = this.timerItems[0];
     }
+  }
+
+  getDefaultTimerItemsData(){
+    let items = Object.assign({}, this.config.TEMP_TIMER_ITEMS);
+
+    let englishDefault:any ={
+      title:"Timer",
+      detail:"..."
+    }
+
+    this.translate.get('Default.Timer.Title')
+    .subscribe((res: string) => {
+      if(res === 'Default.Timer.Title'){
+        items.title= englishDefault.title;
+      }else{
+        items.title= res;
+      }
+    })
+
+    items.color = this.config.RANDOM_COLOR[this.utilsRandomRange(0, this.config.RANDOM_COLOR.length-1)];
+    return items;    
   }
 
   getCurrentTimer(){
@@ -197,8 +220,9 @@ export class TimerEditorPage{
   }
 
   goAddTimer(){
-    let _timerItem = Object.assign({}, this.config.TEMP_TIMER_ITEMS);
+    let _timerItem = this.getDefaultTimerItemsData();
     _timerItem.id = UUID.UUID();
+
     this.timerItems.push(_timerItem);
     this.content.scrollTo(0, this.content.getContentDimensions().scrollHeight, 1000);
   }
@@ -233,18 +257,19 @@ export class TimerEditorPage{
   saveTimerDataToServer({name, summary}){
     this.setTimerData({name, summary});
 
-    if(this.editMode === false){
+    if(this.editMode === true){
+      this.timerService.serviceUpdateTimer(this.timer)
+      .then((res)=>{
+        this.events.publish('timer:update-list', this.timer.category);
+        this.navCtrl.pop();
+      }); 
+    }else{
       this.timerService.serviceAddTimer(this.timer)
       .then((res)=>{
         this.events.publish('timer:update-list', this.timer.category );
         this.navCtrl.pop();
       });
-    }else{
-      this.timerService.serviceUpdateTimer(this.timer)
-      .then((res)=>{
-        this.events.publish('timer:update-list', this.timer.category);
-        this.navCtrl.pop();
-      }); }
+    }
   }
 
   setTimerData({name, summary}){
@@ -279,7 +304,7 @@ export class TimerEditorPage{
   onRemoveMain(){
     this.timerService.serviceRemoveTimer(this.timer)
     .then((res)=>{
-      this.events.publish('timer:update-list', this.timer.category);
+      this.events.publish('timer:remove-list');
       this.navCtrl.pop();
     });
   }
@@ -318,5 +343,9 @@ export class TimerEditorPage{
       cnt +=1;
     }
     return -1;
+  }
+  utilsRandomRange(min, max){
+    var RandVal = Math.random() * (max- min) + min;
+    return Math.floor(RandVal);
   }
 }

@@ -1,22 +1,15 @@
 <ion-content padding>
 
-<!--   <button ion-button color="light" (click)="goLogout()">
-    logout
-  </button>
-  <button ion-button color="light" (click)="onEdit()">
-    edit
-  </button>
-   -->
   <ion-card *ngFor="let item of timerItems  ; let i = index" [attr.id]="'timerId_' + item.id">
       <h1 style="margin:5px 5px 5px 5px;" [style.color]=item.color >{{item.title}}</h1>
       <img class="cover" *ngIf="item.image!=''" style="margin:0 0 15px 0" [src]=item.image>
       <div class="progress-wrapper" >
-        <i [style.color]=item.color class="icon-spin3 progress-refresh" (click)="goTimerReset(item)" ></i>
+        <i [style.color]=item.color class="icon-spin3 progress-refresh" (click)="onResetTimer(item)" ></i>
 
         <ion-icon [style.color]=item.color class="progress-current" *ngIf="item.nextTimer==true" name="radio-button-on" (click)="goNextTimerStop()"></ion-icon>
         <ion-icon [style.color]=item.color class="progress-current" *ngIf="item.nextTimer==false" name="radio-button-off" (click)="goNextTimerSet(item, i)"></ion-icon>
 
-        <ion-icon [style.color]=item.color class="progress-setting" name="settings" (click)="goTimerSetting(item)"></ion-icon>
+        <ion-icon [style.color]=item.color class="progress-setting" name="settings" (click)="onTimerSetting(item)"></ion-icon>
 
         <ion-icon *ngIf="item.notification.enable==true" [style.color]=item.color class="progress-notification" name="notifications" (click)="goNotificationToggle(item)"></ion-icon>
         <ion-icon *ngIf="item.notification.enable==false" [style.color]=item.color class="progress-notification" name="notifications-off" (click)="goNotificationToggle(item)"></ion-icon>
@@ -31,7 +24,8 @@
           </ion-datetime>
         </div>
 
-        <div class="progress-percent"> {{(item.current * 100) / item.max | number : '1.2-2' }}% </div>
+        <div class="progress-percent" *ngIf="item.status!='complete'" > {{(item.current * 100) / item.max | number : '1.2-2' }}% </div>
+        <div class="progress-percent" *ngIf="item.status=='complete'" > 100 % </div>
 
         <div>
           <i *ngIf="item.btnStatus=='start'" [style.color]=item.color class="icon-play progress-icon" (click)="goTimerAction(item)" ></i>
@@ -53,11 +47,14 @@
 </ion-content>
 <ion-footer>
   <div class="flex_button_group">
-   <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onBack()">
-        {{'Common.Back' | translate }}
-    </button>
     <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onStartAllTimer()">
-        {{'Common.Start' | translate }}
+      {{'Common.Start' | translate }}
+    </button>
+    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onEditTimer()">
+    {{'Common.Edit' | translate }}
+    </button>
+    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onBack()">
+      {{'Common.Back' | translate }}
     </button>
   </div>
 </ion-footer>

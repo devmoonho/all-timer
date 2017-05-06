@@ -33,9 +33,7 @@ export class TimerListPage {
 
   timerList: any;
 
-  randomColor: any = ['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5',
-  '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39',
-  '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'];
+  
 
   selectedTimer: any;
 
@@ -52,6 +50,11 @@ export class TimerListPage {
       console.log('timer:update-list');
       this.updateTimerList(_category);
     });
+
+    events.subscribe('timer:remove-list', () => {
+      console.log('timer:remove-list');
+      this.removeTimerList();
+    });
   }
 
   ngOnInit(){
@@ -60,8 +63,8 @@ export class TimerListPage {
   }
 
   getRandomColor(index: number): string {
-    let idx = (index) % this.randomColor.length
-    return this.randomColor[idx];
+    let idx = (index) % this.config.RANDOM_COLOR.length
+    return this.config.RANDOM_COLOR[idx];
   }
 
   onBackCategory(){
@@ -88,6 +91,13 @@ export class TimerListPage {
     this.currentCategory = this.getCategoryByValue(_category);
 
     this.timerService.serviceTimerData()
+    .then((res)=>{
+      this.timerList = res;
+    })
+  }
+
+  removeTimerList(){
+   this.timerService.serviceTimerData()
     .then((res)=>{
       this.timerList = res;
     })

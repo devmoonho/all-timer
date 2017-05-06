@@ -44,8 +44,8 @@ export class Config{
     current: 0,
     max:0,
     needToUpdateTimer:false,
-    defaultTimeSet:'00:00:00',
-    timeSet:'00:00:00',
+    defaultTimeSet:'00:00:10',
+    timeSet:'00:00:10',
     status: 'ready',
     btnStatus: 'start',
     detail: "",
@@ -62,4 +62,8 @@ export class Config{
   }
 
   public MY_TIMER = {};
+
+  public RANDOM_COLOR : any = ['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5',
+  '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39',
+  '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'];
 }

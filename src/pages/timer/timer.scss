@@ -133,5 +133,10 @@ page-timer{
     background-size: cover;
     background-image: url("../assets/image/background-pattern.jpg");
   }
-
+  ion-card{
+    h1{
+      font-weight: bold !important;
+      border-bottom: 5px solid orange;
+    }
+  }
 }
