@@ -5,7 +5,7 @@
       <ion-item>
         <ion-label stacked style="color:#FF6E40;">
           {{'TimerEditor.timer-name' | translate }}
-          </ion-label>
+        </ion-label>
         <ion-input placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{timer.name}}" #name type="text" clearInput="true"></ion-input>
       </ion-item>
       <ion-item>
@@ -18,7 +18,7 @@
         <ion-label stacked style="color:#FF6E40;">
           {{'TimerEditor.category-title' | translate }}
         </ion-label>
-        <ion-select formControlName="category" required="required" [(ngModel)]="timer.category">
+        <ion-select interface="popover" formControlName="category" required="required" [(ngModel)]="timer.category">
           <span *ngFor="let item of categoryList">
             <ion-option  value="{{item.value}}" >{{'TimerEditor.category-list.'+item.value | translate}}</ion-option>
           </span>
@@ -77,6 +77,27 @@
         </ion-label>
         <ion-textarea placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{currentTimer.detail}}" #detail type="text" clearInput="true" ></ion-textarea>
       </ion-item>
+
+      <div class="sound-container">
+        <div class="sound-item">
+          <ion-item>
+            <ion-label stacked style="color:#FF6E40;">
+              {{'TimerEditor.sound' | translate }}
+            </ion-label>
+            <ion-select required="required" [(ngModel)]="currentTimer.notification.sound" [ngModelOptions]="{standalone: true}">
+              <span *ngFor="let item of soundList">
+                <ion-option  value="{{item.value}}" >{{item.name}}</ion-option>
+              </span>
+            </ion-select>
+          </ion-item>
+        </div>
+
+        <div class="sound-item">
+           <ion-icon *ngIf="soundPlayState=='play'" name="pause" (tap)="onSound('pause')"></ion-icon>
+           <ion-icon *ngIf="soundPlayState=='pause'" name="play" (tap)="onSound('play')"></ion-icon>
+        </div>
+      </div>
+
       <div class="color-container">
         <div class="color-item">
           {{'TimerEditor.choose-color' | translate }}

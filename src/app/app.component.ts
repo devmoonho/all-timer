@@ -211,6 +211,11 @@ export class MyApp implements OnInit{
         .then((res:any)=>{
           console.log('common#3');
           this.config.CATETGORY = res.val();
+          return this.loadSoundDataFromServer();
+        })
+        .then((res:any)=>{
+          console.log('common#4');
+          this.config.SOUND= res.val();
         })
         .then(()=>{
           return this.isFirstAccess();
@@ -332,6 +337,10 @@ export class MyApp implements OnInit{
 
   private loadCategoryDataFromServer(){
     return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_CATEGORY).once('value')
+  }
+
+  private loadSoundDataFromServer(){
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_SOUND).once('value')
   }
 
   private loadTimerTemplateDataFromServer(){

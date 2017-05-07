@@ -10,6 +10,7 @@ export class Globals{
   public SERVER_PATH_APP: any = '/app/';
   public SERVER_PATH_DEFAULT: any = '/default/';
   public SERVER_PATH_TIMER_CATEGORY: any = '/timer-category/';
+  public SERVER_PATH_TIMER_SOUND: any = '/timer-sound/';
   public SERVER_PATH_TIMER_TEMPLATE: any = '/timer-template/';
   public SERVER_PATH_TIMER_TEMPLATE_ITEMS: any = '/timer-template-items/';
 

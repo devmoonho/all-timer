@@ -152,6 +152,7 @@ export class TimerPage {
     let cnt = 0; 
     let btnConfirm: string; 
 
+    if(this.device.uuid == null){return;}
     this.nativeAudio.preloadSimple(timer.id, timer.notification.sound)
     .then(()=>{
       this.nativeAudio.play(timer.id);
@@ -362,6 +363,16 @@ export class TimerPage {
     item.needToUpdateTimer = false;
   }
 
+  onStopAllTimer(){
+    this.timerItems.forEach((el, idx)=>{
+      el.nextTimer = false;
+      if(el.status == 'running'){
+        el.btnStatus = 'end';
+        this.goTimerAction(el)
+      }
+    })
+  }
+
   setTimer(timer){
     let day:number = 0;
     let hour:number = moment(timer.timeSet, "HH:mm:ss").hour();
@@ -383,15 +394,14 @@ export class TimerPage {
   }
 
   utilsBackGroundMode(enable: boolean){
-    // if(this.device.uuid != null){
-      if(enable){
-        this.backgroundMode.enable();
-        console.log('enabled backgroundMode');
-      }else{
-        this.backgroundMode.disable();
-        console.log('disabled backgroundMode');
-      }
-    // }
+    if(this.device.uuid == null){return;}
+    if(enable){
+      this.backgroundMode.enable();
+      console.log('enabled backgroundMode');
+    }else{
+      this.backgroundMode.disable();
+      console.log('disabled backgroundMode');
+    }
   }
 
   goTimerAction(item){
@@ -420,7 +430,7 @@ export class TimerPage {
       if(item.notification.enable) {
         this.popLocalNotifications(item)
       }
-      if(this.isAllTimerSleep()){this.utilsBackGroundMode(false)}
+      // if(this.isAllTimerSleep()){this.utilsBackGroundMode(false)}
       break;
     }
   }
@@ -449,7 +459,7 @@ export class TimerPage {
 
       case "r":
       let _current = item.current;
-      this.utilsBackGroundMode(true);
+      // this.utilsBackGroundMode(true);
       item.subscribtion = item.timer.subscribe(t => {
         item.current = t + _current;
         item.status = "running";
@@ -491,6 +501,7 @@ export class TimerPage {
       this.showAlert({titleCode: "Common.AlertTitle.Error", messageObj: "Login.Alert.LogoutErrorMessage"});
     })
   }
+
 
   showAlert({titleCode, messageObj}) {
     let title, message, btnConfirm: string;
@@ -544,6 +555,7 @@ export class TimerPage {
   }
 
   updateTimerList(){
+    this.onStopAllTimer();
     this.timerService.serviceTimerData()
     .then((res)=>{
       this.timerItems = this.utilsObjectToArray(res[this.timer.timerId].timerItems);

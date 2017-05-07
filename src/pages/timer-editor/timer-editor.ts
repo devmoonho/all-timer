@@ -22,6 +22,8 @@ import { ColorPickerModal } from '../../modals/color-picker/color-picker';
 
 // utils
 import { TranslateService } from '@ngx-translate/core';
+import { Device } from '@ionic-native/device';
+import { NativeAudio } from '@ionic-native/native-audio';
 
 // pipe
 
@@ -64,6 +66,9 @@ export class TimerEditorPage{
 
   categoryList: any;
 
+  soundList:any; 
+  soundPlayState: string = 'pause';
+
   constructor(
     public imagePicker: ImagePicker,
     public navCtrl: NavController,
@@ -74,6 +79,8 @@ export class TimerEditorPage{
     public translate: TranslateService,
     public events: Events,
     public modalCtrl: ModalController,
+    public device: Device,
+    public nativeAudio: NativeAudio,
   ){
     this.initValidator()
   }
@@ -92,6 +99,8 @@ export class TimerEditorPage{
 
   ngOnInit(){
     this.categoryList = this.config.CATETGORY;
+    this.soundList = this.utilsObjectToArray(this.config.SOUND);
+    this.soundList.sort(function(a, b){return a.order - b.order});
     this.intDefaultTimerData();
   }
 
@@ -157,6 +166,23 @@ export class TimerEditorPage{
     }
   }
 
+  onSound(state){
+    this.soundPlayState = state;
+    console.log('onSound', state);
+
+    if(this.device.uuid == null){return;}
+    if(state == 'play'){
+      this.nativeAudio.preloadSimple(this.currentTimer.id, this.currentTimer.notification.sound)
+      .then(()=>{
+        this.nativeAudio.play(this.currentTimer.id, () =>{
+          this.soundPlayState = 'pause';
+        });
+      });
+    }else{
+      this.nativeAudio.unload(this.currentTimer.id);
+    }
+  }
+
   onOpenImagePicker(){
     let options: any = {
       maximumImagesCount: 1,
@@ -165,6 +191,8 @@ export class TimerEditorPage{
       quality: 100,
       outputType: 0
     };
+
+    if(this.device.uuid == null){return;}
 
     this.imagePicker.hasReadPermission()
     .then((res)=>{
@@ -279,6 +307,12 @@ export class TimerEditorPage{
     for(let _timer of this.timerItems){
       _timer.order = cnt;
       _timer.timer = '';
+      _timer.subscribtion = '';
+      _timer.max = 0;
+      _timer.current = 0;
+      _timer.status = 'ready';
+      _timer.btnStatus= 'start';
+      _timer.nextTimer = false;
       cnt +=1;
     }
     this.timer.timerItems = this.utilsArrayToObject(this.timerItems);
@@ -288,7 +322,8 @@ export class TimerEditorPage{
     let _timer: any = this.getCurrentTimer();
     _timer.title = title;
     _timer.detail = detail;
-
+    
+    this.nativeAudio.unload(this.currentTimer.id);
     this.setMode('timerEdit');
   }
 
