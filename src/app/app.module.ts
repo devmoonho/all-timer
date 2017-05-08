@@ -27,6 +27,7 @@ import { ColorPickerModal } from '../modals/color-picker/color-picker';
 // services
 import { LoginService } from '../services/login-service';
 import { TimerService } from '../services/timer-service';
+import { StorageService } from '../services/storage-service';
 import { Globals } from './globals';
 import { Config } from './config';
 
@@ -77,7 +78,7 @@ export function createTranslateLoader(http: Http) {
     TimerEditorPage,
     CategoryPipe,
     PlaceholderPipe,
-    ColorPickerModal, 
+    ColorPickerModal,
   ],
   imports: [
     BrowserModule,
@@ -121,6 +122,7 @@ export function createTranslateLoader(http: Http) {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginService,
     TimerService,
+    StorageService,
     Globals,
     Config,
     ScreenOrientation,

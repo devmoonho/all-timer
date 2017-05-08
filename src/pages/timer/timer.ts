@@ -87,7 +87,7 @@ export class TimerPage {
     });
 
     events.subscribe('timer:remove-list', () => {
-      this.navCtrl.pop();
+      console.log('timer:remove-list');
     });
   }
 
@@ -149,8 +149,8 @@ export class TimerPage {
 
   popLocalNotifications(timer){
     let times = 10;
-    let cnt = 0; 
-    let btnConfirm: string; 
+    let cnt = 0;
+    let btnConfirm: string;
 
     if(this.device.uuid == null){return;}
     this.nativeAudio.preloadSimple(timer.id, timer.notification.sound)
@@ -558,8 +558,10 @@ export class TimerPage {
     this.onStopAllTimer();
     this.timerService.serviceTimerData()
     .then((res)=>{
-      this.timerItems = this.utilsObjectToArray(res[this.timer.timerId].timerItems);
-      this.initTimer();
+      if(res[this.timer.timerId]!==undefined){
+        this.timerItems = this.utilsObjectToArray(res[this.timer.timerId].timerItems);
+        this.initTimer();
+      }
     })
   }
 }

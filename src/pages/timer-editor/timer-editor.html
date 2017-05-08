@@ -112,7 +112,7 @@
           {{'TimerEditor.choose-picture' | translate }}
         </div>
         <div class="color-item" (click)="onOpenImagePicker()">
-          <img [src]="selectedImage">
+          <img [src]="currentTimer.image==''?defaultImage:currentTimer.image">
         </div>
       </div>
     </div>
@@ -139,10 +139,10 @@
 
   <div [@timerAnimationMode]="timerItemsEditMode">
     <div class="flex_button_group">
-      <button ion-button class="flex_button_item" type="button"  clear  [color]="'Yellow'" (click)="goSaveTimerItems(title.value, detail.value)">
+      <button ion-button class="flex_button_item" type="button"  clear  [color]="'Yellow'" (click)="onSaveTimerItems(title.value, detail.value)">
         {{'Common.Save' | translate }}
       </button>
-      <button ion-button class="flex_button_item" type="button"  clear  [color]="'Yellow'" (click)="goCancelTimerItems(title.value, detail.value)">
+      <button ion-button class="flex_button_item" type="button"  clear  [color]="'Yellow'" (click)="onCancelTimerItems(title.value, detail.value)">
         {{'Common.Cancel' | translate }}
       </button>
     </div>

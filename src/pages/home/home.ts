@@ -44,9 +44,9 @@ export class HomePage {
   ){
     this.rootNavCtrl = navParams.get('rootNavCtrl');
 
-    events.subscribe('timer:update-list', (_category) => {
+    events.subscribe('timer:update-list', () => {
       console.log('timer:update-list');
-      this.updateTimerList(_category);
+      this.updateTimerList();
     });
   }
 
@@ -55,8 +55,17 @@ export class HomePage {
     this.category = this.config.CATETGORY;
   }
 
+  ionViewWillEnter(){
+    this.timerService.serviceTimerData()
+    .then((res)=>{
+      this.timerList = res;
+      this.config.MY_TIMER = res;
+    })
+    console.log('ionViewWillEnter');
+  }
+
   onSelectCard(idx){
-    this.navCtrl.push(TimerListPage, { 
+    this.navCtrl.push(TimerListPage, {
       timerList:this.timerList,
       category:this.config.CATETGORY[idx]
     })
@@ -82,7 +91,7 @@ export class HomePage {
     });
   }
 
-  updateTimerList(_category){
+  updateTimerList(){
     this.timerService.serviceTimerData()
     .then((res)=>{
       this.timerList = res;

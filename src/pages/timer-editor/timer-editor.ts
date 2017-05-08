@@ -16,6 +16,7 @@ import { TimerService } from '../../services/timer-service';
 import { Config } from '../../app/config';
 
 // pages
+import { TimerListPage } from '../timer-list/timer-list';
 
 // modals
 import { ColorPickerModal } from '../../modals/color-picker/color-picker';
@@ -57,7 +58,7 @@ export class TimerEditorPage{
   removeMode: string = 'hidden';
 
   selectedColor: string = '#000000';
-  selectedImage: string = 'assets/image/timer-default.png';
+  defaultImage: string = 'assets/image/timer-default.png';
 
   timer: any;
   timerItems: any =[];
@@ -66,7 +67,8 @@ export class TimerEditorPage{
 
   categoryList: any;
 
-  soundList:any; 
+  soundList:any;
+  defaultSound: string = 'assets/sound/default.mp3';
   soundPlayState: string = 'pause';
 
   constructor(
@@ -138,7 +140,7 @@ export class TimerEditorPage{
     })
 
     items.color = this.config.RANDOM_COLOR[this.utilsRandomRange(0, this.config.RANDOM_COLOR.length-1)];
-    return items;    
+    return items;
   }
 
   getCurrentTimer(){
@@ -186,10 +188,10 @@ export class TimerEditorPage{
   onOpenImagePicker(){
     let options: any = {
       maximumImagesCount: 1,
-      width: 400,
-      height: 400,
-      quality: 100,
-      outputType: 0
+      width: 200,
+      height: 200,
+      quality: 80,
+      outputType: 1
     };
 
     if(this.device.uuid == null){return;}
@@ -210,12 +212,12 @@ export class TimerEditorPage{
         console.log('Image URI: ' + results[i]);
       }
       if(results[0]=='' || results[0]==undefined){
-        this.selectedImage = 'assets/image/timer-default.png';
+        this.currentTimer.image = '';
       }else{
-        this.selectedImage = results[0]
+        this.currentTimer.image = "data:image/png;base64," + results[0];
       }
     }, (err) => {
-      this.selectedImage = 'assets/image/timer-default.png';
+      this.currentTimer.image= '';
       console.log('Image err:', err);
     });
   }
@@ -269,6 +271,7 @@ export class TimerEditorPage{
   goTimerEdit(event, timer){
     event.stopPropagation();
     console.log(timer);
+    this.soundPlayState = 'play';
     this.currentTimer = timer;
     this.setMode('timerItemsEdit');
     this.content.scrollTo(0, 0, 0);
@@ -290,7 +293,7 @@ export class TimerEditorPage{
       .then((res)=>{
         this.events.publish('timer:update-list', this.timer.category);
         this.navCtrl.pop();
-      }); 
+      });
     }else{
       this.timerService.serviceAddTimer(this.timer)
       .then((res)=>{
@@ -308,7 +311,7 @@ export class TimerEditorPage{
       _timer.order = cnt;
       _timer.timer = '';
       _timer.subscribtion = '';
-      _timer.max = 0;
+      _timer.max = 1;
       _timer.current = 0;
       _timer.status = 'ready';
       _timer.btnStatus= 'start';
@@ -318,16 +321,17 @@ export class TimerEditorPage{
     this.timer.timerItems = this.utilsArrayToObject(this.timerItems);
   }
 
-  goSaveTimerItems(title, detail){
+  onSaveTimerItems(title, detail){
     let _timer: any = this.getCurrentTimer();
     _timer.title = title;
     _timer.detail = detail;
-    
-    this.nativeAudio.unload(this.currentTimer.id);
+
+    this.nativeAudio.unload(_timer.id);
+
     this.setMode('timerEdit');
   }
 
-  goCancelTimerItems(title, detail){
+  onCancelTimerItems(title, detail){
     title = detail = '';
     this.setMode('timerEdit');
   }
@@ -340,7 +344,7 @@ export class TimerEditorPage{
     this.timerService.serviceRemoveTimer(this.timer)
     .then((res)=>{
       this.events.publish('timer:remove-list');
-      this.navCtrl.pop();
+      this.navCtrl.popToRoot();
     });
   }
 

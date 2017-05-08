@@ -129,7 +129,8 @@ page-timer{
   img {
     padding: 5px 5px 5px 5px;
     height: 150px;
-    object-fit: contain;
+    object-fit: cover;
+    // object-fit: contain;
     background-size: cover;
     background-image: url("../assets/image/background-pattern.jpg");
   }
