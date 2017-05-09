@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Rx';
 import { trigger, state, style, transition, animate, keyframes} from '@angular/core'
 
 // services
+import { StorageService } from '../../services/storage-service';
 import { TimerService } from '../../services/timer-service';
 import { Config } from '../../app/config';
 
@@ -33,13 +34,12 @@ export class TimerListPage {
 
   timerList: any;
 
-  
-
   selectedTimer: any;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public storageService: StorageService,
     public timerService: TimerService,
     public config: Config,
     public events: Events,
@@ -48,7 +48,7 @@ export class TimerListPage {
 
     events.subscribe('timer:update-list', (_category) => {
       console.log('timer:update-list');
-      this.updateTimerList(_category);
+      this.updateTimerList();
     });
 
     events.subscribe('timer:remove-list', () => {
@@ -68,7 +68,7 @@ export class TimerListPage {
   }
 
   onBackCategory(){
-    this.navCtrl.pop(); 
+    this.navCtrl.pop();
   }
 
   onCreateTimer(){
@@ -87,17 +87,16 @@ export class TimerListPage {
     });
   }
 
-  updateTimerList(_category){
-    this.currentCategory = this.getCategoryByValue(_category);
-
-    this.timerService.serviceTimerData()
+  updateTimerList(){
+    // this.currentCategory = this.getCategoryByValue(_category);
+    this.storageService.serviceGetAllTimer()
     .then((res)=>{
       this.timerList = res;
     })
   }
 
   removeTimerList(){
-   this.timerService.serviceTimerData()
+   this.storageService.serviceGetAllTimer()
     .then((res)=>{
       this.timerList = res;
     })

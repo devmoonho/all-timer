@@ -5,6 +5,7 @@ import { Content, NavController, NavParams, AlertController, Platform, Events } 
 // services
 import { TimerService } from '../../services/timer-service';
 import { LoginService } from '../../services/login-service';
+import { StorageService } from '../../services/storage-service';
 
 // utils
 import { BackgroundMode } from '@ionic-native/background-mode';
@@ -19,14 +20,19 @@ import { UUID } from 'angular2-uuid';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { Vibration } from '@ionic-native/vibration';
 
+import { Config } from '../../app/config';
+import { Globals } from '../../app/globals';
 
 // pages
 import { LoginPage } from '../login/login';
 import { TimerEditorPage } from '../timer-editor/timer-editor';
 
+// pipe
+import { ToArrayPipe } from '../../pipes/toArray-pipe';
+
 @Component({
   selector: 'page-timer',
-  providers: [LoginService],
+  providers: [LoginService, StorageService],
   templateUrl: 'timer.html'
 })
 
@@ -79,7 +85,10 @@ export class TimerPage {
     public platform: Platform,
     public events : Events,
     public timerService: TimerService,
+    public storageService: StorageService,
     public vibration: Vibration,
+    public globals: Globals,
+    public config: Config,
   ) {
     events.subscribe('timer:update-list', (_category) => {
       console.log('timer:update-list');
@@ -89,26 +98,46 @@ export class TimerPage {
     events.subscribe('timer:remove-list', () => {
       console.log('timer:remove-list');
     });
+
+    events.subscribe('timer:stop', () => {
+      console.log('timer:stop');
+      this.onStopAllTimer();
+    });
   }
 
   ngOnInit() {
     this.timer = this.navParams.get('timer')
-    this.timerItems = this.utilsObjectToArray(this.navParams.get('timer').timerItems);
     this.initTimer();
   }
 
   initTimer(){
     let category = this.navParams.get('category');
+    let items = this.timer.timerItems;
 
-    this.timerItems.forEach((el) => {
-      el.max = this.getMax(el.timeSet);
-      el.max = el.max==0?1:el.max;
-      el.timer = Observable.timer(0, 1000);
-      el.image = el.image===''?category.defaultTimerImage:el.image;
-      el.color = el.color==''?'#3F51B5': el.color;
-    });
+    for(let key in items){
+      items[key].max = this.getMax(items[key].timeSet)==0?1:this.getMax(items[key].timeSet);
+      items[key].timer = Observable.timer(0, 1000);
+      items[key].image = items[key].image===''?category.defaultTimerImage:items[key].image;
+      items[key].color = items[key].color==''?'#3F51B5': items[key].color;
+    }
 
+    // this.loadLocalSavedImage();
+    this.timerItems = this.utilsObjectToArray(this.timer.timerItems);
     this.timerItems.sort(function(a, b){return a.order - b.order});
+  }
+
+  loadLocalSavedImage():any{
+    let category = this.navParams.get('category');
+    this.storageService.serviceGetLocalStorage(this.timer.timerId)
+    .then((res:any)=>{
+      this.timerItems.forEach((el)=>{
+        if(res === null){
+          el.image = category.defaultTimerImage
+        }else{
+          el.image = res[el.id]['image'];
+        }
+      })
+    })
   }
 
   onStartAllTimer(){
@@ -364,6 +393,8 @@ export class TimerPage {
   }
 
   onStopAllTimer(){
+    let items:any = this.timerItems;
+
     this.timerItems.forEach((el, idx)=>{
       el.nextTimer = false;
       if(el.status == 'running'){
@@ -556,10 +587,10 @@ export class TimerPage {
 
   updateTimerList(){
     this.onStopAllTimer();
-    this.timerService.serviceTimerData()
+    this.storageService.serviceGetTimer(this.timer.timerId)
     .then((res)=>{
-      if(res[this.timer.timerId]!==undefined){
-        this.timerItems = this.utilsObjectToArray(res[this.timer.timerId].timerItems);
+      if(res!==null){
+        this.timer = res;
         this.initTimer();
       }
     })

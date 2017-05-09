@@ -16,6 +16,7 @@ export class Globals{
 
   // for local storage
   public LOCAL_STORAGE_KEY_USER_INFO: any = 'userInfo';
+  public LOCAL_STORAGE_KEY_TIMER: any = 'super-timer';
 
   // variable
   public WEB_CLINED_ID: any = '902931259626-87cv97578lsa82ea92us4o3h1qje31u4.apps.googleusercontent.com';

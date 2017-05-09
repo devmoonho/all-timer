@@ -8,7 +8,9 @@ import { trigger, state, style, transition, animate, keyframes} from '@angular/c
 
 // services
 import { TimerService } from '../../services/timer-service';
+import { StorageService } from '../../services/storage-service';
 import { Config } from '../../app/config';
+import { Globals } from '../../app/globals';
 
 // pipe
 import { CategoryPipe } from '../../pipes/category-pipe';
@@ -20,7 +22,7 @@ import { TimerEditorPage } from '../timer-editor/timer-editor';
 
 @Component({
   selector: 'home-page',
-  providers:[TimerService],
+  providers:[TimerService, StorageService],
   templateUrl: 'home.html',
 })
 
@@ -30,6 +32,7 @@ export class HomePage {
   categoryMode: any = true;
   currentCategory: any;
 
+  timer: any;
   timerList: any;
   category: any;
 
@@ -39,7 +42,9 @@ export class HomePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public timerService: TimerService,
+    public storageService: StorageService,
     public config: Config,
+    public globals: Globals,
     public events: Events,
   ){
     this.rootNavCtrl = navParams.get('rootNavCtrl');
@@ -51,24 +56,33 @@ export class HomePage {
   }
 
   ngOnInit(){
-    this.timerList = this.config.MY_TIMER;
     this.category = this.config.CATETGORY;
   }
 
   ionViewWillEnter(){
-    this.timerService.serviceTimerData()
+    this.storageService.serviceGetAllTimer()
     .then((res)=>{
-      this.timerList = res;
-      this.config.MY_TIMER = res;
+      this.timer = res;
     })
-    console.log('ionViewWillEnter');
   }
 
   onSelectCard(idx){
     this.navCtrl.push(TimerListPage, {
-      timerList:this.timerList,
+      timerList: this.getCategoryTimer(idx),
       category:this.config.CATETGORY[idx]
     })
+  }
+
+
+  getCategoryTimer(idx):any{
+    let _retTimer: any = {};
+    let _category = this.config.CATETGORY[idx]
+    for(let key in this.timer){
+      if(this.timer[key].category === _category.value){
+        _retTimer[key] = this.timer[key];
+      }
+    }
+    return _retTimer
   }
 
   onBackCategory(){
@@ -92,9 +106,9 @@ export class HomePage {
   }
 
   updateTimerList(){
-    this.timerService.serviceTimerData()
+    this.storageService.serviceGetLocalStorage(this.globals.LOCAL_STORAGE_KEY_TIMER)
     .then((res)=>{
-      this.timerList = res;
+      this.config.MY_TIMER = this.timer = res;
     })
   }
 

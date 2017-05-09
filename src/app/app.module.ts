@@ -9,6 +9,7 @@ import { MyApp } from './app.component';
 // Pipe
 import { CategoryPipe } from '../pipes/category-pipe';
 import { PlaceholderPipe } from '../pipes/placeholder-pipe';
+import { ToArrayPipe } from '../pipes/toArray-pipe';
 
 // Pages
 import { TabsPage } from '../pages/tabs/tabs';
@@ -77,6 +78,7 @@ export function createTranslateLoader(http: Http) {
     TimerListPage,
     TimerEditorPage,
     CategoryPipe,
+    ToArrayPipe,
     PlaceholderPipe,
     ColorPickerModal,
   ],

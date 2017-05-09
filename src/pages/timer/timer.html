@@ -1,6 +1,6 @@
 <ion-content padding>
 
-  <ion-card *ngFor="let item of timerItems  ; let i = index" [attr.id]="'timerId_' + item.id">
+  <ion-card *ngFor="let item of timer.timerItems | toArrayPipe  ; let i = index" [attr.id]="'timerId_' + item.id">
       <h1 style="margin:5px 5px 5px 5px;" [style.color]=item.color >{{item.title}}</h1>
       <img class="cover" *ngIf="item.image!=''" style="margin:0 0 15px 0" [src]=item.image>
       <div class="progress-wrapper" >

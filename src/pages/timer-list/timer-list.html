@@ -3,11 +3,11 @@
     <ion-card class="card-detail" (tap)="onBackCategory()" tappable>
       <img [src]="currentCategory.defaultImage">
       <div class="card-title">{{ 'Main.' + currentCategory.value | translate}}</div>
-      <div class="card-subtitle">{{(timerList | categoryPipe:{category:currentCategory.value}).length}} {{'Main.listings' | translate}}</div>
+      <div class="card-subtitle">{{ timerList | categoryPipe:{category:currentCategory.value} }} {{'Main.listings' | translate}}</div>
       <ion-icon class="card-icon-back" name="arrow-back"></ion-icon>
     </ion-card>
   </div>
-  <ion-item *ngFor="let timer of timerList | categoryPipe:{category:currentCategory.value}; let j = index" (click)="onSelectTimer(timer)" tappable>
+  <ion-item *ngFor="let timer of timerList | toArrayPipe; let j = index" (click)="onSelectTimer(timer)" tappable>
     <ion-avatar item-left>
       <h1 class="avatar-text" [style.background-color]="getRandomColor(j)" text-center>{{timer.name | slice:0:2}}</h1>
     </ion-avatar>

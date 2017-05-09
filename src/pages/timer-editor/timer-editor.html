@@ -30,18 +30,18 @@
       <ion-list>
         <ion-list-header stacked style="color:#FF6E40;">
           {{'TimerEditor.timer-list' | translate }}
-          <button item-right ion-button color="DeepOrange" Clear icon-only type="button" (click)="goAddTimer()">
+          <button item-right ion-button color="DeepOrange" Clear icon-only type="button" (click)="onAddTimer()">
             <ion-icon name="add-circle"></ion-icon>
           </button>
-          <button  item-right ion-button color="DeepOrange" Clear icon-only type="button" (click)="goToggleRemove()">
+          <button  item-right ion-button color="DeepOrange" Clear icon-only type="button" (click)="onToggleRemove()">
             <ion-icon name="remove-circle"></ion-icon>
           </button>
         </ion-list-header>
 
-        <ion-item-group reorder="true" (ionItemReorder)="goReorderItems($event);">
+        <ion-item-group reorder="true" (ionItemReorder)="onReorderItems($event);">
 
-          <button type="button" ion-item *ngFor="let item of timerItems" (click)="goTimerEdit($event, item)">
-            <ion-icon [@removeAnimationMode]="removeMode" style="margin-top:4%;" item-left  name="remove-circle" color="DeepOrange" (click)="goRemoveTimer($event, item)"></ion-icon>
+          <button type="button" ion-item *ngFor="let item of timer.timerItems | toArrayPipe" (click)="onEditTimer($event, item)">
+            <ion-icon [@removeAnimationMode]="removeMode" style="margin-top:4%;" item-left  name="remove-circle" color="DeepOrange" (click)="onRemoveTimer($event, item)"></ion-icon>
             <ion-avatar item-left>
               <img src="assets/image/timer-default.png">
             </ion-avatar>

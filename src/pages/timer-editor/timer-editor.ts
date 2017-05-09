@@ -13,7 +13,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 // services
 import { TimerService } from '../../services/timer-service';
+import { StorageService } from '../../services/storage-service';
 import { Config } from '../../app/config';
+import { Globals } from '../../app/globals';
 
 // pages
 import { TimerListPage } from '../timer-list/timer-list';
@@ -27,10 +29,11 @@ import { Device } from '@ionic-native/device';
 import { NativeAudio } from '@ionic-native/native-audio';
 
 // pipe
+import { ToArrayPipe } from '../../pipes/toArray-pipe';
 
 @Component({
   selector: 'page-timer-editor',
-  providers: [TimerService],
+  providers: [TimerService, StorageService],
   templateUrl: 'timer-editor.html',
   animations: [
     trigger('timerAnimationMode', [
@@ -77,7 +80,9 @@ export class TimerEditorPage{
     public navParams: NavParams,
     public formBuilder: FormBuilder,
     public timerService: TimerService,
+    public storageService: StorageService,
     public config: Config,
+    public globals: Globals,
     public translate: TranslateService,
     public events: Events,
     public modalCtrl: ModalController,
@@ -101,8 +106,7 @@ export class TimerEditorPage{
 
   ngOnInit(){
     this.categoryList = this.config.CATETGORY;
-    this.soundList = this.utilsObjectToArray(this.config.SOUND);
-    this.soundList.sort(function(a, b){return a.order - b.order});
+    this.soundList = this.config.SOUND;
     this.intDefaultTimerData();
   }
 
@@ -111,41 +115,131 @@ export class TimerEditorPage{
 
     if(this.navParams.get('mode') === 'edit'){
       this.timer = this.navParams.get('timer');
-      this.timerItems = this.utilsObjectToArray(this.timer.timerItems);
-      this.utilsSortByOrder(this.timerItems)
-      this.currentTimer = this.timerItems[0];
+      this.currentTimer = this.config.TEMP_TIMER_ITEMS;
      }else{
+      let itemKey = UUID.UUID();
       this.timer = Object.assign({}, this.config.TEMP_TIMER)
+      this.timer.timerItems = {};
+      this.timer.timerItems[itemKey] = Object.assign({}, this.config.TEMP_TIMER_ITEMS);
+
+      this.currentTimer = this.config.TEMP_TIMER_ITEMS;
       this.timer.category = this.navParams.get('category').value;
-      this.timerItems.push(this.getDefaultTimerItemsData());
-      this.currentTimer = this.timerItems[0];
     }
   }
 
-  getDefaultTimerItemsData(){
-    let items = Object.assign({}, this.config.TEMP_TIMER_ITEMS);
+  // edit items
+  onSaveTimerItems(title, detail){
+    let _timer:any = this.getCurrentTimer();
+    _timer.title = title;
+    _timer.detail = detail;
+    this.nativeAudio.unload(_timer.id);
+    this.setMode('timerEdit');
+  }
 
-    let englishDefault:any ={
-      title:"Timer",
-      detail:"..."
+  // edit timer
+  onSaveTimerMain(_name, _summary){
+    this.timer.name = _name;
+    this.timer.summary = _summary;
+    // this.events.publish('timer:stop');
+
+    let items:any = this.timer.timerItems;
+    for(let key in items){
+      items[key].timer = '';
+      items[key].subscribtion = '';
+      items[key].max = 1;
+      items[key].current = 0;
+      items[key].status = 'ready';
+      items[key].btnStatus= 'start';
+      items[key].nextTimer = false;
     }
+
+    console.log(this.timer);
+
+    this.storageService.serviceSetTimer(this.timer.timerId, this.timer)
+    .then(()=>{
+      this.events.publish('timer:update-list', this.timer.category);
+      this.navCtrl.pop();
+    })
+  }
+
+  onRemoveTimer(event,timer){
+    event.stopPropagation();
+    delete this.timer.timerItems[timer.id];
+    this.onOrderItems();
+  }
+
+  onAddTimer(){
+    let itemKey:any = UUID.UUID();
+    this.timer.timerItems[itemKey] = this.getDefaultTimerItemsData(itemKey);
+    this.onOrderItems();
+    this.content.scrollTo(0, this.content.getContentDimensions().scrollHeight, 1000);
+  }
+
+  onEditTimer(event, _timer){
+    event.stopPropagation();
+    this.setCurrentTimer(_timer);
+    this.soundPlayState = 'pause';
+    this.setMode('timerItemsEdit');
+    this.content.scrollTo(0, 0, 0);
+  }
+
+  onReorderItems(evt){
+    this.timer.timerItems = this.utilsArrayToObject(reorderArray(this.utilsObjectToArray(this.timer.timerItems), evt));
+  }
+
+  onOrderItems(): any{
+    this.utilsArrayToObject(this.utilsObjectToArray(this.timer.timerItems));
+  }
+
+  onToggleRemove(){
+    this.removeMode = (this.removeMode == 'shown') ? 'hidden': 'shown';
+  }
+
+  // common
+  setCurrentTimer(_timer){
+    for(let key in this.timer.timerItems){
+      if(this.timer.timerItems[key] === _timer){
+        this.currentTimer = this.timer.timerItems[key];
+        break;
+      }
+    }
+  }
+
+  getCurrentTimer():any{
+    return this.currentTimer;
+  }
+
+  utilsArrayToObject(arr){
+    let _obj:any = {};
+    let cnt: number = 0;
+
+    for(let item of arr){
+      item.order = cnt++;
+      _obj[item.id] = item;
+    }
+    return _obj;
+  }
+
+  getDefaultTimerItemsData(itemKey){
+    let items = Object.assign({}, this.config.TEMP_TIMER_ITEMS);
+    let englishDefault:any ={ title:"Timer", detail:"..." }
 
     this.translate.get('Default.Timer.Title')
     .subscribe((res: string) => {
-      if(res === 'Default.Timer.Title'){
-        items.title= englishDefault.title;
-      }else{
-        items.title= res;
-      }
+      if(res === 'Default.Timer.Title'){ items.title= englishDefault.title; }
+      else{ items.title= res;}
     })
-
+    items.id = itemKey;
+    items.order = Object.keys(this.timer.timerItems).length;
     items.color = this.config.RANDOM_COLOR[this.utilsRandomRange(0, this.config.RANDOM_COLOR.length-1)];
     return items;
   }
 
-  getCurrentTimer(){
-    return this.timerItems[this.utilsGetTimerPositionByTimer(this.currentTimer)];
-  }
+  ///////////////////////////////
+
+  // getCurrentTimer(){
+  //   return this.timerItems[this.utilsGetTimerPositionByTimer(this.currentTimer)];
+  // }
 
   setMode(mode){
     switch (mode){
@@ -188,9 +282,9 @@ export class TimerEditorPage{
   onOpenImagePicker(){
     let options: any = {
       maximumImagesCount: 1,
-      width: 200,
-      height: 200,
-      quality: 80,
+      width: 400,
+      height: 400,
+      quality: 100,
       outputType: 1
     };
 
@@ -249,37 +343,9 @@ export class TimerEditorPage{
     _timer.defaultTimeSet = this.currentTimer.timeSet;
   }
 
-  goAddTimer(){
-    let _timerItem = this.getDefaultTimerItemsData();
-    _timerItem.id = UUID.UUID();
-
-    this.timerItems.push(_timerItem);
-    this.content.scrollTo(0, this.content.getContentDimensions().scrollHeight, 1000);
-  }
-
-  goToggleRemove(){
-    this.removeMode = (this.removeMode == 'shown') ? 'hidden': 'shown';
-  }
-
-  goRemoveTimer(event,timer){
-    event.stopPropagation();
-    console.log(timer);
-    this.timerItems = this.timerItems.filter((jsonObject) => {
-        return jsonObject.id != timer.id;
-    });
-  }
-  goTimerEdit(event, timer){
-    event.stopPropagation();
-    console.log(timer);
-    this.soundPlayState = 'play';
-    this.currentTimer = timer;
-    this.setMode('timerItemsEdit');
-    this.content.scrollTo(0, 0, 0);
-  }
-
-  onSaveTimerMain(name, summary){
-    this.saveTimerDataToServer({name, summary});
-  }
+  // onSaveTimerMain(name, summary){
+  //   this.saveTimerDataToServer({name, summary});
+  // }
 
   onSaveMain(validator, name, summary){
     console.log('onSaveMain', validator, this.timerMainForm.valid);
@@ -307,6 +373,7 @@ export class TimerEditorPage{
     this.timer.name = name;
     this.timer.summary = summary;
     let cnt: number = 0;
+
     for(let _timer of this.timerItems){
       _timer.order = cnt;
       _timer.timer = '';
@@ -319,25 +386,26 @@ export class TimerEditorPage{
       cnt +=1;
     }
     this.timer.timerItems = this.utilsArrayToObject(this.timerItems);
+    // this.storageService.serviceSetLocalStorage(this.timer.timerId, this.timer.timerItems);
+    //
+    // for(let item in this.timer.timerItmes){
+    //   this.timer.timerItems[item]['image'] = '';
+    // }
   }
 
-  onSaveTimerItems(title, detail){
-    let _timer: any = this.getCurrentTimer();
-    _timer.title = title;
-    _timer.detail = detail;
-
-    this.nativeAudio.unload(_timer.id);
-
-    this.setMode('timerEdit');
-  }
+  // onSaveTimerItems(title, detail){
+  //   let _timer: any = this.getCurrentTimer();
+  //   _timer.title = title;
+  //   _timer.detail = detail;
+  //
+  //   this.nativeAudio.unload(_timer.id);
+  //
+  //   this.setMode('timerEdit');
+  // }
 
   onCancelTimerItems(title, detail){
     title = detail = '';
     this.setMode('timerEdit');
-  }
-
-  goReorderItems(evt){
-    this.timerItems = reorderArray(this.timerItems, evt);
   }
 
   onRemoveMain(){
@@ -354,15 +422,6 @@ export class TimerEditorPage{
 
   onSaveTimer(validator){
     console.log('onSaveTimer', validator, this.timerForm.valid);
-  }
-
-  utilsArrayToObject(arr){
-    let _obj:any = {};
-    for(let item of arr){
-      item.id = UUID.UUID();
-      _obj[item.id] = item;
-    }
-    return _obj;
   }
 
   utilsObjectToArray(obj){

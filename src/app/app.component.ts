@@ -23,6 +23,8 @@ import * as firebase from 'firebase';
 import * as moment from 'moment';
 import { Firebase } from '@ionic-native/firebase';
 import { Network } from '@ionic-native/network';
+import { Storage } from '@ionic/storage';
+import { UUID } from 'angular2-uuid';
 
 // services
 
@@ -58,8 +60,8 @@ export class MyApp implements OnInit{
       params: { icons: true, titles: true }
     },
     {
-      name: 'Partial - Title only',
-      page: LoginPage,
+      name: 'clear',
+      page: '',
       params: { icons: false, titles: true }
     },
     {
@@ -83,6 +85,7 @@ export class MyApp implements OnInit{
     public device: Device,
     public network: Network,
     public events: Events,
+    public storage: Storage,
   ){
     translate.addLangs(["en", "ko"]);
     translate.setDefaultLang('en');
@@ -182,13 +185,35 @@ export class MyApp implements OnInit{
           this.rootPage = StartPage ;
         } else {
           console.log(user)
-          this.loadingProcess();
+          this.loadingProcessFromLocal();
+          // this.loadingProcessFromServer();
         }
       });
     });
   }
 
-  private loadingProcess(){
+  private loadingProcessFromLocal(){
+    this.zone.run(() =>{
+      Promise.resolve()
+      .then(() =>{
+        return this.isFirstAccessLocalStorage();
+      })
+      .then((res)=>{
+        if(res===0){ // first access
+          return this.makeDefaultTimer();
+        }
+        return;
+      })
+      .then((res)=>{
+        // console.log('loadTimerData', res);
+        // this.config.MY_TIMER = res;
+        this.events.publish('timer:update-list');
+        this.rootPage = TabsPage;
+      })
+    })
+  }
+
+  private loadingProcessFromServer(){
     this.zone.run(() => {
       let _timer:any;
       let _items:any;
@@ -201,13 +226,13 @@ export class MyApp implements OnInit{
           _timer = res.val();
           this.config.TEMP_TIMER = _timer;
           return this.loadTemplateItemsFromServer();
-        }) 
+        })
         .then((res:any)=>{
           console.log('common#2');
           _items = res.val();
           this.config.TEMP_TIMER_ITEMS = _items;
           return this.loadCategoryDataFromServer();
-        }) 
+        })
         .then((res:any)=>{
           console.log('common#3');
           this.config.CATETGORY = res.val();
@@ -241,6 +266,39 @@ export class MyApp implements OnInit{
     });
   }
 
+  private isFirstAccessLocalStorage():any {
+    return this.storage.length();
+  }
+
+  private makeDefaultTimer(){
+    let firstTimer = {};
+    let timerItems = {};
+    let newPostTimerKey = UUID.UUID();
+
+    firstTimer[newPostTimerKey]= Object.assign({}, this.config.TEMP_TIMER);
+    for(let i=0 ; i<3 ; i++){
+      let _items = Object.assign({}, this.config.TEMP_TIMER_ITEMS);
+      let newPostItemsKey = UUID.UUID();
+
+      _items['id'] = newPostItemsKey;
+      _items['color'] = this.config.RANDOM_COLOR[this.randomRange(0, this.config.RANDOM_COLOR.length-1)];
+      timerItems[newPostItemsKey] = _items;
+    }
+    firstTimer[newPostTimerKey]['timerId'] = newPostTimerKey;
+    firstTimer[newPostTimerKey]['timerItems'] = timerItems;
+
+    // firstTimer[newPostTimerKey] = this.defaultDataForFirstAccess(firstTimer[newPostTimerKey]);
+    return this.storage.set(newPostTimerKey, this.defaultDataForFirstAccess(firstTimer[newPostTimerKey]));
+  }
+
+  private loadTimerDataFromLocalStorage(){
+    let _timer = {};
+    this.storage.forEach((value, key, iterationNumber) =>{
+      _timer[key] = value[key];
+    })
+    return _timer;
+  }
+
   private isFirstAccess(){
     let user = firebase.auth().currentUser;
     return firebase.database().ref(this.globals.SERVER_PATH_USERS + user.uid ).once('value');
@@ -267,8 +325,8 @@ export class MyApp implements OnInit{
       let _items = Object.assign({}, items);
       let newPostItemsKey = ref.push().key;
 
-      _items['id'] = newPostItemsKey; 
-      _items['color'] = this.config.RANDOM_COLOR[this.randomRange(0, this.config.RANDOM_COLOR.length-1)]; 
+      _items['id'] = newPostItemsKey;
+      _items['color'] = this.config.RANDOM_COLOR[this.randomRange(0, this.config.RANDOM_COLOR.length-1)];
       timerItems[newPostItemsKey] = _items;
     }
     _timer['timerItems'] = timerItems;
@@ -281,7 +339,6 @@ export class MyApp implements OnInit{
   }
 
   private defaultDataForFirstAccess(_timer): any{
-    
     let englishDefault:any ={
       name:"Super Timer",
       summary:"This is a sample timer",
@@ -365,12 +422,14 @@ export class MyApp implements OnInit{
   }
 
   private logout(){
-    firebase.auth().signOut();    
+    firebase.auth().signOut();
   }
 
   openPage(page) {
     if(page.name === 'Logout'){
       this.logout();
+    }else if(page.name === 'clear'){
+      this.storage.clear();
     }else{
       page.params.pageTitle = page.name;
       this.nav.push(page.page, page.params);
