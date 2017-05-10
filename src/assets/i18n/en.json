@@ -82,7 +82,8 @@
   "MobileMessage":{
     "Congratuation": "Congratulations",
     "SuccessCreateUser":"Congratulations on your joining us.Go home after 3 seconds.",
-    "SuccessLogin":"Welcome to All timer"
+    "SuccessLogin":"Welcome to All timer",
+    "RemoveTimer":"Do you agree to remove this timer"
   },
   "TimerEditor":{
     "timer-name":"TIMER NAME",

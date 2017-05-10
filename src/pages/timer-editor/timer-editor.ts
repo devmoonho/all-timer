@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Events, ModalController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, Events, ModalController, ViewController, AlertController } from 'ionic-angular';
 import { Content } from 'ionic-angular';
 import { reorderArray } from 'ionic-angular';
 import { UUID } from 'angular2-uuid';
@@ -88,6 +88,7 @@ export class TimerEditorPage{
     public modalCtrl: ModalController,
     public device: Device,
     public nativeAudio: NativeAudio,
+    public alertCtrl: AlertController,
   ){
     this.initValidator()
   }
@@ -448,5 +449,35 @@ export class TimerEditorPage{
   utilsRandomRange(min, max){
     var RandVal = Math.random() * (max- min) + min;
     return Math.floor(RandVal);
+  }
+
+  showDeleteConfirm() {
+    let englishDefault = {title:'Remove this Timer', message:'Do you agree to remove this timer?', btnAgree:'Agree', btnDisagree:'Disagree'}
+    let title, message, btnAgree, btnDisagree: string = '';
+
+    this.translate.get('Common.AlertTitle.Warning').subscribe((res)=>{title = res});
+    this.translate.get('MobileMessage.RemoveTimer').subscribe((res)=>{message= res});
+    this.translate.get('Common.Agree').subscribe((res)=>{btnAgree= res});
+    this.translate.get('Common.Disagree').subscribe((res)=>{btnDisagree= res});
+
+    let confirm = this.alertCtrl.create({
+      title: title==''?englishDefault.title:title,
+      message: message==''?englishDefault.message:message,
+      buttons: [
+        {
+          text: btnDisagree==''?englishDefault.btnDisagree:btnDisagree,
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: btnAgree==''?englishDefault.btnAgree:btnAgree,
+          handler: () => {
+          this.onRemoveMain()
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 }

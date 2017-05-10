@@ -111,7 +111,7 @@
         <div class="color-item">
           {{'TimerEditor.choose-picture' | translate }}
         </div>
-        <div class="color-item" (click)="onOpenImagePicker()">
+        <div class="color-item" (tap)="onOpenImagePicker()">
           <img [src]="currentTimer.image==''?defaultImage:currentTimer.image">
         </div>
       </div>
@@ -125,7 +125,7 @@
       <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onSaveTimerMain(name.value, summary.value)">
         {{'Common.Save' | translate }}
       </button>
-      <button *ngIf="editMode" ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onRemoveMain()">
+      <button *ngIf="editMode" ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="showDeleteConfirm()">
         {{'Common.Remove' | translate }}
       </button>
       <button *ngIf="editMode" ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onCancelMain()">
