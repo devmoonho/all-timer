@@ -35,7 +35,11 @@ export class Config{
   ]
 
   public SOUND = [
-    {value: 'assets/sound/default.mp3', name: 'default', order: 0},
+    {value: 'assets/sound/default.mp3', name: 'default', order: 0.0},
+    {value: 'assets/sound/workout.mp3', name: 'workout', order: 0.1},
+    {value: 'assets/sound/cooking.mp3', name: 'cooking', order: 0.2},
+    {value: 'assets/sound/study.mp3', name: 'study', order: 0.3},
+    {value: 'assets/sound/etc.mp3', name: 'etc', order: 0.4},
     {value: 'assets/sound/1.mp3', name: 'sound1', order: 1},
     {value: 'assets/sound/2.mp3', name: 'sound2', order: 2},
     {value: 'assets/sound/3.mp3', name: 'sound3', order: 3},
@@ -57,7 +61,7 @@ export class Config{
     name: '',
     summary: '',
     category: 'etc',
-    timerItems: {}
+    timerItems:{}
   }
 
   public TEMP_TIMER_ITEMS = {

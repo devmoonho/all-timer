@@ -46,14 +46,14 @@ export class TimerListPage {
   ){
     this.rootNavCtrl = navParams.get('rootNavCtrl');
 
-    events.subscribe('timer:update-list', (_category) => {
+    events.subscribe('timer:update-list', (category) => {
       console.log('timer:update-list');
-      this.updateTimerList();
+      this.updateTimerList(category);
     });
 
-    events.subscribe('timer:remove-list', () => {
+    events.subscribe('timer:remove-list', (category) => {
       console.log('timer:remove-list');
-      this.removeTimerList();
+      this.updateTimerList(category);
     });
   }
 
@@ -87,16 +87,9 @@ export class TimerListPage {
     });
   }
 
-  updateTimerList(){
-    // this.currentCategory = this.getCategoryByValue(_category);
-    this.storageService.serviceGetAllTimer()
-    .then((res)=>{
-      this.timerList = res;
-    })
-  }
-
-  removeTimerList(){
-   this.storageService.serviceGetAllTimer()
+  updateTimerList(category){
+    this.currentCategory = this.getCategoryByValue(category);
+    this.storageService.serviceGetCategoryTimer(category)
     .then((res)=>{
       this.timerList = res;
     })

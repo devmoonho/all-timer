@@ -53,6 +53,11 @@ export class HomePage {
       console.log('timer:update-list');
       this.updateTimerList();
     });
+
+    events.subscribe('timer:remove-list', () => {
+      console.log('timer:update-list');
+      this.updateTimerList();
+    });
   }
 
   ngOnInit(){
@@ -106,9 +111,9 @@ export class HomePage {
   }
 
   updateTimerList(){
-    this.storageService.serviceGetLocalStorage(this.globals.LOCAL_STORAGE_KEY_TIMER)
+    this.storageService.serviceGetAllTimer()
     .then((res)=>{
-      this.config.MY_TIMER = this.timer = res;
+      this.timer = res;
     })
   }
 

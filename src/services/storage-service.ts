@@ -21,6 +21,24 @@ export class StorageService {
     this.fireStorage= firebase.storage();
   }
 
+  public serviceGetCategoryTimer(category):any{
+    let timer={};
+
+    return Promise.resolve()
+    .then(()=>{
+      return this.storage.forEach((val, key)=>{
+        if(val.category === category){
+          timer[key] = val;
+        }
+      })
+    })
+    .then((res)=>{
+      console.log("---- serviceGetCategoryTimer done ----");
+      return timer;
+    })
+
+  }
+
   public serviceGetAllTimer():any{
     let allTimer={};
 
@@ -103,6 +121,6 @@ export class StorageService {
   }
 
   public serviceDeleteLocalStorage(key){
-    this.storage.remove(key);
+    return this.storage.remove(key);
   }
 }

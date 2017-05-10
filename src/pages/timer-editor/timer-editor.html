@@ -18,7 +18,7 @@
         <ion-label stacked style="color:#FF6E40;">
           {{'TimerEditor.category-title' | translate }}
         </ion-label>
-        <ion-select interface="popover" formControlName="category" required="required" [(ngModel)]="timer.category">
+        <ion-select  formControlName="category" required="required" [(ngModel)]="timer.category">
           <span *ngFor="let item of categoryList">
             <ion-option  value="{{item.value}}" >{{'TimerEditor.category-list.'+item.value | translate}}</ion-option>
           </span>

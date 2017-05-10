@@ -107,24 +107,46 @@ export class TimerEditorPage{
   ngOnInit(){
     this.categoryList = this.config.CATETGORY;
     this.soundList = this.config.SOUND;
-    this.intDefaultTimerData();
+    this.initDefaultTimerData();
   }
 
-  intDefaultTimerData(){
+  initDefaultTimerData(){
     this.editMode = this.navParams.get('mode')==='edit'?true:false;
 
     if(this.navParams.get('mode') === 'edit'){
       this.timer = this.navParams.get('timer');
       this.currentTimer = this.config.TEMP_TIMER_ITEMS;
      }else{
-      let itemKey = UUID.UUID();
-      this.timer = Object.assign({}, this.config.TEMP_TIMER)
-      this.timer.timerItems = {};
-      this.timer.timerItems[itemKey] = Object.assign({}, this.config.TEMP_TIMER_ITEMS);
-
+      this.timer = this.createTimer();
       this.currentTimer = this.config.TEMP_TIMER_ITEMS;
       this.timer.category = this.navParams.get('category').value;
     }
+  }
+
+  createTimer():any{
+    let retTimer:any = {}
+    let timerKey = UUID.UUID();
+    let itemKey = UUID.UUID();
+
+    retTimer = Object.assign({}, this.config.TEMP_TIMER);
+    retTimer.timerId = timerKey;
+
+    retTimer.timerItems = {};
+    retTimer.timerItems[itemKey] = Object.assign({}, this.config.TEMP_TIMER_ITEMS);
+
+    let englishDefault:any ={ title:"Timer", detail:"..." }
+    let item = retTimer.timerItems[itemKey];
+    item.id = itemKey;
+    this.translate.get('Default.Timer.Title')
+    .subscribe((res: string) => {
+      if(res === 'Default.Timer.Title'){ item.title = englishDefault.title; }
+      else{ item.title= res;}
+    })
+
+    item.order = Object.keys(retTimer.timerItems).length;
+    item.color = this.config.RANDOM_COLOR[this.utilsRandomRange(0, this.config.RANDOM_COLOR.length-1)];
+
+    return retTimer;
   }
 
   // edit items
@@ -343,10 +365,6 @@ export class TimerEditorPage{
     _timer.defaultTimeSet = this.currentTimer.timeSet;
   }
 
-  // onSaveTimerMain(name, summary){
-  //   this.saveTimerDataToServer({name, summary});
-  // }
-
   onSaveMain(validator, name, summary){
     console.log('onSaveMain', validator, this.timerMainForm.valid);
   }
@@ -386,22 +404,7 @@ export class TimerEditorPage{
       cnt +=1;
     }
     this.timer.timerItems = this.utilsArrayToObject(this.timerItems);
-    // this.storageService.serviceSetLocalStorage(this.timer.timerId, this.timer.timerItems);
-    //
-    // for(let item in this.timer.timerItmes){
-    //   this.timer.timerItems[item]['image'] = '';
-    // }
   }
-
-  // onSaveTimerItems(title, detail){
-  //   let _timer: any = this.getCurrentTimer();
-  //   _timer.title = title;
-  //   _timer.detail = detail;
-  //
-  //   this.nativeAudio.unload(_timer.id);
-  //
-  //   this.setMode('timerEdit');
-  // }
 
   onCancelTimerItems(title, detail){
     title = detail = '';
@@ -409,9 +412,9 @@ export class TimerEditorPage{
   }
 
   onRemoveMain(){
-    this.timerService.serviceRemoveTimer(this.timer)
-    .then((res)=>{
-      this.events.publish('timer:remove-list');
+    this.storageService.serviceDeleteLocalStorage(this.timer.timerId)
+    .then(()=>{
+      this.events.publish('timer:remove-list', this.timer.category);
       this.navCtrl.popToRoot();
     });
   }

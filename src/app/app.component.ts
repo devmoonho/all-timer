@@ -205,8 +205,6 @@ export class MyApp implements OnInit{
         return;
       })
       .then((res)=>{
-        // console.log('loadTimerData', res);
-        // this.config.MY_TIMER = res;
         this.events.publish('timer:update-list');
         this.rootPage = TabsPage;
       })
