@@ -32,7 +32,7 @@ export class TimerListPage {
   categoryMode: any = true;
   currentCategory: any;
 
-  timerList: any;
+  timerList: any={};
 
   selectedTimer: any;
 
@@ -58,8 +58,8 @@ export class TimerListPage {
   }
 
   ngOnInit(){
-    this.timerList = this.navParams.get('timerList');
     this.currentCategory = this.navParams.get('category');
+    this.updateTimerList(this.currentCategory.value);
   }
 
   getRandomColor(index: number): string {

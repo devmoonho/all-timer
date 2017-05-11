@@ -70,6 +70,12 @@ export class TimerPage {
 
   notiAlert: any;
 
+  rangeNumber: number = 0;
+
+  simpleMode: boolean = false;
+  repeat: boolean = false;
+  repeatCounter: number=0;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -533,6 +539,9 @@ export class TimerPage {
     })
   }
 
+  onEnableSimple(){
+    console.log('onEnableSimpleView', this.simpleMode);
+  }
 
   showAlert({titleCode, messageObj}) {
     let title, message, btnConfirm: string;
@@ -595,4 +604,17 @@ export class TimerPage {
       }
     })
   }
+
+  onDecrease(){
+    if(this.repeatCounter > 0){
+      this.repeatCounter -=1;
+    }
+  }
+
+  onIncrease(){
+    if(this.repeatCounter < 10){
+      this.repeatCounter +=1;
+    }
+  }
+
 }

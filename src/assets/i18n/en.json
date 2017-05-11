@@ -106,6 +106,10 @@
     "choose-picture":"CHOOSE PICTURE",
     "Couleur":"COULEUR"
   },
+  "Timer":{
+    "simple-view":"Simple View",
+    "repeat-count":"Repeat count"
+  },
   "Common":{
     "AlertTitle":{
         "Information":"Information",

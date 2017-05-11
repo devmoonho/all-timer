@@ -106,6 +106,10 @@
     "choose-picture":"사진 선택",
     "Couleur":"색깔"
   },
+  "Timer":{
+    "simple-view":"간단히 보기",
+    "repeat-count":"반복횟수"
+  },
   "Common":{
     "AlertTitle":{
         "Information":"정보",
