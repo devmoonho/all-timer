@@ -24,7 +24,10 @@
           </span>
         </ion-select>
       </ion-item>
-
+      <ion-item>
+        <ion-label stacked style="color:#FF6E40;">{{'Timer.simple-view' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="timer.simple" [ngModelOptions]="{standalone: true}" ></ion-toggle>
+      </ion-item>
       <div class="spacer" style="width: 300px; height: 15px;"></div>
 
       <ion-list>

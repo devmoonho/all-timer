@@ -62,6 +62,11 @@ export class TimerListPage {
     this.updateTimerList(this.currentCategory.value);
   }
 
+  ionViewWillEnter(){
+    this.currentCategory = this.navParams.get('category');
+    this.updateTimerList(this.currentCategory.value);
+  }
+
   getRandomColor(index: number): string {
     let idx = (index) % this.config.RANDOM_COLOR.length
     return this.config.RANDOM_COLOR[idx];

@@ -30,9 +30,18 @@ import { TimerEditorPage } from '../timer-editor/timer-editor';
 // pipe
 import { ToArrayPipe } from '../../pipes/toArray-pipe';
 
+// animation
+import { trigger, state, style, transition, animate } from '@angular/core'
+
 @Component({
   selector: 'page-timer',
   providers: [LoginService, StorageService],
+  animations: [
+    trigger('animationDetailMode', [
+    state('shown' , style({opacity: 1 })),
+    state('hidden', style({opacity: 0, 'display':'none' })),
+    transition('hidden => shown', animate('.5s'))]),
+  ],
   templateUrl: 'timer.html'
 })
 
@@ -75,6 +84,9 @@ export class TimerPage {
   simpleMode: boolean = false;
   repeat: boolean = false;
   repeatCounter: number=0;
+
+  detailShown: string = 'hidden';
+  detailMode: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -183,7 +195,7 @@ export class TimerPage {
   }
 
   popLocalNotifications(timer){
-    let times = 10;
+    let times = 3;
     let cnt = 0;
     let btnConfirm: string;
 
@@ -216,8 +228,10 @@ export class TimerPage {
          clearInterval(interval);
          this.nativeAudio.unload(timer.id);
        }
-     }]
+     }],
+     enableBackdropDismiss: false
    });
+
    this.notiAlert.present();
   }
 
@@ -265,9 +279,14 @@ export class TimerPage {
     this.setContinuousMode(true);
 
     this.loopTimer(this.timerItems.length, 0, (res)=>{
-        this.setNextTimerUI('');
-        this.setContinuousMode(false);
-        console.log('done', res);
+        if(this.repeatCounter > 0){
+          this.repeatCounter -= 1;
+          this.onStartAllTimer();
+        }else{
+          this.setNextTimerUI('');
+          this.setContinuousMode(false);
+          console.log('done', res);
+        }
     })
   }
 
@@ -540,7 +559,7 @@ export class TimerPage {
   }
 
   onEnableSimple(){
-    console.log('onEnableSimpleView', this.simpleMode);
+    console.log('onEnableSimpleView', this.timer.simple);
   }
 
   showAlert({titleCode, messageObj}) {
@@ -617,4 +636,12 @@ export class TimerPage {
     }
   }
 
+  onDetailMode(){
+    this.detailMode = this.detailMode?false:true;
+    if(this.detailMode){
+      this.detailShown = 'shown';
+    }else{
+      this.detailShown = 'hidden';
+    }
+  }
 }

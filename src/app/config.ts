@@ -61,6 +61,7 @@ export class Config{
     name: '',
     summary: '',
     category: 'etc',
+    simple: false,
     timerItems:{}
   }
 
