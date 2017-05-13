@@ -211,59 +211,6 @@ export class MyApp implements OnInit{
     })
   }
 
-  private loadingProcessFromServer(){
-    this.zone.run(() => {
-      let _timer:any;
-      let _items:any;
-
-      Promise.resolve()
-      .then((res:any)=>{
-        return this.loadTemplateTimerFromServer()
-        .then((res:any)=>{
-          console.log('common#1');
-          _timer = res.val();
-          this.config.TEMP_TIMER = _timer;
-          return this.loadTemplateItemsFromServer();
-        })
-        .then((res:any)=>{
-          console.log('common#2');
-          _items = res.val();
-          this.config.TEMP_TIMER_ITEMS = _items;
-          return this.loadCategoryDataFromServer();
-        })
-        .then((res:any)=>{
-          console.log('common#3');
-          this.config.CATETGORY = res.val();
-          return this.loadSoundDataFromServer();
-        })
-        .then((res:any)=>{
-          console.log('common#4');
-          this.config.SOUND= res.val();
-        })
-        .then(()=>{
-          return this.isFirstAccess();
-        })
-        .then((res)=>{
-          if(res.val()===null){
-            console.log('first access')
-            return this.copyDefaultTimer(_timer, _items);
-          }
-          console.log('not first access')
-          return;
-        })
-        .then(()=>{
-          console.log('common#4');
-          return this.loadTimerDataFromServer();
-        })
-        .then((res:any)=>{
-          this.config.MY_TIMER = res.val();
-          this.events.publish('timer:update-list');
-          this.rootPage = TabsPage;
-        })
-      });
-    });
-  }
-
   private isFirstAccessLocalStorage():any {
     return this.storage.length();
   }
@@ -285,7 +232,6 @@ export class MyApp implements OnInit{
     firstTimer[newPostTimerKey]['timerId'] = newPostTimerKey;
     firstTimer[newPostTimerKey]['timerItems'] = timerItems;
 
-    // firstTimer[newPostTimerKey] = this.defaultDataForFirstAccess(firstTimer[newPostTimerKey]);
     return this.storage.set(newPostTimerKey, this.defaultDataForFirstAccess(firstTimer[newPostTimerKey]));
   }
 

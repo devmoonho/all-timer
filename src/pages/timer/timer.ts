@@ -126,8 +126,15 @@ export class TimerPage {
   }
 
   ngOnInit() {
-    this.timer = this.navParams.get('timer')
-    this.initTimer();
+    console.log(this.config.RUNNING_TIMER);
+    this.timer = this.config.RUNNING_TIMER[this.navParams.get('timer').timerId];
+
+    if(this.timer===undefined){
+      this.timer = this.navParams.get('timer');
+      this.initTimer();
+      this.config.RUNNING_TIMER[this.timer.timerId] = this.timer;
+    }
+    this.initTimerItems();
   }
 
   initTimer(){
@@ -140,8 +147,10 @@ export class TimerPage {
       items[key].image = items[key].image===''?category.defaultTimerImage:items[key].image;
       items[key].color = items[key].color==''?'#3F51B5': items[key].color;
     }
+    this.initTimerItems();
+  }
 
-    // this.loadLocalSavedImage();
+  initTimerItems(){
     this.timerItems = this.utilsObjectToArray(this.timer.timerItems);
     this.timerItems.sort(function(a, b){return a.order - b.order});
   }
@@ -158,6 +167,10 @@ export class TimerPage {
         }
       })
     })
+  }
+
+  ionViewDidLeave(){
+    console.log('ionViewDidLeave')
   }
 
   onStartAllTimer(){
@@ -299,7 +312,8 @@ export class TimerPage {
           this.setNextTimerUI('');
           this.setContinuousMode(false);
           this.btnStatus = 'start';
-          console.log('done', res);
+          delete this.config.RUNNING_TIMER[this.timer.timerId];
+          console.log('done', this.config.RUNNING_TIMER);
         }
     })
   }
