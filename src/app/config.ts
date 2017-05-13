@@ -3,122 +3,96 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class Config{
-  public CATETGORY = [{
-    name: 'WORK OUT',
-    value:'workout',
-    defaultImage: 'assets/image/default.jpg',
-    defaultSound: 'assets/sound/default.mp3'
-  },
-  {
-    name: 'FOOD',
-    value:'food',
-    defaultImage: 'assets/image/default.jpg',
-    defaultSound: 'assets/sound/default.mp3'
-  },
-  {
-    name: 'STUDY',
-    value:'study',
-    defaultImage: 'assets/image/default.jpg',
-    defaultSound: 'assets/sound/default.mp3'
-  },
-  {
-    name: 'ETC',
-    value:'etc',
-    defaultImage: 'assets/image/default.jpg',
-    defaultSound: 'assets/sound/default.mp3'
-  }]
+  public CATETGORY = [
+    {
+      "defaultImage": "assets/image/main-workout.jpg",
+      "defaultSound": "assets/sound/default.mp3",
+      "defaultTimerImage": "assets/image/timer-workout.png",
+      "name": "WORK OUT",
+      "value": "workout"
+    },
+    {
+      "defaultImage": "assets/image/main-cooking.jpg",
+      "defaultSound": "assets/sound/default.mp3",
+      "defaultTimerImage": "assets/image/timer-cooking.png",
+      "name": "COOKING",
+      "value": "cooking"
+    },
+    {
+      "defaultImage": "assets/image/main-study.jpg",
+      "defaultSound": "assets/sound/default.mp3",
+      "defaultTimerImage": "assets/image/timer-study.png",
+      "name": "STUDY",
+      "value": "study"
+    },
+    {
+      "defaultImage": "assets/image/main-etc.jpg",
+      "defaultSound": "assets/sound/default.mp3",
+      "defaultTimerImage": "assets/image/timer-etc.png",
+      "name": "ETC",
+      "value": "etc"
+    }
+  ]
+
+  public SOUND = [
+    {value: 'assets/sound/default.mp3', name: 'default', order: 0.0},
+    {value: 'assets/sound/workout.mp3', name: 'workout', order: 0.1},
+    {value: 'assets/sound/cooking.mp3', name: 'cooking', order: 0.2},
+    {value: 'assets/sound/study.mp3', name: 'study', order: 0.3},
+    {value: 'assets/sound/etc.mp3', name: 'etc', order: 0.4},
+    {value: 'assets/sound/1.mp3', name: 'sound1', order: 1},
+    {value: 'assets/sound/2.mp3', name: 'sound2', order: 2},
+    {value: 'assets/sound/3.mp3', name: 'sound3', order: 3},
+    {value: 'assets/sound/4.mp3', name: 'sound4', order: 4},
+    {value: 'assets/sound/5.mp3', name: 'sound5', order: 5},
+    {value: 'assets/sound/6.mp3', name: 'sound6', order: 6},
+    {value: 'assets/sound/7.mp3', name: 'sound7', order: 7},
+    {value: 'assets/sound/8.mp3', name: 'sound8', order: 8},
+    {value: 'assets/sound/9.mp3', name: 'sound9', order: 9},
+    {value: 'assets/sound/10.mp3', name: 'sound10', order: 10},
+    {value: 'assets/sound/11.mp3', name: 'sound11', order: 11},
+    {value: 'assets/sound/12.mp3', name: 'sound12', order: 12},
+    {value: 'assets/sound/13.mp3', name: 'sound13', order: 13},
+    {value: 'assets/sound/14.mp3', name: 'sound14', order: 14}
+  ];
 
   public TEMP_TIMER = {
     timerId :'',
     name: '',
     summary: '',
     category: 'etc',
-    timerItems:
-    [{
-      id:'',
-      title:'',
-      timer: '',
-      subscribtion: null,
-      current: 0,
-      max:0,
-      needToUpdateTimer:false,
-      defaultTimeSet:'00:00:00',
-      timeSet:'00:00:00',
-      status: 'ready',
-      btnStatus: 'start',
-      detail: "",
-      order: 1,
-      nextTimer: false,
-      notification:{
-        enable:true,
-        id: 1,
-        sound:'default.mp3',
-        data:''
-      },
-      image: "",
-      color:"",
-    }]
+    simple: false,
+    timerItems:{}
   }
 
-  public DEFAULT_TIMER =
-  [{
-    timerId :'',
-    name: 'super-timer',
-    summary: 'This timer is sample',
-    category: 'etc',
-    timerItems:
-    [{
-      id:'',
-      title:'Timer #1',
-      timer: '',
-      subscribtion: null,
-      current: 0,
-      max:0,
-      needToUpdateTimer:false,
-      defaultTimeSet:'00:00:10',
-      timeSet:'00:00:10',
-      status: 'ready',
-      btnStatus: 'start',
-      detail:  "Timer 1",
-      order: 1,
-      nextTimer: false,
-      notification:{
-        enable:true,
-        id: 1,
-        sound:'assets/sound/default.mp3',
-        data:''
-      },
-      image: "assets/image/timer-default.png",
-      color:"",
+  public TEMP_TIMER_ITEMS = {
+    id:'',
+    title:'',
+    timer: '',
+    subscribtion: null,
+    current: 0,
+    max:1,
+    needToUpdateTimer:false,
+    defaultTimeSet:'00:00:10',
+    timeSet:'00:00:10',
+    status: 'ready',
+    btnStatus: 'start',
+    detail: "",
+    order: 1,
+    nextTimer: false,
+    notification:{
+      enable:true,
+      id: 1,
+      sound:'assets/sound/default.mp3',
+      data:''
     },
-    {
-      id:'',
-      title:'Timer #2',
-      timer: '',
-      subscribtion: null,
-      current: 0,
-      max:0,
-      needToUpdateTimer:false,
-      defaultTimeSet:'00:00:10',
-      timeSet:'00:00:10',
-      status: 'ready',
-      btnStatus: 'start',
-      detail:  "Timer 2",
-      order: 1,
-      nextTimer: false,
-      notification:{
-        enable:true,
-        id: 1,
-        sound:'assets/sound/default.mp3',
-        data:''
-      },
-      image: "assets/image/timer-default.png",
-      color:"",
-    }]
-  }];
+    image: "",
+    color:""
+  }
 
-  public MY_TIMER = [];
+  public RANDOM_COLOR : any = ['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5',
+  '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39',
+  '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'];
 
-  public TEMPLATE = this.TEMP_TIMER['timerItems'][0];
-  public CREATE_TIMER = this.TEMP_TIMER;
+  public RUNNING_TIMER ={};
 }

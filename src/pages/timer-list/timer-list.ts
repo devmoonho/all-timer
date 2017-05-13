@@ -3,7 +3,11 @@ import { NavController, NavParams, Events } from 'ionic-angular';
 import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs/Rx';
 
+// animatin
+import { trigger, state, style, transition, animate, keyframes} from '@angular/core'
+
 // services
+import { StorageService } from '../../services/storage-service';
 import { TimerService } from '../../services/timer-service';
 import { Config } from '../../app/config';
 
@@ -11,6 +15,7 @@ import { Config } from '../../app/config';
 import { CategoryPipe } from '../../pipes/category-pipe';
 
 // pages
+import { TimerPage } from '../timer/timer';
 import { TimerEditorPage } from '../timer-editor/timer-editor';
 
 @Component({
@@ -18,61 +23,109 @@ import { TimerEditorPage } from '../timer-editor/timer-editor';
   providers:[TimerService],
   templateUrl: 'timer-list.html',
 })
+
 export class TimerListPage {
   rootNavCtrl: NavController;
+  categoryView: string  = 'shown';
+  categoryDetail: string  = 'hidden';
 
-  timerList: any;
-  category: any;
+  categoryMode: any = true;
+  currentCategory: any;
 
-  randomColor: any = ['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5',
-  '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39',
-  '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'];
+  // timerList: any={};
+  timerList: any=[];
 
   selectedTimer: any;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public storageService: StorageService,
     public timerService: TimerService,
     public config: Config,
     public events: Events,
   ){
     this.rootNavCtrl = navParams.get('rootNavCtrl');
 
-    events.subscribe('timer:update-list', () => {
+    events.subscribe('timer:update-list', (category) => {
       console.log('timer:update-list');
-      this.updateTimerList();
+      this.updateTimerList(category);
+    });
+
+    events.subscribe('timer:remove-list', (category) => {
+      console.log('timer:remove-list');
+      this.updateTimerList(category);
     });
   }
 
   ngOnInit(){
-    this.timerList = this.config.MY_TIMER;
-    this.category = this.config.CATETGORY;
+    this.currentCategory = this.navParams.get('category');
+    this.updateTimerList(this.currentCategory.value);
+  }
+
+  ionViewWillEnter(){
+    this.currentCategory = this.navParams.get('category');
+    this.updateTimerList(this.currentCategory.value);
   }
 
   getRandomColor(index: number): string {
-    let idx = (index) % this.randomColor.length
-    return this.randomColor[idx];
+    let idx = (index) % this.config.RANDOM_COLOR.length
+    return this.config.RANDOM_COLOR[idx];
+  }
+
+  shareTimer(event: Event, timer){
+    event.stopPropagation();
+    console.log('shareTimer');
+  }
+
+  onBackCategory(){
+    this.navCtrl.pop();
   }
 
   onCreateTimer(){
     this.navCtrl.push(TimerEditorPage, {
       mode: 'create',
       timer: '',
+      category: this.currentCategory,
     });
   }
 
   onSelectTimer(_timer){
-    this.navCtrl.push(TimerEditorPage, {
+    this.navCtrl.push(TimerPage, {
       mode: 'edit',
       timer: _timer,
+      category: this.currentCategory,
     });
   }
 
-  updateTimerList(){
-    this.timerService.serviceTimerData()
+  updateTimerList(category){
+    this.currentCategory = this.getCategoryByValue(category);
+    this.storageService.serviceGetCategoryTimer(category)
     .then((res)=>{
-      this.timerList = res;
+      // this.timerList = res;
+      this.timerList = this.utilsObjectToArray(res);
     })
+  }
+
+  getCategoryByValue(_value){
+    for(let obj of this.config.CATETGORY){
+      if(_value === obj.value){
+        return obj;
+      }
+    }
+    return this.currentCategory;
+  }
+
+  utilsArrayToObject(arr){
+    let _obj:any = {};
+    for(let item of arr){
+      item.id = UUID.UUID();
+      _obj[item.id] = item;
+    }
+    return _obj;
+  }
+
+  utilsObjectToArray(obj){
+    return Object.keys(obj).map((k) => obj[k])
   }
 }

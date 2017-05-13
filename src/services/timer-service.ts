@@ -20,6 +20,16 @@ export class TimerService {
     this.fireDatabase = firebase.database();
   }
 
+  public serviceRemoveTimer(timer):any{
+    return Promise.resolve()
+    .then(()=>{
+        return this.removeTimerToServer(timer);
+    })
+    .then(()=>{
+      console.log("---- serviceRemoveTimer done ----");
+    })
+  }
+
   public serviceUpdateTimer(timer):any{
     return Promise.resolve()
     .then(()=>{
@@ -38,10 +48,6 @@ export class TimerService {
     .then(()=>{
       console.log("---- serviceAddTimer done ----");
     })
-  }
-
-  public serviceRemoveTimer(): any{
-
   }
 
   public serviceTimerData(): any{
@@ -74,6 +80,11 @@ export class TimerService {
     .then(()=>{
       console.log("---- serviceTimerCategoryData done ----");
     })
+  }
+
+  private removeTimerToServer(timer){
+    let user = this.fireAuth.currentUser;
+    return this.fireDatabase.ref(this.globals.SERVER_PATH_USERS +  user.uid + this.globals.SERVER_PATH_TIMER + timer.timerId ).remove();
   }
 
   private updateTimerDataToServer(timer){

@@ -1,9 +1,11 @@
 import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
 
-import { Content, NavController, NavParams, AlertController, Platform } from 'ionic-angular';
+import { Content, NavController, NavParams, AlertController, Platform, Events } from 'ionic-angular';
 
 // services
+import { TimerService } from '../../services/timer-service';
 import { LoginService } from '../../services/login-service';
+import { StorageService } from '../../services/storage-service';
 
 // utils
 import { BackgroundMode } from '@ionic-native/background-mode';
@@ -16,14 +18,30 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 import { Device } from '@ionic-native/device';
 import { UUID } from 'angular2-uuid';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { Vibration } from '@ionic-native/vibration';
 
+import { Config } from '../../app/config';
+import { Globals } from '../../app/globals';
 
 // pages
 import { LoginPage } from '../login/login';
+import { TimerEditorPage } from '../timer-editor/timer-editor';
+
+// pipe
+import { ToArrayPipe } from '../../pipes/toArray-pipe';
+
+// animation
+import { trigger, state, style, transition, animate } from '@angular/core'
 
 @Component({
   selector: 'page-timer',
-  providers: [LoginService],
+  providers: [LoginService, StorageService],
+  animations: [
+    trigger('animationDetailMode', [
+    state('shown' , style({opacity: 1 })),
+    state('hidden', style({opacity: 0, 'display':'none' })),
+    transition('hidden => shown', animate('.5s'))]),
+  ],
   templateUrl: 'timer.html'
 })
 
@@ -53,12 +71,24 @@ export class TimerPage {
   btnState: string = "start"
 
   subscribtion: any;
-  timerList: any;
+  timer:any;
+  timerItems: any;
 
   continuousMode: boolean = false;
   continuousCallback: any;
 
   notiAlert: any;
+
+  rangeNumber: number = 0;
+
+  simpleMode: boolean = false;
+  repeat: boolean = false;
+  repeatCounter: number=0;
+
+  detailShown: string = 'hidden';
+  detailMode: boolean = false;
+
+  btnStatus: string = 'start';
 
   constructor(
     public navCtrl: NavController,
@@ -73,159 +103,187 @@ export class TimerPage {
     public device: Device,
     public nativeAudio: NativeAudio,
     public platform: Platform,
+    public events : Events,
+    public timerService: TimerService,
+    public storageService: StorageService,
+    public vibration: Vibration,
+    public globals: Globals,
+    public config: Config,
   ) {
-    this.nativeAudio.preloadSimple('timeout', 'assets/sound/default.mp3');
-    this.localNotifications.on("trigger", (res) =>{
-      this.notificationAlert(res.data);
+    events.subscribe('timer:update-list', (_category, _timer) => {
+      console.log('timer:update-list');
+      this.updateTimerList(_timer);
+    });
+
+    events.subscribe('timer:remove-list', () => {
+      console.log('timer:remove-list');
+    });
+
+    events.subscribe('timer:stop', () => {
+      console.log('timer:stop');
+      this.onStopAllTimer();
     });
   }
 
   ngOnInit() {
-    this.timerList = [{
-      id: UUID.UUID(),
-      title:'운동',
-      timer: Observable.timer(0, 1000),
-      subscribtion: null,
-      current: 0,
-      max:0,
-      needToUpdateTimer:false,
-      defaultTimeSet:'00:00:10',
-      timeSet:'00:00:10',
-      status: 'ready',
-      btnStatus: 'start',
-      detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-      order: 2,
-      nextTimer: false,
-      notification:{
-        enable:true,
-        id: 1,
-        sound:'default.mp3',
-        data:''
-      },
-      image: "http://www.livestrong.com/wp-content/uploads/2013/05/NewTrainer_JBBlog_iStock_000017277101Medium.jpg",
-      color:"#E91E63",
-    },{
-      id: UUID.UUID(),
-      title:'SPICY CAULIFLOWER WITH COCONUT RICE',
-      timer: Observable.timer(0, 1000),
-      subscribtion: null,
-      current: 0,
-      max:0,
-      needToUpdateTimer:false,
-      defaultTimeSet:'00:00:08',
-      timeSet:'00:00:08',
-      status: 'ready',
-      btnStatus: 'start',
-      detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-      order:1,
-      nextTimer: false,
-      notification:{
-        enable:false,
-        id: 1,
-        sound:'default.mp3',
-        data:''
-      },
-      image: 'http://saverafoods.co.in/wp-content/uploads/2014/10/1.jpg',
-      color:"#9C27B0",
-    },{
-      id: UUID.UUID(),
-      title:'SAT',
-      timer: Observable.timer(0, 1000),
-      subscribtion: null,
-      current: 0,
-      max:0,
-      needToUpdateTimer:false,
-      defaultTimeSet:'00:00:05',
-      timeSet:'00:00:05',
-      status: 'ready',
-      btnStatus: 'start',
-      detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-      order:3,
-      nextTimer: false,
-      notification:{
-        enable:true,
-        id: 1,
-        sound:'default.mp3',
-        data:''
-      },
-      image: 'https://media.licdn.com/mpr/mpr/p/7/005/089/3bf/1451504.jpg',
-      color:"#009688",
-    },{
-      id: UUID.UUID(),
-      title:'高考',
-      timer: Observable.timer(0, 1000),
-      subscribtion: null,
-      current: 0,
-      max:0,
-      needToUpdateTimer:false,
-      defaultTimeSet:'00:00:07',
-      timeSet:'00:00:07',
-      status: 'ready',
-      btnStatus: 'start',
-      detail:  "aute veniam veniam dolor duis illum multos quid fore esse noster quae quorum elit aute amet summis summis labore quae culpa illum amet fore sunt quem fugiat elit tempor export",
-      order:4,
-      nextTimer: false,
-      notification:{
-        enable:false,
-        id: 1,
-        sound:'default.mp3',
-        data:''
-      },
-      image: 'http://p1.img.cctvpic.com/photoAlbum/templet/special/PAGEa6hEmeHGH5f9GdaNVrBw160529/ELMTybetDju4MYylXRQirEyi160529_1465098233.jpg',
-      color:"#00B0FF",
-    }
-  ]
+    this.timer = this.config.RUNNING_TIMER[this.navParams.get('timer').timerId];
 
-    this.initTimer();
+    if(this.timer===undefined){
+      this.timer = this.navParams.get('timer');
+      this.initTimer();
+    }
+    this.initTimerItems();
+    this.setBtnStatus();
   }
 
   initTimer(){
-    this.timerList .forEach((el) => {
-      el.max = this.getMax(el.timeSet)
+    let category = this.navParams.get('category');
+    let items = this.timer.timerItems;
+
+    for(let key in items){
+      items[key].max = this.getMax(items[key].timeSet)==0?1:this.getMax(items[key].timeSet);
+      items[key].timer = Observable.timer(0, 1000);
+      items[key].image = items[key].image===''?category.defaultTimerImage:items[key].image;
+      items[key].color = items[key].color==''?'#3F51B5': items[key].color;
+    }
+    this.initTimerItems();
+    // this.config.RUNNING_TIMER[this.timer.timerId] = this.timer;
+  }
+
+  initTimerItems(){
+    this.timerItems = this.utilsObjectToArray(this.timer.timerItems);
+    this.timerItems.sort(function(a, b){return a.order - b.order});
+  }
+
+  updateTimerList(_timer){
+    if(this.timer.timerId == _timer.timerId){
+      this.onStopAllTimer();
+      delete this.config.RUNNING_TIMER[this.timer.timerId];
+      this.storageService.serviceGetTimer(this.timer.timerId)
+      .then((res)=>{
+        if(res!==null){
+          this.timer = res;
+          this.initTimer();
+        }
+      })
+    }
+  }
+
+  setBtnStatus(){
+    let currentTimer = this.getNextTimerUI();
+    if(currentTimer==''){
+      this.btnStatus = 'start';
+    }else{
+      this.btnStatus = currentTimer.btnStatus;
+    }
+  }
+
+  loadLocalSavedImage():any{
+    let category = this.navParams.get('category');
+    this.storageService.serviceGetLocalStorage(this.timer.timerId)
+    .then((res:any)=>{
+      this.timerItems.forEach((el)=>{
+        if(res === null){
+          el.image = category.defaultTimerImage
+        }else{
+          el.image = res[el.id]['image'];
+        }
+      })
+    })
+  }
+
+  ionViewDidLeave(){
+    console.log('ionViewDidLeave')
+  }
+
+  onStartAllTimer(){
+    let _timer = this.getNextTimerUI();
+
+    if(_timer===''){
+      _timer = this.timerItems[0];
+    }
+
+    this.setNextTimerUI(_timer);
+
+    switch(_timer.btnStatus){
+      case 'start':
+      this.btnStatus = 'pause';
+      _timer.btnStatus = 'start';
+      this.goTimerAction(_timer);
+      this.setPositionForTimer(_timer);
+      break;
+      case 'pause':
+      this.btnStatus = 'resume';
+      this.goTimerAction(_timer);
+      break;
+      case 'resume':
+      this.btnStatus = 'pause';
+      this.goTimerAction(_timer);
+      break;
+      case 'end':
+      this.btnStatus = 'start';
+      _timer.btnStatus = 'start';
+      this.setPositionForTimer(_timer);
+      this.goTimerAction(_timer);
+      break;
+    }
+  }
+
+  onBack(){
+    this.navCtrl.pop();
+  }
+
+  onEditTimer(){
+    let _timer = this.navParams.get('timer');
+    this.navCtrl.push(TimerEditorPage, {
+      mode: 'edit',
+      timer: _timer,
+      category: _timer.category
     });
-    this.timerList.sort(function(a, b){return a.order - b.order});
   }
 
   popLocalNotifications(timer){
-    this.localNotifications.schedule({
-      id: timer.notification.id,
-      title:timer.title +' '+ timer.status,
-      text: timer.detail,
-      sound:'file://assets/sound/' + timer.notification.sound,
-      data: timer.id
-    });
-  }
-
-  notificationAlert(id){
-    let timer: any = this.getTimerById(id);
+    let times = 3;
+    let cnt = 0;
     let btnConfirm: string;
 
-    if(this.platform.is('ios')){
-      this.nativeAudio.play('timeout');
-    }
-
-    this.translate.get('Common.Confirm')
-    .subscribe((res: string) => {
-      btnConfirm = res;
-    })
-    this.notiAlert = this.alertCtrl.create({
-      title: timer.title,
-      subTitle: timer.detail,
-      buttons: [
-        {
-          text: btnConfirm,
-          handler: () => {
-            this.localNotifications.clearAll();
-            this.nativeAudio.unload('timeout');
-            this.nativeAudio.preloadSimple('timeout', 'assets/sound/default.mp3');
-          }
-        }
-      ]
+    if(this.device.uuid == null){return;}
+    this.nativeAudio.preloadSimple(timer.id, timer.notification.sound)
+    .then(()=>{
+      this.nativeAudio.play(timer.id);
     });
-    this.notiAlert.present()
+
+    let interval = setInterval(() => {
+      this.vibration.vibrate(1000);
+      if(cnt >= times){
+        clearInterval(interval);
+      }
+      cnt +=1;
+    }, 2000);
+
+
+   this.translate.get('Common.Confirm')
+   .subscribe((res: string) => {
+     btnConfirm = res;
+   })
+
+   this.notiAlert = this.alertCtrl.create({
+     title: timer.title,
+     subTitle: timer.detail,
+     buttons: [{
+       text: btnConfirm,
+       handler: () => {
+         clearInterval(interval);
+         this.nativeAudio.unload(timer.id);
+       }
+     }],
+     enableBackdropDismiss: false
+   });
+
+   this.notiAlert.present();
   }
 
-  goTimerSetting(){
+  onTimerSetting(_item){
     console.log('timer setting');
   }
 
@@ -245,15 +303,6 @@ export class TimerPage {
     );
   }
 
-  goTimerReset(timer){
-    // timer.timeSet = timer.defaultTimeSet;
-    let day:number = 0;
-    let hour:number = moment(timer.timeSet, "HH:mm:ss").hour();
-    let minunt:number = moment(timer.timeSet, "HH:mm:ss").minute();
-    let seconds:number = moment(timer.timeSet, "HH:mm:ss").second();
-    this.setTimer({timer, day, hour, minunt, seconds})
-  }
-
   setContinuousMode(enabled: boolean){
     this.continuousMode = enabled;
   }
@@ -265,7 +314,7 @@ export class TimerPage {
   isAllTimerSleep(): boolean{
     if(this.isContinuousMode()) {return false;}
 
-    for(let _timer of this.timerList){
+    for(let _timer of this.timerItems){
       if(_timer.status == 'running'){
         return false;
       }
@@ -277,10 +326,18 @@ export class TimerPage {
     if(this.isContinuousMode()) return;
     this.setContinuousMode(true);
 
-    this.loopTimer(this.timerList.length, 0, (res)=>{
-        this.setNextTimerUI('');
-        this.setContinuousMode(false);
-        console.log('done', res);
+    this.loopTimer(this.timerItems.length, 0, (res)=>{
+        if(this.repeatCounter > 0){
+          this.repeatCounter -= 1;
+          this.setNextTimerUI('');
+          this.onStartAllTimer();
+        }else{
+          this.setNextTimerUI('');
+          this.setContinuousMode(false);
+          this.btnStatus = 'start';
+          delete this.config.RUNNING_TIMER[this.timer.timerId];
+          console.log('done', this.config.RUNNING_TIMER);
+        }
     })
   }
 
@@ -289,11 +346,9 @@ export class TimerPage {
       if(max <= res){
         return done(res);
       }
-      let timer =this.timerList[res];
-      let doc:any = document;
-      let yOffset = doc.getElementById('timerId_' + timer.id).offsetTop;
+      let timer =this.timerItems[res];
+      this.setPositionForTimer(timer);
 
-      this.content.scrollTo(0, yOffset - 10, 1000)
       if(timer.status != 'running'){
         this.goTimerAction(timer);
       }
@@ -303,12 +358,20 @@ export class TimerPage {
     })
   }
 
+  setPositionForTimer(timer){
+    let doc:any = document;
+    let el:any = doc.getElementById('timerId_' + timer.id);
+    if(el === null || this.content._scroll === null) {return;}
+    let yOffset = el.offsetTop;
+    this.content.scrollTo(0, yOffset - 10, 1000)
+  }
+
   doNextAction(cb){
     this.continuousCallback= cb;
   }
 
   getTimerById(id):any{
-    for(let _timer of this.timerList){
+    for(let _timer of this.timerItems){
       if(_timer.id == id){
         return _timer;
       }
@@ -330,34 +393,43 @@ export class TimerPage {
 
   getTimerPostion(timer): number{
     let pos: number = 0;
-    for(let _timer of this.timerList){
+    for(let _timer of this.timerItems){
       if(_timer == timer){
         return pos;
       }
       pos +=1;
     }
-    return this.timerList.length == pos ? -1 : pos;
+    return this.timerItems.length == pos ? -1 : pos;
   }
 
   getNextTimerPosition(): number{
     let pos: number = 0;
-    for(let _timer of this.timerList){
+    for(let _timer of this.timerItems){
       if(_timer.nextTimer == true){
         return pos;
       }
       pos +=1;
     }
-    return this.timerList.length == pos ? -1 : pos;
+    return this.timerItems.length == pos ? -1 : pos;
   }
 
   setNextTimerUI(timer){
-    for(let _timer of this.timerList){
+    for(let _timer of this.timerItems){
       if(timer == _timer){
         _timer.nextTimer= true;
       }else{
         _timer.nextTimer= false;
       }
     }
+  }
+
+  getNextTimerUI():any{
+    for(let _timer of this.timerItems){
+      if(_timer.nextTimer == true){
+        return _timer
+      }
+    }
+    return '';
   }
 
   goNextTimerSet(timer, idx){
@@ -388,18 +460,42 @@ export class TimerPage {
     }
   }
 
+  onResetTimer(timer){
+    if(timer.status == 'running'){
+      timer.btnStatus = 'pause';
+      this.goTimerAction(timer)
+    }
+    timer.timeSet = timer.defaultTimeSet;
+
+    this.setTimer(timer)
+    timer.needToUpdateTimer = false;
+  }
+
   onChangeTimeSet(item:any): void{
     item.defaultTimeSet = item.timeSet;
-    let day:number = 0;
-    let hour:number = moment(item.timeSet, "HH:mm:ss").hour();
-    let minunt:number = moment(item.timeSet, "HH:mm:ss").minute();
-    let seconds:number = moment(item.timeSet, "HH:mm:ss").second();
-
-    this.setTimer({timer: item, day, hour, minunt, seconds})
+    this.setTimer(item);
     item.needToUpdateTimer = false;
   }
 
-  setTimer({timer, day, hour, minunt, seconds}){
+  onStopAllTimer(){
+    this.initTimerItems();
+    let items:any = this.timerItems;
+
+    this.timerItems.forEach((el, idx)=>{
+      el.nextTimer = false;
+      if(el.status == 'running'){
+        el.btnStatus = 'end';
+        this.goTimerAction(el)
+      }
+    })
+  }
+
+  setTimer(timer){
+    let day:number = 0;
+    let hour:number = moment(timer.timeSet, "HH:mm:ss").hour();
+    let minunt:number = moment(timer.timeSet, "HH:mm:ss").minute();
+    let seconds:number = moment(timer.timeSet, "HH:mm:ss").second();
+
     let convertSeconds = this.utilsConvertSecond({day, hour, minunt, seconds});
     timer.max = convertSeconds;
     timer.current = 0;
@@ -415,15 +511,14 @@ export class TimerPage {
   }
 
   utilsBackGroundMode(enable: boolean){
-    // if(this.device.uuid != null){
-      if(enable){
-        this.backgroundMode.enable();
-        console.log('enabled backgroundMode');
-      }else{
-        this.backgroundMode.disable();
-        console.log('disabled backgroundMode');
-      }
-    // }
+    if(this.device.uuid == null){return;}
+    if(enable){
+      this.backgroundMode.enable();
+      console.log('enabled backgroundMode');
+    }else{
+      this.backgroundMode.disable();
+      console.log('disabled backgroundMode');
+    }
   }
 
   goTimerAction(item){
@@ -432,17 +527,22 @@ export class TimerPage {
       if(item.needToUpdateTimer){ this.onChangeTimeSet(item); }
       this.timerAction({item, status: "s"});
       item.btnStatus= "pause";
+      if(this.getNextTimerUI()==item){this.btnStatus = 'pause';}
+
+      this.config.RUNNING_TIMER[this.timer.timerId] = this.timer;
       break;
 
       case "pause":
       this.timerAction({item, status: "p"});
       item.btnStatus = "resume";
+      if(this.getNextTimerUI()==item){this.btnStatus = 'resume';}
       break;
 
       case "resume":
       if(item.needToUpdateTimer){ this.onChangeTimeSet(item); }
       this.timerAction({item, status: "r"});
       item.btnStatus = "pause";
+      if(this.getNextTimerUI()==item){this.btnStatus = 'pause';}
       break;
 
       case "end":
@@ -452,7 +552,7 @@ export class TimerPage {
       if(item.notification.enable) {
         this.popLocalNotifications(item)
       }
-      if(this.isAllTimerSleep()){this.utilsBackGroundMode(false)}
+      // if(this.isAllTimerSleep()){this.utilsBackGroundMode(false)}
       break;
     }
   }
@@ -481,7 +581,7 @@ export class TimerPage {
 
       case "r":
       let _current = item.current;
-      this.utilsBackGroundMode(true);
+      // this.utilsBackGroundMode(true);
       item.subscribtion = item.timer.subscribe(t => {
         item.current = t + _current;
         item.status = "running";
@@ -524,6 +624,10 @@ export class TimerPage {
     })
   }
 
+  onEnableSimple(){
+    console.log('onEnableSimpleView', this.timer.simple);
+  }
+
   showAlert({titleCode, messageObj}) {
     let title, message, btnConfirm: string;
 
@@ -561,5 +665,39 @@ export class TimerPage {
     });
 
     alert.present();
+  }
+  utilsArrayToObject(arr){
+    let _obj:any = {};
+    for(let item of arr){
+      item.id = UUID.UUID();
+      _obj[item.id] = item;
+    }
+    return _obj;
+  }
+
+  utilsObjectToArray(obj){
+    return Object.keys(obj).map((k) => obj[k])
+  }
+
+
+  onDecrease(){
+    if(this.repeatCounter > 0){
+      this.repeatCounter -=1;
+    }
+  }
+
+  onIncrease(){
+    if(this.repeatCounter < 10){
+      this.repeatCounter +=1;
+    }
+  }
+
+  onDetailMode(){
+    this.detailMode = this.detailMode?false:true;
+    if(this.detailMode){
+      this.detailShown = 'shown';
+    }else{
+      this.detailShown = 'hidden';
+    }
   }
 }

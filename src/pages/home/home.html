@@ -1,20 +1,18 @@
-<ion-header no-shadow no-border>
-  <ion-navbar>
-    <button ion-button menuToggle color="yellow">
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>{{pageTitle}}</ion-title>
-  </ion-navbar>
-</ion-header>
-<ion-content no-bounce>
-  <!-- <super-tabs (tabSelect)="onTabSelect($event)">
-    <super-tab [root]="store" title="Store"></super-tab>
-    <super-tab [root]="timer" title="Timer"></super-tab>
-    <super-tab [root]="timerList" title="My Timer"></super-tab>
-  </super-tabs> -->
-<ion-tabs tabsPlacement="top">
-  <ion-tab [root]="timerList" tabTitle="timerList" tabIcon="contacts"></ion-tab>
-  <ion-tab [root]="timer" tabTitle="timer" tabIcon="information-circle"></ion-tab>
-  <ion-tab [root]="store" tabTitle="store" tabIcon="home"></ion-tab>
-</ion-tabs>
+<ion-content no-bounce >
+<div class="card-background-page">
+  <ion-card *ngFor="let item of category; let idx = index;" (tap)="onSelectCard(idx)" tappable>
+    <img [src]="item.defaultImage" (click)="onSelectCard(idx)">
+    <div class="card-title">{{ 'Main.' + item.value | translate}}</div>
+    <div class="card-subtitle">{{ timer | categoryPipe:{category:category[idx].value} }} {{'Main.listings' | translate}}</div>
+    <ion-icon class="card-icon" name="arrow-forward"></ion-icon>
+  </ion-card>
+</div>
 </ion-content>
+
+<ion-footer>
+  <div class="flex_button_group">
+    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onCreateTimer()">
+        {{'Common.Create' | translate }}
+    </button>
+  </div>
+</ion-footer>

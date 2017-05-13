@@ -9,8 +9,10 @@ import { MyApp } from './app.component';
 // Pipe
 import { CategoryPipe } from '../pipes/category-pipe';
 import { PlaceholderPipe } from '../pipes/placeholder-pipe';
+import { ToArrayPipe } from '../pipes/toArray-pipe';
 
 // Pages
+import { TabsPage } from '../pages/tabs/tabs';
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
@@ -20,9 +22,13 @@ import { TimerPage } from '../pages/timer/timer';
 import { TimerListPage } from '../pages/timer-list/timer-list';
 import { TimerEditorPage } from '../pages/timer-editor/timer-editor';
 
+// Modals
+import { ColorPickerModal } from '../modals/color-picker/color-picker';
+
 // services
 import { LoginService } from '../services/login-service';
 import { TimerService } from '../services/timer-service';
+import { StorageService } from '../services/storage-service';
 import { Globals } from './globals';
 import { Config } from './config';
 
@@ -53,6 +59,7 @@ import { SuperTabsModule } from 'ionic2-super-tabs';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Network } from '@ionic-native/network';
+import { Vibration } from '@ionic-native/vibration';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -62,6 +69,7 @@ export function createTranslateLoader(http: Http) {
   declarations: [
     MyApp,
     HomePage,
+    TabsPage,
     StartPage,
     LoginPage,
     SignupPage,
@@ -70,7 +78,9 @@ export function createTranslateLoader(http: Http) {
     TimerListPage,
     TimerEditorPage,
     CategoryPipe,
+    ToArrayPipe,
     PlaceholderPipe,
+    ColorPickerModal,
   ],
   imports: [
     BrowserModule,
@@ -98,6 +108,7 @@ export function createTranslateLoader(http: Http) {
   entryComponents: [
     MyApp,
     HomePage,
+    TabsPage,
     StartPage,
     LoginPage,
     SignupPage,
@@ -105,6 +116,7 @@ export function createTranslateLoader(http: Http) {
     TimerPage,
     TimerListPage,
     TimerEditorPage,
+    ColorPickerModal,
   ],
   providers: [
     StatusBar,
@@ -112,6 +124,7 @@ export function createTranslateLoader(http: Http) {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginService,
     TimerService,
+    StorageService,
     Globals,
     Config,
     ScreenOrientation,
@@ -127,6 +140,7 @@ export function createTranslateLoader(http: Http) {
     NativeAudio,
     ImagePicker,
     Network,
+    Vibration,
   ]
 })
 export class AppModule {}

@@ -11,6 +11,7 @@ import { Globals } from './globals';
 import { Config } from './config';
 
 // page
+import { TabsPage } from '../pages/tabs/tabs';
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
 import { StorePage } from '../pages/store/store';
@@ -22,6 +23,8 @@ import * as firebase from 'firebase';
 import * as moment from 'moment';
 import { Firebase } from '@ionic-native/firebase';
 import { Network } from '@ionic-native/network';
+import { Storage } from '@ionic/storage';
+import { UUID } from 'angular2-uuid';
 
 // services
 
@@ -57,13 +60,13 @@ export class MyApp implements OnInit{
       params: { icons: true, titles: true }
     },
     {
-      name: 'Partial - Title only',
-      page: LoginPage,
+      name: 'clear',
+      page: '',
       params: { icons: false, titles: true }
     },
     {
-      name: 'Partial - Icons only',
-      page: StorePage,
+      name: 'Logout',
+      page: '',
       params: { icons: true, titles: false }
     }
   ];
@@ -82,6 +85,7 @@ export class MyApp implements OnInit{
     public device: Device,
     public network: Network,
     public events: Events,
+    public storage: Storage,
   ){
     translate.addLangs(["en", "ko"]);
     translate.setDefaultLang('en');
@@ -169,6 +173,7 @@ export class MyApp implements OnInit{
       let userLang = res.value.split('-')[0];
       userLang = /(en|ko)/gi.test(userLang) ? userLang : 'en';
       this.translate.use(userLang);
+      // this.translate.use('ko');
     })
   }
 
@@ -180,41 +185,62 @@ export class MyApp implements OnInit{
           this.rootPage = StartPage ;
         } else {
           console.log(user)
-          this.loadingProcess();
+          this.loadingProcessFromLocal();
+          // this.loadingProcessFromServer();
         }
       });
     });
   }
 
-  private loadingProcess(){
-    this.zone.run(() => {
+  private loadingProcessFromLocal(){
+    this.zone.run(() =>{
       Promise.resolve()
-      .then(()=>{
-        return this.isFirstAccess();
+      .then(() =>{
+        return this.isFirstAccessLocalStorage();
       })
-      .then((res:any)=>{
-        if(res.val()===null){
-          console.log('first access')
-          return this.loadDefaultTimerFromServer()
-          .then((res:any)=>{
-            console.log('res.val()', res.val());
-            return this.copyDefaultTimer(res.val());
-          })
-          .then(()=>{
-            console.log('#3')
-            return this.loadTimerDataFromServer();
-          })
-        }else{
-          console.log('not first access')
-          return this.loadTimerDataFromServer();
+      .then((res)=>{
+        if(res===0){ // first access
+          return this.makeDefaultTimer();
         }
+        return;
       })
-      .then((res:any)=>{
-        this.config.MY_TIMER = res.val()
+      .then((res)=>{
         this.events.publish('timer:update-list');
-        this.rootPage = HomePage;
+        this.rootPage = TabsPage;
       })
     })
+  }
+
+  private isFirstAccessLocalStorage():any {
+    return this.storage.length();
+  }
+
+  private makeDefaultTimer(){
+    let firstTimer = {};
+    let timerItems = {};
+    let newPostTimerKey = UUID.UUID();
+
+    firstTimer[newPostTimerKey]= Object.assign({}, this.config.TEMP_TIMER);
+    for(let i=0 ; i<3 ; i++){
+      let _items = Object.assign({}, this.config.TEMP_TIMER_ITEMS);
+      let newPostItemsKey = UUID.UUID();
+
+      _items['id'] = newPostItemsKey;
+      _items['color'] = this.config.RANDOM_COLOR[this.randomRange(0, this.config.RANDOM_COLOR.length-1)];
+      timerItems[newPostItemsKey] = _items;
+    }
+    firstTimer[newPostTimerKey]['timerId'] = newPostTimerKey;
+    firstTimer[newPostTimerKey]['timerItems'] = timerItems;
+
+    return this.storage.set(newPostTimerKey, this.defaultDataForFirstAccess(firstTimer[newPostTimerKey]));
+  }
+
+  private loadTimerDataFromLocalStorage(){
+    let _timer = {};
+    this.storage.forEach((value, key, iterationNumber) =>{
+      _timer[key] = value[key];
+    })
+    return _timer;
   }
 
   private isFirstAccess(){
@@ -222,24 +248,100 @@ export class MyApp implements OnInit{
     return firebase.database().ref(this.globals.SERVER_PATH_USERS + user.uid ).once('value');
   }
 
+  private loadTemplateTimerFromServer(): any{
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_TEMPLATE ).once('value')
+  }
+
+  private loadTemplateItemsFromServer(): any{
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_TEMPLATE_ITEMS ).once('value')
+  }
+
+  private copyDefaultTimer(timer, items): any{
+    let _timer = Object.assign({}, timer);
+    let user = firebase.auth().currentUser;
+    let ref = firebase.database().ref(this.globals.SERVER_PATH_USERS +  user.uid + this.globals.SERVER_PATH_TIMER);
+    let newPostTimerKey = ref.push().key;
+
+    let updates = {};
+    let timerItems = {};
+
+    for(let i=0 ; i<3 ; i++){
+      let _items = Object.assign({}, items);
+      let newPostItemsKey = ref.push().key;
+
+      _items['id'] = newPostItemsKey;
+      _items['color'] = this.config.RANDOM_COLOR[this.randomRange(0, this.config.RANDOM_COLOR.length-1)];
+      timerItems[newPostItemsKey] = _items;
+    }
+    _timer['timerItems'] = timerItems;
+    _timer['timerId'] = newPostTimerKey;
+    _timer = this.defaultDataForFirstAccess(_timer);
+
+    // first default timer
+    updates[newPostTimerKey] = _timer;
+    return ref.update(updates);
+  }
+
+  private defaultDataForFirstAccess(_timer): any{
+    let englishDefault:any ={
+      name:"Super Timer",
+      summary:"This is a sample timer",
+      title:"Timer",
+      detail:"This is first timer, Let's set time"
+    }
+
+    this.translate.get('Default.Timer.Name')
+    .subscribe((res: string) => {
+      if(res === 'Default.Timer.Name'){
+        _timer.name = englishDefault.name;
+      }else{
+        _timer.name = res;
+      }
+    })
+    this.translate.get('Default.Timer.Summary')
+    .subscribe((res: string) => {
+      if(res === 'Default.Timer.Summary'){
+        _timer.summary = englishDefault.summary;
+      }else{
+        _timer.summary = res;
+      }
+    })
+    this.translate.get('Default.Timer.Title')
+    .subscribe((res: string) => {
+      if(res === 'Default.Timer.Title'){
+        for(let key in _timer.timerItems){
+          _timer.timerItems[key]['title'] = englishDefault.title;
+        }
+      }else{
+        for(let key in _timer.timerItems){
+          _timer.timerItems[key]['title'] = res;
+        }
+      }
+
+    })
+    this.translate.get('Default.Timer.Detail')
+    .subscribe((res: string) => {
+      if(res === 'Default.Timer.Detail'){
+        for(let key in _timer.timerItems){
+          _timer.timerItems[key]['detail'] = englishDefault.detail;
+        }
+      }else{
+        for(let key in _timer.timerItems){
+          _timer.timerItems[key]['detail'] = res;
+        }
+      }
+    })
+
+    return _timer;
+  }
+
+
   private loadCategoryDataFromServer(){
     return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_CATEGORY).once('value')
   }
 
-  private loadDefaultTimerFromServer(): any{
-    console.log('#1')
-    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_DEFAULT + this.globals.SERVER_PATH_DEFAULT).once('value')
-  }
-
-  private copyDefaultTimer(timer): any{
-    console.log('#2')
-    let user = firebase.auth().currentUser;
-    let ref = firebase.database().ref(this.globals.SERVER_PATH_USERS +  user.uid + this.globals.SERVER_PATH_TIMER);
-    let newPostKey = ref.push().key;
-    let updates = {};
-    timer.timerId = newPostKey;
-    updates[newPostKey] = timer;
-    return ref.update(updates);
+  private loadSoundDataFromServer(){
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_SOUND).once('value')
   }
 
   private loadTimerTemplateDataFromServer(){
@@ -258,8 +360,23 @@ export class MyApp implements OnInit{
     });
   }
 
+  private randomRange(min, max){
+    var RandVal = Math.random() * (max- min) + min;
+    return Math.floor(RandVal);
+  }
+
+  private logout(){
+    firebase.auth().signOut();
+  }
+
   openPage(page) {
-    page.params.pageTitle = page.name;
-    this.nav.push(page.page, page.params);
+    if(page.name === 'Logout'){
+      this.logout();
+    }else if(page.name === 'clear'){
+      this.storage.clear();
+    }else{
+      page.params.pageTitle = page.name;
+      this.nav.push(page.page, page.params);
+    }
   }
 }

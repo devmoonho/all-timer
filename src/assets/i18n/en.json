@@ -59,6 +59,17 @@
       "CreateUserErrorTitle":"Create User Error"
     }
   },
+  "Main" :{
+    "workout": "WORK OUT",
+    "workout-detail": "WORK OUT",
+    "cooking": "COOKING",
+    "cooking-detail": "COOKING",
+    "study": "STUDY",
+    "study-detail": "STUDY",
+    "etc": "ETC",
+    "etc-detail": "ETC",
+    "listings": "Listings"
+  },
   "FirebaseMessage":{
     "auth/account-exists-with-different-credential": "An account already exists with the same email addr",
     "auth/user-not-found": "Unable to find registered user.",
@@ -71,20 +82,22 @@
   "MobileMessage":{
     "Congratuation": "Congratulations",
     "SuccessCreateUser":"Congratulations on your joining us.Go home after 3 seconds.",
-    "SuccessLogin":"Welcome to All timer"
+    "SuccessLogin":"Welcome to All timer",
+    "RemoveTimer":"Do you agree to remove this timer"
   },
   "TimerEditor":{
     "timer-name":"TIMER NAME",
     "summary":"SUMMARY",
-    "category":"CATEGORY",
+    "category-title":"CATEGORY",
     "timer-list":"TIMER LIST",
     "please-enter":"Please enter",
     "category-list":{
       "workout":"Work Out",
       "study":"Study",
-      "food":"Food",
+      "cooking":"Cooking",
       "etc":"Etc"
     },
+    "sound":"SOUND",
     "title":"TITLE",
     "set-time":"SET TIME",
     "detail":"DETAIL",
@@ -92,6 +105,10 @@
     "color":"COLOR",
     "choose-picture":"CHOOSE PICTURE",
     "Couleur":"COULEUR"
+  },
+  "Timer":{
+    "simple-view":"SIMPLE",
+    "repeat-count":"Repeat count"
   },
   "Common":{
     "AlertTitle":{
@@ -102,11 +119,27 @@
     },
     "Save":"SAVE",
     "Ok":"OK",
-    "Cancel":"Cancel",
-    "Yes":"Yes",
-    "No":"No",
-    "Confirm":"Confirm",
-    "Agree":"Agree",
-    "Disagree":"Disagree"
+    "Cancel":"CANCEL",
+    "Remove":"REMOVE",
+    "Yes":"YES",
+    "No":"NO",
+    "Confirm":"CONFIRM",
+    "Agree":"AGREE",
+    "Disagree":"DISAGREE",
+    "Create":"CREATE",
+    "Back":"BACK",
+    "Edit":"EDIT",
+    "start":"START",
+    "stop":"STOP",
+    "resume":"RESUME",
+    "pause":"PAUSE"
+  },
+  "Default":{
+    "Timer":{
+      "Name":"Super Timer",
+      "Summary":"This is a sample timer",
+      "Title":"Timer",
+      "Detail":"This is first timer, Let's set time"
+    }
   }
 }
