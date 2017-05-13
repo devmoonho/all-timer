@@ -180,7 +180,7 @@ export class TimerEditorPage{
 
     this.storageService.serviceSetTimer(this.timer.timerId, this.timer)
     .then(()=>{
-      this.events.publish('timer:update-list', this.timer.category);
+      this.events.publish('timer:update-list', this.timer.category, this.timer);
       this.navCtrl.pop();
     })
   }
@@ -382,7 +382,7 @@ export class TimerEditorPage{
     }else{
       this.timerService.serviceAddTimer(this.timer)
       .then((res)=>{
-        this.events.publish('timer:update-list', this.timer.category );
+        this.events.publish('timer:update-list', this.timer.category);
         this.navCtrl.pop();
       });
     }

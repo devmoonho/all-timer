@@ -110,9 +110,9 @@ export class TimerPage {
     public globals: Globals,
     public config: Config,
   ) {
-    events.subscribe('timer:update-list', (_category) => {
+    events.subscribe('timer:update-list', (_category, _timer) => {
       console.log('timer:update-list');
-      this.updateTimerList();
+      this.updateTimerList(_timer);
     });
 
     events.subscribe('timer:remove-list', () => {
@@ -155,15 +155,18 @@ export class TimerPage {
     this.timerItems.sort(function(a, b){return a.order - b.order});
   }
 
-  updateTimerList(){
-    this.onStopAllTimer();
-    this.storageService.serviceGetTimer(this.timer.timerId)
-    .then((res)=>{
-      if(res!==null){
-        this.timer = res;
-        this.initTimer();
-      }
-    })
+  updateTimerList(_timer){
+    if(this.timer.timerId == _timer.timerId){
+      this.onStopAllTimer();
+      delete this.config.RUNNING_TIMER[this.timer.timerId];
+      this.storageService.serviceGetTimer(this.timer.timerId)
+      .then((res)=>{
+        if(res!==null){
+          this.timer = res;
+          this.initTimer();
+        }
+      })
+    }
   }
 
   setBtnStatus(){
@@ -475,6 +478,7 @@ export class TimerPage {
   }
 
   onStopAllTimer(){
+    this.initTimerItems();
     let items:any = this.timerItems;
 
     this.timerItems.forEach((el, idx)=>{
