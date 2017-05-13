@@ -107,7 +107,7 @@
     "Couleur":"COULEUR"
   },
   "Timer":{
-    "simple-view":"Simple View",
+    "simple-view":"SIMPLE",
     "repeat-count":"Repeat count"
   },
   "Common":{
@@ -129,7 +129,10 @@
     "Create":"CREATE",
     "Back":"BACK",
     "Edit":"EDIT",
-    "Start":"START"
+    "start":"START",
+    "stop":"STOP",
+    "resume":"RESUME",
+    "pause":"PAUSE"
   },
   "Default":{
     "Timer":{

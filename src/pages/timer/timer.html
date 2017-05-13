@@ -13,8 +13,6 @@
         <ion-icon [style.color]=item.color class="progress-current" *ngIf="item.nextTimer==true" name="radio-button-on" (click)="goNextTimerStop()"></ion-icon>
         <ion-icon [style.color]=item.color class="progress-current" *ngIf="item.nextTimer==false" name="radio-button-off" (click)="goNextTimerSet(item, i)"></ion-icon>
 
-        <ion-icon [style.color]=item.color class="progress-setting" name="settings" (click)="onTimerSetting(item)"></ion-icon>
-
         <ion-icon *ngIf="item.notification.enable==true" [style.color]=item.color class="progress-notification" name="notifications" (click)="goNotificationToggle(item)"></ion-icon>
         <ion-icon *ngIf="item.notification.enable==false" [style.color]=item.color class="progress-notification" name="notifications-off" (click)="goNotificationToggle(item)"></ion-icon>
 
@@ -57,13 +55,23 @@
         </div>
 
         <div class="progress-simple-item;">
-          <div style="text-align:center; font-size:2.4rem; font-weight:bold">
-            <ion-datetime [style.color]=item.color displayFormat="HH:mm:ss" (ionCancel)="onCancelTimeSet(item)" (click)="onPopDataTimePicker(item)" [(ngModel)]="item.timeSet">
-            </ion-datetime>
-          </div>
-          <div style="text-align:center; font-size:1.7rem; ">
-            <div *ngIf="item.status!='complete'" > {{(item.current * 100) / item.max | number : '1.1-1' }}% </div>
-            <div *ngIf="item.status=='complete'" > 100 % </div>
+          <div style="display:flex;flex-direction:column;">
+            <div style="text-align:center; font-size:2.4rem; font-weight:bold">
+              <ion-datetime [style.color]=item.color displayFormat="HH:mm:ss" (ionCancel)="onCancelTimeSet(item)" (click)="onPopDataTimePicker(item)" [(ngModel)]="item.timeSet">
+              </ion-datetime>
+            </div>
+            <div style="text-align:center; font-size:1.7rem; margin-top:4px;">
+              <div *ngIf="item.status!='complete'" > {{(item.current * 100) / item.max | number : '1.1-1' }}% </div>
+              <div *ngIf="item.status=='complete'" > 100 % </div>
+            </div>
+            <div style="display:flex;flex-direction:row; height:30px; margin-top:8px;">
+              <div style="flex-basis:60%;"></div>
+              <ion-icon style="font-size:2.5rem;flex-basis:20%;" [style.color]=item.color *ngIf="item.nextTimer==true" name="radio-button-on" (click)="goNextTimerStop()"></ion-icon>
+              <ion-icon style="font-size:2.5rem;flex-basis:20%;" [style.color]=item.color *ngIf="item.nextTimer==false" name="radio-button-off" (click)="goNextTimerSet(item, i)"></ion-icon>
+              <ion-icon style="font-size:2.5rem;flex-basis:20%;" [style.color]=item.color name="refresh-circle" (click)="onResetTimer(item)"></ion-icon>
+              <ion-icon style="font-size:2.5rem;flex-basis:20%;" *ngIf="item.notification.enable==true" [style.color]=item.color name="notifications" (click)="goNotificationToggle(item)"></ion-icon>
+              <ion-icon style="font-size:2.5rem;flex-basis:20%;" *ngIf="item.notification.enable==false" [style.color]=item.color name="notifications-off" (click)="goNotificationToggle(item)"></ion-icon>
+            </div>
           </div>
         </div>
 
@@ -74,14 +82,7 @@
           <i *ngIf="item.btnStatus=='end'" [style.color]=item.color class="icon-play"></i>
         </div>
       </div>
-      <div style="display:flex;flex-direction:row; height:30px;">
-        <div style="flex-basis:60%;"></div>
-        <ion-icon style="font-size:2.5rem;flex-basis:20%;" [style.color]=item.color *ngIf="item.nextTimer==true" name="radio-button-on" (click)="goNextTimerStop()"></ion-icon>
-        <ion-icon style="font-size:2.5rem;flex-basis:20%;" [style.color]=item.color *ngIf="item.nextTimer==false" name="radio-button-off" (click)="goNextTimerSet(item, i)"></ion-icon>
-        <ion-icon style="font-size:2.5rem;flex-basis:20%;" [style.color]=item.color name="refresh-circle" (click)="onResetTimer(item)"></ion-icon>
-        <ion-icon style="font-size:2.5rem;flex-basis:20%;" *ngIf="item.notification.enable==true" [style.color]=item.color name="notifications" (click)="goNotificationToggle(item)"></ion-icon>
-        <ion-icon style="font-size:2.5rem;flex-basis:20%;" *ngIf="item.notification.enable==false" [style.color]=item.color name="notifications-off" (click)="goNotificationToggle(item)"></ion-icon>
-      </div>
+
     </div>
   </ion-card>
 </ion-content>
@@ -90,15 +91,11 @@
     <ion-icon *ngIf="detailMode" class="footer-simple-item" [color]="'Yellow'" name="arrow-dropdown" (tap)="onDetailMode()"></ion-icon>
     <ion-icon *ngIf="!detailMode" class="footer-simple-item" [color]="'Yellow'" name="arrow-dropup" (tap)="onDetailMode()"></ion-icon>
     <button class="footer-simple-item" ion-button  type="button" round [color]="'Yellow'" (click)="onStartAllTimer()">
-      {{'Common.Start' | translate }}
+      {{'Common.'+btnStatus | translate }}
     </button>
   </div>
 
   <div [@animationDetailMode]="detailShown" style="margin: 0 15px 0 15px;">
-    <!-- <ion-item>
-      <ion-label style="font-size:1.6rem;font-weight:500;color:#90A4AE">{{'Timer.simple-view' | translate }}</ion-label>
-      <ion-toggle [(ngModel)]="timer.simple" (ionChange)="onEnableSimple()" ></ion-toggle>
-    </ion-item> -->
     <ion-item>
       <div style="display:flex; justify-content: space-between; align-items:center; width: 100%;">
         <p style="font-size:1.6rem;font-weight:500;color:#90A4AE">{{'Timer.repeat-count' | translate }}</p>

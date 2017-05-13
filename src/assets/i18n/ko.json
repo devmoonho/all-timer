@@ -129,7 +129,10 @@
     "Create":"만들기",
     "Back":"뒤로",
     "Edit":"편집",
-    "Start":"시작"
+    "start":"시작",
+    "stop":"멈춤",
+    "resume":"재개",
+    "pause":"정지"
   },
   "Default":{
     "Timer":{

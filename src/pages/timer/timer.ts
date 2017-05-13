@@ -88,6 +88,8 @@ export class TimerPage {
   detailShown: string = 'hidden';
   detailMode: boolean = false;
 
+  btnStatus: string = 'start';
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -159,21 +161,31 @@ export class TimerPage {
   }
 
   onStartAllTimer(){
-    let _timer = this.timerItems[0];
+    let _timer = this.getNextTimerUI();
+
+    if(_timer===''){
+      _timer = this.timerItems[0];
+    }
+
     this.setNextTimerUI(_timer);
 
     switch(_timer.btnStatus){
       case 'start':
+      this.btnStatus = 'pause';
       _timer.btnStatus = 'start';
       this.goTimerAction(_timer);
       this.setPositionForTimer(_timer);
       break;
       case 'pause':
+      this.btnStatus = 'resume';
+      this.goTimerAction(_timer);
       break;
       case 'resume':
+      this.btnStatus = 'pause';
       this.goTimerAction(_timer);
       break;
       case 'end':
+      this.btnStatus = 'start';
       _timer.btnStatus = 'start';
       this.setPositionForTimer(_timer);
       this.goTimerAction(_timer);
@@ -281,10 +293,12 @@ export class TimerPage {
     this.loopTimer(this.timerItems.length, 0, (res)=>{
         if(this.repeatCounter > 0){
           this.repeatCounter -= 1;
+          this.setNextTimerUI('');
           this.onStartAllTimer();
         }else{
           this.setNextTimerUI('');
           this.setContinuousMode(false);
+          this.btnStatus = 'start';
           console.log('done', res);
         }
     })
@@ -370,6 +384,15 @@ export class TimerPage {
         _timer.nextTimer= false;
       }
     }
+  }
+
+  getNextTimerUI():any{
+    for(let _timer of this.timerItems){
+      if(_timer.nextTimer == true){
+        return _timer
+      }
+    }
+    return '';
   }
 
   goNextTimerSet(timer, idx){
