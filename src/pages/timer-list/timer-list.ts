@@ -32,7 +32,8 @@ export class TimerListPage {
   categoryMode: any = true;
   currentCategory: any;
 
-  timerList: any={};
+  // timerList: any={};
+  timerList: any=[];
 
   selectedTimer: any;
 
@@ -72,6 +73,11 @@ export class TimerListPage {
     return this.config.RANDOM_COLOR[idx];
   }
 
+  shareTimer(event: Event, timer){
+    event.stopPropagation();
+    console.log('shareTimer');
+  }
+
   onBackCategory(){
     this.navCtrl.pop();
   }
@@ -96,7 +102,8 @@ export class TimerListPage {
     this.currentCategory = this.getCategoryByValue(category);
     this.storageService.serviceGetCategoryTimer(category)
     .then((res)=>{
-      this.timerList = res;
+      // this.timerList = res;
+      this.timerList = this.utilsObjectToArray(res);
     })
   }
 

@@ -126,15 +126,14 @@ export class TimerPage {
   }
 
   ngOnInit() {
-    console.log(this.config.RUNNING_TIMER);
     this.timer = this.config.RUNNING_TIMER[this.navParams.get('timer').timerId];
 
     if(this.timer===undefined){
       this.timer = this.navParams.get('timer');
       this.initTimer();
-      this.config.RUNNING_TIMER[this.timer.timerId] = this.timer;
     }
     this.initTimerItems();
+    this.setBtnStatus();
   }
 
   initTimer(){
@@ -148,11 +147,32 @@ export class TimerPage {
       items[key].color = items[key].color==''?'#3F51B5': items[key].color;
     }
     this.initTimerItems();
+    // this.config.RUNNING_TIMER[this.timer.timerId] = this.timer;
   }
 
   initTimerItems(){
     this.timerItems = this.utilsObjectToArray(this.timer.timerItems);
     this.timerItems.sort(function(a, b){return a.order - b.order});
+  }
+
+  updateTimerList(){
+    this.onStopAllTimer();
+    this.storageService.serviceGetTimer(this.timer.timerId)
+    .then((res)=>{
+      if(res!==null){
+        this.timer = res;
+        this.initTimer();
+      }
+    })
+  }
+
+  setBtnStatus(){
+    let currentTimer = this.getNextTimerUI();
+    if(currentTimer==''){
+      this.btnStatus = 'start';
+    }else{
+      this.btnStatus = currentTimer.btnStatus;
+    }
   }
 
   loadLocalSavedImage():any{
@@ -503,17 +523,22 @@ export class TimerPage {
       if(item.needToUpdateTimer){ this.onChangeTimeSet(item); }
       this.timerAction({item, status: "s"});
       item.btnStatus= "pause";
+      if(this.getNextTimerUI()==item){this.btnStatus = 'pause';}
+
+      this.config.RUNNING_TIMER[this.timer.timerId] = this.timer;
       break;
 
       case "pause":
       this.timerAction({item, status: "p"});
       item.btnStatus = "resume";
+      if(this.getNextTimerUI()==item){this.btnStatus = 'resume';}
       break;
 
       case "resume":
       if(item.needToUpdateTimer){ this.onChangeTimeSet(item); }
       this.timerAction({item, status: "r"});
       item.btnStatus = "pause";
+      if(this.getNextTimerUI()==item){this.btnStatus = 'pause';}
       break;
 
       case "end":
@@ -650,16 +675,6 @@ export class TimerPage {
     return Object.keys(obj).map((k) => obj[k])
   }
 
-  updateTimerList(){
-    this.onStopAllTimer();
-    this.storageService.serviceGetTimer(this.timer.timerId)
-    .then((res)=>{
-      if(res!==null){
-        this.timer = res;
-        this.initTimer();
-      }
-    })
-  }
 
   onDecrease(){
     if(this.repeatCounter > 0){
