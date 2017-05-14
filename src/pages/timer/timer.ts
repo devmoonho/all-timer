@@ -115,8 +115,9 @@ export class TimerPage {
       this.updateTimerList(_timer);
     });
 
-    events.subscribe('timer:remove-list', () => {
+    events.subscribe('timer:remove-list', (_category, _timer) => {
       console.log('timer:remove-list');
+      this.removeTimer(_timer);
     });
 
     events.subscribe('timer:stop', () => {
@@ -147,7 +148,6 @@ export class TimerPage {
       items[key].color = items[key].color==''?'#3F51B5': items[key].color;
     }
     this.initTimerItems();
-    // this.config.RUNNING_TIMER[this.timer.timerId] = this.timer;
   }
 
   initTimerItems(){
@@ -159,6 +159,7 @@ export class TimerPage {
     if(this.timer.timerId == _timer.timerId){
       this.onStopAllTimer();
       delete this.config.RUNNING_TIMER[this.timer.timerId];
+
       this.storageService.serviceGetTimer(this.timer.timerId)
       .then((res)=>{
         if(res!==null){
@@ -167,6 +168,25 @@ export class TimerPage {
         }
       })
     }
+  }
+
+  onStopAllTimer(){
+    let timer :any = this.config.RUNNING_TIMER[this.timer.timerId];
+    if(timer===undefined){return;}
+    let timerItems = timer.timerItems;
+
+    this.timerItems.forEach((el, idx)=>{
+      el.nextTimer = false;
+      if(el.status == 'running'){
+        el.btnStatus = 'end';
+        this.goTimerAction(el)
+      }
+    })
+  }
+
+  removeTimer(_timer){
+    this.onStopAllTimer();
+    delete this.config.RUNNING_TIMER[_timer.timerId];
   }
 
   setBtnStatus(){
@@ -388,6 +408,9 @@ export class TimerPage {
       nextPosition = currentPosition == this.getNextTimerPosition() ? this.getNextTimerPosition() + 1 : this.getNextTimerPosition();
       this.startContinuousTimer();
       this.continuousCallback(nextPosition);
+    }else{
+      this.btnStatus = 'start';
+      delete this.config.RUNNING_TIMER[this.timer.timerId];
     }
   }
 
@@ -477,18 +500,6 @@ export class TimerPage {
     item.needToUpdateTimer = false;
   }
 
-  onStopAllTimer(){
-    this.initTimerItems();
-    let items:any = this.timerItems;
-
-    this.timerItems.forEach((el, idx)=>{
-      el.nextTimer = false;
-      if(el.status == 'running'){
-        el.btnStatus = 'end';
-        this.goTimerAction(el)
-      }
-    })
-  }
 
   setTimer(timer){
     let day:number = 0;

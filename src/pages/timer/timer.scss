@@ -8,11 +8,13 @@ page-timer{
     align-items:center;
   }
   .footer-simple-item:nth-child(1){
+    margin-right:10px;
     margin-top:5px;
     flex-basis:10%;
     font-size:3rem;
   }
   .footer-simple-item:nth-child(2){
+    margin-left:5px;
     height:38px;
     flex-basis:90%;
   }

@@ -4,7 +4,7 @@
     <img [src]="item.defaultImage" (click)="onSelectCard(idx)">
     <div class="card-title">{{ 'Main.' + item.value | translate}}</div>
     <div class="card-subtitle">{{ timer | categoryPipe:{category:category[idx].value} }} {{'Main.listings' | translate}}</div>
-    <ion-icon class="card-icon" name="arrow-forward"></ion-icon>
+    <ion-icon class="card-icon" name="ios-arrow-forward"></ion-icon>
   </ion-card>
 </div>
 </ion-content>

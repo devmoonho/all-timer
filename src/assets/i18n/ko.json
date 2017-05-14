@@ -68,7 +68,7 @@
     "study-detail": "STUDY",
     "etc": "기타",
     "etc-detail": "ETC",
-    "listings": "리스팅"
+    "listings": "리스트"
   },
   "FirebaseMessage":{
     "auth/account-exists-with-different-credential": "이미 등록된 동일한 이메일이 있습니다.",

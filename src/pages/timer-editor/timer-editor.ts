@@ -415,7 +415,7 @@ export class TimerEditorPage{
   onRemoveMain(){
     this.storageService.serviceDeleteLocalStorage(this.timer.timerId)
     .then(()=>{
-      this.events.publish('timer:remove-list', this.timer.category);
+      this.events.publish('timer:remove-list', this.timer.category, this.timer);
       this.navCtrl.popToRoot();
     });
   }
