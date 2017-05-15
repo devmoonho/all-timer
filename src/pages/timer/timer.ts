@@ -53,7 +53,7 @@ export class TimerPage {
   current: number = 0;
   max: number = 0;
   stroke: number = 15;
-  radius: number = 100;
+  radius: number = 90;
   semicircle: boolean = false;
   rounded: boolean = true;
   responsive: boolean = false;
@@ -82,7 +82,6 @@ export class TimerPage {
   rangeNumber: number = 0;
 
   simpleMode: boolean = false;
-  repeat: boolean = false;
   repeatCounter: number=0;
 
   detailShown: string = 'hidden';
@@ -347,8 +346,8 @@ export class TimerPage {
     this.setContinuousMode(true);
 
     this.loopTimer(this.timerItems.length, 0, (res)=>{
-        if(this.repeatCounter > 0){
-          this.repeatCounter -= 1;
+        if(this.timer.repeat> 0){
+          this.timer.repeat-= 1;
           this.setNextTimerUI('');
           this.onStartAllTimer();
         }else{
@@ -692,14 +691,14 @@ export class TimerPage {
 
 
   onDecrease(){
-    if(this.repeatCounter > 0){
-      this.repeatCounter -=1;
+    if(this.timer.repeat> 0){
+      this.timer.repeat-=1;
     }
   }
 
   onIncrease(){
-    if(this.repeatCounter < 10){
-      this.repeatCounter +=1;
+    if(this.timer.repeat< 10){
+      this.timer.repeat+=1;
     }
   }
 

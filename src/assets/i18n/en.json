@@ -83,7 +83,9 @@
     "Congratuation": "Congratulations",
     "SuccessCreateUser":"Congratulations on your joining us.Go home after 3 seconds.",
     "SuccessLogin":"Welcome to All timer",
-    "RemoveTimer":"Do you agree to remove this timer"
+    "RemoveTimer":"Do you agree to remove this timer?",
+    "ShareTimer":"Do you agree to share this timer?",
+    "Wait":"Please wait.."
   },
   "TimerEditor":{
     "timer-name":"TIMER NAME",
@@ -108,7 +110,7 @@
   },
   "Timer":{
     "simple-view":"SIMPLE",
-    "repeat-count":"Repeat count"
+    "repeat-count":"REPEAT"
   },
   "Common":{
     "AlertTitle":{

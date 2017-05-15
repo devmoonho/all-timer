@@ -29,6 +29,7 @@ import { ColorPickerModal } from '../modals/color-picker/color-picker';
 import { LoginService } from '../services/login-service';
 import { TimerService } from '../services/timer-service';
 import { StorageService } from '../services/storage-service';
+import { ShareService } from '../services/share-service';
 import { Globals } from './globals';
 import { Config } from './config';
 
@@ -125,6 +126,7 @@ export function createTranslateLoader(http: Http) {
     LoginService,
     TimerService,
     StorageService,
+    ShareService,
     Globals,
     Config,
     ScreenOrientation,

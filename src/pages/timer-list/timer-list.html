@@ -14,13 +14,15 @@
     <h2>{{timer.name}}</h2>
     <p>{{timer.summary}}</p>
 
-    <ion-avatar style="display:flex;align-items:center;" item-right>
+    <div style="display:flex;align-items:center;" item-right>
       <ion-spinner *ngIf="config.RUNNING_TIMER[timer.timerId]!=undefined" [color]="'Yellow'" name="crescent"></ion-spinner>
-    </ion-avatar>
+    </div>
 
-    <ion-avatar style="display:flex;align-items:center;z-index:1" item-right>
-      <ion-icon style="font-size:2.4rem;" [color]="'Yellow'" name="md-share" (click)="shareTimer($event, timer)"></ion-icon>
-    </ion-avatar>
+    <div style="display:flex;align-items:center;z-index:1;" item-right>
+      <button ion-button type="button" clear [color]="'Yellow'" (click)="showShareConfirm($event, timer)">
+        <ion-icon name="md-share"></ion-icon>
+      </button>
+    </div>
 
   </ion-item>
 </ion-content>

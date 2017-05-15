@@ -18,7 +18,7 @@
 
         <i *ngIf="item.status=='complete'" [style.color]=item.color class="icon-ok progress-status "></i>
 
-        <ion-spinner *ngIf="item.status=='running'" [style.stroke]=item.color class="progress-status" name="bubbles"></ion-spinner>
+        <ion-spinner *ngIf="item.status=='running'" [style.stroke]=item.color class="progress-status" name="dots"></ion-spinner>
 
         <div class="progress-default-text"> {{item.defaultTimeSet}} </div>
         <div class="progress-text">
@@ -100,9 +100,13 @@
       <div style="display:flex; justify-content: space-between; align-items:center; width: 100%;">
         <p style="font-size:1.6rem;font-weight:500;color:#90A4AE">{{'Timer.repeat-count' | translate }}</p>
         <ion-icon name="remove-circle" clear style="font-size:3rem" (tap)="onDecrease()"></ion-icon>
-        <span class="ticker-progress">{{repeatCounter}}</span>
+        <span class="ticker-progress">{{timer.repeat}}</span>
         <ion-icon name="add-circle" clear style="font-size:3rem" (tap)="onIncrease()"></ion-icon>
       </div>
+    </ion-item>
+    <ion-item>
+      <ion-label style="font-size:1.6rem;font-weight:500;color:#90A4AE">{{'Timer.simple-view' | translate }}</ion-label>
+      <ion-toggle [(ngModel)]="timer.simple" [ngModelOptions]="{standalone: true}" ></ion-toggle>
     </ion-item>
   </div>
   <div class="flex_button_group">

@@ -50,6 +50,28 @@ export class TimerService {
     })
   }
 
+  public serviceShareTimerData():any{
+    return Promise.resolve()
+    .then(()=>{
+      return this.loadShareTimerDataFromServer();
+    })
+    .then((res)=>{
+      console.log("---- serviceShareTimerData done ----");
+      return res.val();
+    })
+  }
+
+  public serviceQueryShareTimerData(query):any{
+    return Promise.resolve()
+    .then(()=>{
+      return this.queryShareTimerDataFromServer(query);
+    })
+    .then((res)=>{
+      console.log("---- serviceQueryShareTimerData done ----");
+      return res.val();
+    })
+  }
+
   public serviceTimerData(): any{
     return Promise.resolve()
     .then(()=>{
@@ -101,6 +123,15 @@ export class TimerService {
     timer.timerId = newPostKey;
     updates[newPostKey] = timer;
     return ref.update(updates);
+  }
+
+  private loadShareTimerDataFromServer(){
+    return this.fireDatabase.ref(this.globals.SERVER_PATH_SHARE).orderByChild('name').limitToLast(100).once('value');
+  }
+
+  private queryShareTimerDataFromServer(queryText){
+    return this.fireDatabase.ref(this.globals.SERVER_PATH_SHARE).orderByChild('name').limitToLast(100)
+    .startAt(queryText).endAt(queryText+'\uf8ff').once('value');
   }
 
   private loadCategoryDataFromServer(){
