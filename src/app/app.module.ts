@@ -25,6 +25,7 @@ import { TimerEditorPage } from '../pages/timer-editor/timer-editor';
 // Modals
 import { ColorPickerModal } from '../modals/color-picker/color-picker';
 import { ShareTimerInfoModal } from '../modals/share-timer-info/share-timer-info';
+import { TimerEditorDetailModal } from '../modals/timer-editor-detail/timer-editor-detail';
 
 // services
 import { LoginService } from '../services/login-service';
@@ -84,6 +85,7 @@ export function createTranslateLoader(http: Http) {
     PlaceholderPipe,
     ColorPickerModal,
     ShareTimerInfoModal,
+    TimerEditorDetailModal,
   ],
   imports: [
     BrowserModule,
@@ -92,7 +94,9 @@ export function createTranslateLoader(http: Http) {
       platforms : {
         ios : {
           scrollAssist: true,
-          autoFocusAssist: true}
+          autoFocusAssist: true
+          // statusbarPadding: true
+          }
         }
       }),
     IonicStorageModule.forRoot(),
@@ -121,6 +125,7 @@ export function createTranslateLoader(http: Http) {
     TimerEditorPage,
     ColorPickerModal,
     ShareTimerInfoModal,
+    TimerEditorDetailModal,
   ],
   providers: [
     StatusBar,

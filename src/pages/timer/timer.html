@@ -1,7 +1,19 @@
+<ion-header no-shadow no-border>
+  <ion-navbar color="Yellow">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{'Default.Timer.Name' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onEditTimer()">
+        <ion-icon name="md-hammer"></ion-icon>
+        {{'Common.Edit' | translate }}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
 
 <ion-content padding>
-
-
   <ion-card *ngFor="let item of timer.timerItems | toArrayPipe  ; let i = index" [attr.id]="'timerId_' + item.id">
 
     <h1 style="margin:5px 5px 5px 5px;" [style.color]=item.color >{{item.title}}</h1>
@@ -108,13 +120,5 @@
       <ion-label style="font-size:1.6rem;font-weight:500;color:#90A4AE">{{'Timer.simple-view' | translate }}</ion-label>
       <ion-toggle [(ngModel)]="timer.simple" [ngModelOptions]="{standalone: true}" ></ion-toggle>
     </ion-item>
-  </div>
-  <div class="flex_button_group">
-    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onEditTimer()">
-    {{'Common.Edit' | translate }}
-    </button>
-    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onBack()">
-      {{'Common.Back' | translate }}
-    </button>
   </div>
 </ion-footer>

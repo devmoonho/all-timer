@@ -41,6 +41,9 @@
         "cordova-plugin-nativeaudio": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
         "cordova-plugin-screen-orientation": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
@@ -48,6 +51,9 @@
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-vibration": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "cordova-plugin-whitelist": {
@@ -64,12 +70,6 @@
         },
         "twitter-connect-plugin": {
             "FABRIC_KEY": "540aa44ce61b01d83d12783716a90d6d93e1bcf6",
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "cordova-plugin-vibration": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     },

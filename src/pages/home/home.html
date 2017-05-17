@@ -1,19 +1,22 @@
+<ion-header no-shadow no-border>
+  <ion-navbar color="Yellow">
+    <ion-title>{{'Default.Timer.Name' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onCreateTimer()">
+        <ion-icon name="md-add"></ion-icon>
+        {{'Common.Create' | translate }}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
 
 <ion-content no-bounce >
-<div class="card-background-page">
-  <ion-card *ngFor="let item of category; let idx = index;" (tap)="onSelectCard(idx)" tappable>
-    <img [src]="item.defaultImage" (click)="onSelectCard(idx)">
-    <div class="card-title">{{ 'Main.' + item.value | translate}}</div>
-    <div class="card-subtitle">{{ timer | categoryPipe:{category:category[idx].value} }} {{'Main.listings' | translate}}</div>
-    <ion-icon class="card-icon" name="ios-arrow-forward"></ion-icon>
-  </ion-card>
-</div>
-</ion-content>
-
-<ion-footer>
-  <div class="flex_button_group">
-    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onCreateTimer()">
-        {{'Common.Create' | translate }}
-    </button>
+  <div class="card-background-page">
+    <ion-card *ngFor="let item of category; let idx = index;" (tap)="onSelectCard(idx)" tappable>
+      <img [src]="item.defaultImage" (click)="onSelectCard(idx)">
+      <div class="card-title">{{ 'Main.' + item.value | translate}}</div>
+      <div class="card-subtitle">{{ timer | categoryPipe:{category:category[idx].value} }} {{'Main.listings' | translate}}</div>
+      <ion-icon class="card-icon" name="ios-arrow-forward"></ion-icon>
+    </ion-card>
   </div>
-</ion-footer>
+</ion-content>

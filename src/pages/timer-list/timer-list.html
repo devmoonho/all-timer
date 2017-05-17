@@ -1,3 +1,18 @@
+<ion-header no-shadow no-border>
+  <ion-navbar color="Yellow">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{'Default.Timer.Name' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onCreateTimer()">
+        <ion-icon name="md-add"></ion-icon>
+        {{'Common.Create' | translate }}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
 <ion-content>
   <div class="card-background-page">
     <ion-card class="card-detail" (tap)="onBackCategory()" tappable>
@@ -27,7 +42,7 @@
   </ion-item>
 </ion-content>
 
-<ion-footer>
+<!-- <ion-footer>
   <div class="flex_button_group">
     <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onCreateTimer()">
         {{'Common.Create' | translate }}
@@ -36,4 +51,4 @@
         {{'Common.Back' | translate }}
     </button>
   </div>
-</ion-footer>
+</ion-footer> -->
