@@ -1,0 +1,80 @@
+<ion-header no-shadow no-border>
+  <ion-navbar color="Yellow">
+    <ion-buttons start>
+      <button ion-button icon-only (click)="onCancelTimerItems()">
+        <ion-icon name="ios-arrow-back"></ion-icon>
+        {{'Common.Cancel' | translate }}
+      </button>
+    </ion-buttons>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onSaveTimerItems(title.value, detail.value)">
+        <ion-icon name="md-checkmark"></ion-icon>
+        {{'Common.Save' | translate }}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding >
+  <form [formGroup]="timerForm" >
+    <ion-item>
+      <ion-label stacked style="color:#FF6E40;">
+        {{'TimerEditor.title' | translate }}
+      </ion-label>
+      <ion-input placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{currentTimer.title}}" #title type="text" clearInput="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked style="color:#FF6E40;">
+        {{'TimerEditor.set-time' | translate }}
+      </ion-label>
+      <!-- <ion-datetime displayFormat="HH:mm:ss" (ionCancel)="onCancelTimeSet()" (ionChange)="onChangeTimeSet()" [(ngModel)]="currentTimer.timeSet" [ngModelOptions]="{standalone: true}"> -->
+      <ion-datetime displayFormat="HH:mm:ss" (ionChange)="onChangeTimeSet()" [(ngModel)]="currentTimer.timeSet" [ngModelOptions]="{standalone: true}">
+      </ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked style="color:#FF6E40;">
+        {{'TimerEditor.detail' | translate }}
+      </ion-label>
+      <ion-textarea placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{currentTimer.detail}}" #detail type="text" clearInput="true" ></ion-textarea>
+    </ion-item>
+
+    <div class="sound-container">
+      <div class="sound-item">
+        <ion-item>
+          <ion-label stacked style="color:#FF6E40;">
+            {{'TimerEditor.sound' | translate }}
+          </ion-label>
+          <ion-select required="required" [(ngModel)]="currentTimer.notification.sound" [ngModelOptions]="{standalone: true}">
+            <span *ngFor="let item of soundList">
+              <ion-option  value="{{item.value}}" >{{item.name}}</ion-option>
+            </span>
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="sound-item">
+        <ion-icon *ngIf="soundPlayState=='play'" name="pause" (tap)="onSound('pause')"></ion-icon>
+        <ion-icon *ngIf="soundPlayState=='pause'" name="play" (tap)="onSound('play')"></ion-icon>
+      </div>
+    </div>
+
+    <div class="color-container">
+      <div class="color-item">
+        {{'TimerEditor.choose-color' | translate }}
+      </div>
+      <div class="color-item" ion-button type="button" [style.border-left-color]="currentTimer.color" [style.color]="selectedColor" block (click)="onColorPicker()">
+        {{'TimerEditor.color' | translate }}
+      </div>
+    </div>
+    <div class="spacer" style="width: 300px; height: 5px;"></div>
+    <div class="color-container">
+      <div class="color-item">
+        {{'TimerEditor.choose-picture' | translate }}
+      </div>
+      <div class="color-item" (tap)="onOpenImagePicker()">
+        <img [src]="currentTimer.image==''?defaultImage:currentTimer.image">
+      </div>
+    </div>
+  </form>
+</ion-content>

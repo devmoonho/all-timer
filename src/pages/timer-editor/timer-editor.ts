@@ -22,6 +22,7 @@ import { TimerListPage } from '../timer-list/timer-list';
 
 // modals
 import { ColorPickerModal } from '../../modals/color-picker/color-picker';
+import { TimerEditorDetailModal } from '../../modals/timer-editor-detail/timer-editor-detail';
 
 // utils
 import { TranslateService } from '@ngx-translate/core';
@@ -200,10 +201,11 @@ export class TimerEditorPage{
 
   onEditTimer(event, _timer){
     event.stopPropagation();
-    this.setCurrentTimer(_timer);
-    this.soundPlayState = 'pause';
-    this.setMode('timerItemsEdit');
-    this.content.scrollTo(0, 0, 0);
+    let detailModal = this.modalCtrl.create(TimerEditorDetailModal, { timer : _timer, mode: this.navParams.get('mode'), category: this.navParams.get('category')});
+    detailModal.onDidDismiss(data => {
+      console.log(data);
+    });
+    detailModal.present();
   }
 
   onReorderItems(evt){
@@ -257,12 +259,6 @@ export class TimerEditorPage{
     items.color = this.config.RANDOM_COLOR[this.utilsRandomRange(0, this.config.RANDOM_COLOR.length-1)];
     return items;
   }
-
-  ///////////////////////////////
-
-  // getCurrentTimer(){
-  //   return this.timerItems[this.utilsGetTimerPositionByTimer(this.currentTimer)];
-  // }
 
   setMode(mode){
     switch (mode){
@@ -415,7 +411,7 @@ export class TimerEditorPage{
   onRemoveMain(){
     this.storageService.serviceDeleteLocalStorage(this.timer.timerId)
     .then(()=>{
-      this.events.publish('timer:remove-list', this.timer.category);
+      this.events.publish('timer:remove-list', this.timer.category, this.timer);
       this.navCtrl.popToRoot();
     });
   }

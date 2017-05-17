@@ -1,153 +1,80 @@
-<ion-content padding >
-  <!-- <form [formGroup]="timerMainForm" (ngSubmit)="onSaveMain(timerInputForm.value)"> -->
-  <form [formGroup]="timerMainForm">
-    <div [@timerAnimationMode]="timerEditMode">
-      <ion-item>
-        <ion-label stacked style="color:#FF6E40;">
-          {{'TimerEditor.timer-name' | translate }}
-        </ion-label>
-        <ion-input placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{timer.name}}" #name type="text" clearInput="true"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label stacked style="color:#FF6E40;">
-          {{'TimerEditor.summary' | translate }}
-        </ion-label>
-        <ion-textarea placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{ timer.summary | translate }}" #summary clearInput="true"></ion-textarea>
-      </ion-item>
-      <ion-item>
-        <ion-label stacked style="color:#FF6E40;">
-          {{'TimerEditor.category-title' | translate }}
-        </ion-label>
-        <ion-select  formControlName="category" required="required" [(ngModel)]="timer.category">
-          <span *ngFor="let item of categoryList">
-            <ion-option  value="{{item.value}}" >{{'TimerEditor.category-list.'+item.value | translate}}</ion-option>
-          </span>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label stacked style="color:#FF6E40;">{{'Timer.simple-view' | translate }}</ion-label>
-        <ion-toggle [(ngModel)]="timer.simple" [ngModelOptions]="{standalone: true}" ></ion-toggle>
-      </ion-item>
-      <div class="spacer" style="width: 300px; height: 15px;"></div>
+<ion-header no-shadow no-border>
+  <ion-navbar color="Yellow">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
 
-      <ion-list>
-        <ion-list-header stacked style="color:#FF6E40;">
-          {{'TimerEditor.timer-list' | translate }}
-          <button item-right ion-button color="DeepOrange" Clear icon-only type="button" (click)="onAddTimer()">
-            <ion-icon name="add-circle"></ion-icon>
-          </button>
-          <button  item-right ion-button color="DeepOrange" Clear icon-only type="button" (click)="onToggleRemove()">
-            <ion-icon name="remove-circle"></ion-icon>
-          </button>
-        </ion-list-header>
-
-        <ion-item-group reorder="true" (ionItemReorder)="onReorderItems($event);">
-
-          <button type="button" ion-item *ngFor="let item of timer.timerItems | toArrayPipe" (click)="onEditTimer($event, item)">
-            <ion-icon [@removeAnimationMode]="removeMode" style="margin-top:4%;" item-left  name="remove-circle" color="DeepOrange" (click)="onRemoveTimer($event, item)"></ion-icon>
-            <ion-avatar item-left>
-              <img src="assets/image/timer-default.png">
-            </ion-avatar>
-            <h2 [style.color]=item.color>{{item.title}}</h2>
-            <h3>{{item.defaultTimeSet}}</h3>
-            <p>{{item.detail}}</p>
-          </button>
-
-        </ion-item-group>
-      </ion-list>
-    </div>
-  </form>
-
-  <!-- <form [formGroup]="timerForm" (ngSubmit)="onSaveTimer(timerForm.value)"> -->
-  <form [formGroup]="timerForm" >
-    <div [@timerAnimationMode]="timerItemsEditMode" >
-      <ion-item>
-        <ion-label stacked style="color:#FF6E40;">
-          {{'TimerEditor.title' | translate }}
-        </ion-label>
-        <ion-input placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{currentTimer.title}}" #title type="text" clearInput="true"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label stacked style="color:#FF6E40;">
-          {{'TimerEditor.set-time' | translate }}
-        </ion-label>
-        <ion-datetime displayFormat="HH:mm:ss" (ionCancel)="onCancelTimeSet()" (ionChange)="onChangeTimeSet()" [(ngModel)]="currentTimer.timeSet" [ngModelOptions]="{standalone: true}">
-        </ion-datetime>
-      </ion-item>
-      <ion-item>
-        <ion-label stacked style="color:#FF6E40;">
-          {{'TimerEditor.detail' | translate }}
-        </ion-label>
-        <ion-textarea placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{currentTimer.detail}}" #detail type="text" clearInput="true" ></ion-textarea>
-      </ion-item>
-
-      <div class="sound-container">
-        <div class="sound-item">
-          <ion-item>
-            <ion-label stacked style="color:#FF6E40;">
-              {{'TimerEditor.sound' | translate }}
-            </ion-label>
-            <ion-select required="required" [(ngModel)]="currentTimer.notification.sound" [ngModelOptions]="{standalone: true}">
-              <span *ngFor="let item of soundList">
-                <ion-option  value="{{item.value}}" >{{item.name}}</ion-option>
-              </span>
-            </ion-select>
-          </ion-item>
-        </div>
-
-        <div class="sound-item">
-           <ion-icon *ngIf="soundPlayState=='play'" name="pause" (tap)="onSound('pause')"></ion-icon>
-           <ion-icon *ngIf="soundPlayState=='pause'" name="play" (tap)="onSound('play')"></ion-icon>
-        </div>
-      </div>
-
-      <div class="color-container">
-        <div class="color-item">
-          {{'TimerEditor.choose-color' | translate }}
-        </div>
-        <div class="color-item" ion-button type="button" [style.border-left-color]="currentTimer.color" [style.color]="selectedColor" block (click)="onColorPicker()">
-          {{'TimerEditor.color' | translate }}
-        </div>
-      </div>
-      <div class="spacer" style="width: 300px; height: 5px;"></div>
-      <div class="color-container">
-        <div class="color-item">
-          {{'TimerEditor.choose-picture' | translate }}
-        </div>
-        <div class="color-item" (tap)="onOpenImagePicker()">
-          <img [src]="currentTimer.image==''?defaultImage:currentTimer.image">
-        </div>
-      </div>
-    </div>
-  </form>
-</ion-content>
-
-<ion-footer >
-  <div [@timerAnimationMode]="timerEditMode" >
-    <div class="flex_button_group" >
-      <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onSaveTimerMain(name.value, summary.value)">
-        {{'Common.Save' | translate }}
-      </button>
-      <button *ngIf="editMode" ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="showDeleteConfirm()">
+    <ion-buttons end>
+      <button ion-button icon-only (click)="showDeleteConfirm()">
+        <ion-icon name="md-remove"></ion-icon>
         {{'Common.Remove' | translate }}
       </button>
-      <button *ngIf="editMode" ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onCancelMain()">
-        {{'Common.Cancel' | translate }}
-      </button>
-      <button *ngIf="!editMode" ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onCancelMain()">
-        {{'Common.Cancel' | translate }}
-      </button>
-    </div>
-  </div>
+    </ion-buttons>
 
-  <div [@timerAnimationMode]="timerItemsEditMode">
-    <div class="flex_button_group">
-      <button ion-button class="flex_button_item" type="button"  clear  [color]="'Yellow'" (click)="onSaveTimerItems(title.value, detail.value)">
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onSaveTimerMain(name.value, summary.value)">
+        <ion-icon name="md-checkmark"></ion-icon>
         {{'Common.Save' | translate }}
       </button>
-      <button ion-button class="flex_button_item" type="button"  clear  [color]="'Yellow'" (click)="onCancelTimerItems(title.value, detail.value)">
-        {{'Common.Cancel' | translate }}
-      </button>
-    </div>
-  </div>
-</ion-footer>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding >
+  <form [formGroup]="timerMainForm">
+    <ion-item>
+      <ion-label stacked style="color:#FF6E40;">
+        {{'TimerEditor.timer-name' | translate }}
+      </ion-label>
+      <ion-input placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{timer.name}}" #name type="text" clearInput="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked style="color:#FF6E40;">
+        {{'TimerEditor.summary' | translate }}
+      </ion-label>
+      <ion-textarea placeholder="{{'TimerEditor.please-enter' | translate}}" value="{{ timer.summary | translate }}" #summary clearInput="true"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked style="color:#FF6E40;">
+        {{'TimerEditor.category-title' | translate }}
+      </ion-label>
+      <ion-select  formControlName="category" required="required" [(ngModel)]="timer.category">
+        <span *ngFor="let item of categoryList">
+          <ion-option  value="{{item.value}}" >{{'TimerEditor.category-list.'+item.value | translate}}</ion-option>
+        </span>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked style="color:#FF6E40;">{{'Timer.simple-view' | translate }}</ion-label>
+      <ion-toggle [(ngModel)]="timer.simple" [ngModelOptions]="{standalone: true}" ></ion-toggle>
+    </ion-item>
+    <div class="spacer" style="width: 300px; height: 15px;"></div>
+
+    <ion-list>
+      <ion-list-header stacked style="color:#FF6E40;">
+        {{'TimerEditor.timer-list' | translate }}
+        <button item-right ion-button color="DeepOrange" Clear icon-only type="button" (click)="onAddTimer()">
+          <ion-icon name="add-circle"></ion-icon>
+        </button>
+        <button  item-right ion-button color="DeepOrange" Clear icon-only type="button" (click)="onToggleRemove()">
+          <ion-icon name="remove-circle"></ion-icon>
+        </button>
+      </ion-list-header>
+
+      <ion-item-group reorder="true" (ionItemReorder)="onReorderItems($event);">
+
+        <button type="button" ion-item *ngFor="let item of timer.timerItems | toArrayPipe" (click)="onEditTimer($event, item)">
+          <ion-icon [@removeAnimationMode]="removeMode" style="margin-top:4%;" item-left  name="remove-circle" color="DeepOrange" (click)="onRemoveTimer($event, item)"></ion-icon>
+          <ion-avatar item-left>
+            <img src="assets/image/timer-default.png">
+          </ion-avatar>
+          <h2 [style.color]=item.color>{{item.title}}</h2>
+          <h3>{{item.defaultTimeSet}}</h3>
+          <p>{{item.detail}}</p>
+        </button>
+
+      </ion-item-group>
+    </ion-list>
+  </form>
+
+</ion-content>

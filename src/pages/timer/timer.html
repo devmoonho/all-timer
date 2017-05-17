@@ -1,7 +1,19 @@
+<ion-header no-shadow no-border>
+  <ion-navbar color="Yellow">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{'Default.Timer.Name' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onEditTimer()">
+        <ion-icon name="md-hammer"></ion-icon>
+        {{'Common.Edit' | translate }}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
 
 <ion-content padding>
-
-
   <ion-card *ngFor="let item of timer.timerItems | toArrayPipe  ; let i = index" [attr.id]="'timerId_' + item.id">
 
     <h1 style="margin:5px 5px 5px 5px;" [style.color]=item.color >{{item.title}}</h1>
@@ -18,7 +30,7 @@
 
         <i *ngIf="item.status=='complete'" [style.color]=item.color class="icon-ok progress-status "></i>
 
-        <ion-spinner *ngIf="item.status=='running'" [style.stroke]=item.color class="progress-status" name="bubbles"></ion-spinner>
+        <ion-spinner *ngIf="item.status=='running'" [style.stroke]=item.color class="progress-status" name="dots"></ion-spinner>
 
         <div class="progress-default-text"> {{item.defaultTimeSet}} </div>
         <div class="progress-text">
@@ -64,13 +76,13 @@
               <div *ngIf="item.status!='complete'" > {{(item.current * 100) / item.max | number : '1.1-1' }}% </div>
               <div *ngIf="item.status=='complete'" > 100 % </div>
             </div>
-            <div style="display:flex;flex-direction:row; height:30px; margin-top:8px;">
-              <div style="flex-basis:60%;"></div>
-              <ion-icon style="font-size:2.5rem;flex-basis:20%;" [style.color]=item.color *ngIf="item.nextTimer==true" name="radio-button-on" (click)="goNextTimerStop()"></ion-icon>
-              <ion-icon style="font-size:2.5rem;flex-basis:20%;" [style.color]=item.color *ngIf="item.nextTimer==false" name="radio-button-off" (click)="goNextTimerSet(item, i)"></ion-icon>
-              <ion-icon style="font-size:2.5rem;flex-basis:20%;" [style.color]=item.color name="refresh-circle" (click)="onResetTimer(item)"></ion-icon>
-              <ion-icon style="font-size:2.5rem;flex-basis:20%;" *ngIf="item.notification.enable==true" [style.color]=item.color name="notifications" (click)="goNotificationToggle(item)"></ion-icon>
-              <ion-icon style="font-size:2.5rem;flex-basis:20%;" *ngIf="item.notification.enable==false" [style.color]=item.color name="notifications-off" (click)="goNotificationToggle(item)"></ion-icon>
+            <div style="display:flex;flex-direction:row; justify-content: space-between; height:30px; margin-top:8px;">
+              <!-- <div style="flex-basis:60%;"></div> -->
+              <ion-icon style="font-size:2.5rem;flex-basis:30%;" [style.color]=item.color *ngIf="item.nextTimer==true" name="radio-button-on" (click)="goNextTimerStop()"></ion-icon>
+              <ion-icon style="font-size:2.5rem;flex-basis:30%;" [style.color]=item.color *ngIf="item.nextTimer==false" name="radio-button-off" (click)="goNextTimerSet(item, i)"></ion-icon>
+              <ion-icon style="font-size:2.5rem;flex-basis:30%;" [style.color]=item.color name="refresh-circle" (click)="onResetTimer(item)"></ion-icon>
+              <ion-icon style="font-size:2.5rem;flex-basis:30%;" *ngIf="item.notification.enable==true" [style.color]=item.color name="notifications" (click)="goNotificationToggle(item)"></ion-icon>
+              <ion-icon style="font-size:2.5rem;flex-basis:30%;" *ngIf="item.notification.enable==false" [style.color]=item.color name="notifications-off" (click)="goNotificationToggle(item)"></ion-icon>
             </div>
           </div>
         </div>
@@ -88,9 +100,9 @@
 </ion-content>
 <ion-footer>
   <div class="footer-simple-container">
-    <ion-icon *ngIf="detailMode" class="footer-simple-item" [color]="'Yellow'" name="arrow-dropdown" (tap)="onDetailMode()"></ion-icon>
-    <ion-icon *ngIf="!detailMode" class="footer-simple-item" [color]="'Yellow'" name="arrow-dropup" (tap)="onDetailMode()"></ion-icon>
-    <button class="footer-simple-item" ion-button  type="button" round [color]="'Yellow'" (click)="onStartAllTimer()">
+    <ion-icon *ngIf="detailMode" class="footer-simple-item" [color]="'Yellow'" name="ios-arrow-dropdown" (tap)="onDetailMode()"></ion-icon>
+    <ion-icon *ngIf="!detailMode" class="footer-simple-item" [color]="'Yellow'" name="ios-arrow-dropup" (tap)="onDetailMode()"></ion-icon>
+    <button class="footer-simple-item" ion-button  type="button" outline [color]="'Yellow'" (click)="onStartAllTimer()">
       {{'Common.'+btnStatus | translate }}
     </button>
   </div>
@@ -100,17 +112,13 @@
       <div style="display:flex; justify-content: space-between; align-items:center; width: 100%;">
         <p style="font-size:1.6rem;font-weight:500;color:#90A4AE">{{'Timer.repeat-count' | translate }}</p>
         <ion-icon name="remove-circle" clear style="font-size:3rem" (tap)="onDecrease()"></ion-icon>
-        <span class="ticker-progress">{{repeatCounter}}</span>
+        <span class="ticker-progress">{{timer.repeat}}</span>
         <ion-icon name="add-circle" clear style="font-size:3rem" (tap)="onIncrease()"></ion-icon>
       </div>
     </ion-item>
-  </div>
-  <div class="flex_button_group">
-    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onEditTimer()">
-    {{'Common.Edit' | translate }}
-    </button>
-    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onBack()">
-      {{'Common.Back' | translate }}
-    </button>
+    <ion-item>
+      <ion-label style="font-size:1.6rem;font-weight:500;color:#90A4AE">{{'Timer.simple-view' | translate }}</ion-label>
+      <ion-toggle [(ngModel)]="timer.simple" [ngModelOptions]="{standalone: true}" ></ion-toggle>
+    </ion-item>
   </div>
 </ion-footer>

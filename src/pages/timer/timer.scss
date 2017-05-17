@@ -1,18 +1,25 @@
 page-timer{
-  .footer-simple-container{
+  ion-footer{
     background: #fff;
-    margin: 5px 20px 0 20px;
+  }
+  
+  .footer-simple-container{
+    margin:5px 0 5px 0;
     display:flex;
     flex-direction:row;
     justify-content: space-between;
     align-items:center;
   }
   .footer-simple-item:nth-child(1){
+    margin-left:10px;
+    margin-right:10px;
     margin-top:5px;
     flex-basis:10%;
     font-size:3rem;
   }
   .footer-simple-item:nth-child(2){
+    margin-right:30px;
+    margin-left:5px;
     height:38px;
     flex-basis:90%;
   }
@@ -51,7 +58,7 @@ page-timer{
     display: flex;
     justify-content: center;
     position: relative;
-    margin: 10px auto;
+    margin: 10px 0 40px 0;
     font-size: 21px;
   }
 
@@ -108,7 +115,7 @@ page-timer{
     bottom: auto;
     left: 50%;
     transform: translateY(-50%) translateX(-45%);
-    font-size: 3.6rem;
+    font-size: 3rem;
     z-index: 3;
   }
 
@@ -125,9 +132,9 @@ page-timer{
 
   .progress-notification{
     position: absolute;
-    top: 89%;
+    top: 115%;
     bottom: auto;
-    left: 87%;
+    left: 71%;
     transform: translateY(-50%) translateX(-50%);
     font-size: 3.5rem;
     z-index: 0;
@@ -145,9 +152,9 @@ page-timer{
 
   .progress-current{
     position: absolute;
-    top: 10%;
+    top: 115%;
     bottom: auto;
-    left: 12%;
+    left: 30%;
     transform: translateY(-50%) translateX(-50%);
     font-size: 3.5rem;
     z-index: 0;
@@ -155,9 +162,9 @@ page-timer{
 
   .progress-refresh{
     position: absolute;
-    top: 9%;
+    top: 115%;
     bottom: auto;
-    left: 87%;
+    left: 50%;
     transform: translateY(-50%) translateX(-50%);
     font-size: 3.5rem;
     z-index: 0;

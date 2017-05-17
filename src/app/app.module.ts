@@ -24,11 +24,14 @@ import { TimerEditorPage } from '../pages/timer-editor/timer-editor';
 
 // Modals
 import { ColorPickerModal } from '../modals/color-picker/color-picker';
+import { ShareTimerInfoModal } from '../modals/share-timer-info/share-timer-info';
+import { TimerEditorDetailModal } from '../modals/timer-editor-detail/timer-editor-detail';
 
 // services
 import { LoginService } from '../services/login-service';
 import { TimerService } from '../services/timer-service';
 import { StorageService } from '../services/storage-service';
+import { ShareService } from '../services/share-service';
 import { Globals } from './globals';
 import { Config } from './config';
 
@@ -81,6 +84,8 @@ export function createTranslateLoader(http: Http) {
     ToArrayPipe,
     PlaceholderPipe,
     ColorPickerModal,
+    ShareTimerInfoModal,
+    TimerEditorDetailModal,
   ],
   imports: [
     BrowserModule,
@@ -89,7 +94,9 @@ export function createTranslateLoader(http: Http) {
       platforms : {
         ios : {
           scrollAssist: true,
-          autoFocusAssist: true}
+          autoFocusAssist: true
+          // statusbarPadding: true
+          }
         }
       }),
     IonicStorageModule.forRoot(),
@@ -117,6 +124,8 @@ export function createTranslateLoader(http: Http) {
     TimerListPage,
     TimerEditorPage,
     ColorPickerModal,
+    ShareTimerInfoModal,
+    TimerEditorDetailModal,
   ],
   providers: [
     StatusBar,
@@ -125,6 +134,7 @@ export function createTranslateLoader(http: Http) {
     LoginService,
     TimerService,
     StorageService,
+    ShareService,
     Globals,
     Config,
     ScreenOrientation,

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { NavController, NavParams, Events, AlertController, LoadingController } from 'ionic-angular';
 import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs/Rx';
 
@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Rx';
 import { trigger, state, style, transition, animate, keyframes} from '@angular/core'
 
 // services
+import { ShareService } from '../../services/share-service';
 import { StorageService } from '../../services/storage-service';
 import { TimerService } from '../../services/timer-service';
 import { Config } from '../../app/config';
@@ -18,9 +19,12 @@ import { CategoryPipe } from '../../pipes/category-pipe';
 import { TimerPage } from '../timer/timer';
 import { TimerEditorPage } from '../timer-editor/timer-editor';
 
+// utils
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'page-timer-list',
-  providers:[TimerService],
+  providers:[TimerService, ShareService],
   templateUrl: 'timer-list.html',
 })
 
@@ -32,18 +36,23 @@ export class TimerListPage {
   categoryMode: any = true;
   currentCategory: any;
 
-  // timerList: any={};
   timerList: any=[];
 
   selectedTimer: any;
 
+  loader: any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public shareService: ShareService,
     public storageService: StorageService,
     public timerService: TimerService,
     public config: Config,
     public events: Events,
+    public translate: TranslateService,
+    public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
   ){
     this.rootNavCtrl = navParams.get('rootNavCtrl');
 
@@ -73,9 +82,12 @@ export class TimerListPage {
     return this.config.RANDOM_COLOR[idx];
   }
 
-  shareTimer(event: Event, timer){
-    event.stopPropagation();
-    console.log('shareTimer');
+  shareTimer(timer){
+    this.shareService.serviceUploadTimer(timer)
+    .then((res)=>{
+      this.loader.dismiss();
+      console.log('shareTimer', res);
+    });
   }
 
   onBackCategory(){
@@ -127,5 +139,49 @@ export class TimerListPage {
 
   utilsObjectToArray(obj){
     return Object.keys(obj).map((k) => obj[k])
+  }
+
+  showShareConfirm(event: Event, timer) {
+    event.stopPropagation();
+
+    let englishDefault = {title:'Share this Timer', message:'Do you agree to share this timer?', btnAgree:'Agree', btnDisagree:'Disagree'}
+    let title, message, btnAgree, btnDisagree: string = '';
+
+    this.translate.get('Common.AlertTitle.Information').subscribe((res)=>{title = res});
+    this.translate.get('MobileMessage.ShareTimer').subscribe((res)=>{message= res});
+    this.translate.get('Common.Agree').subscribe((res)=>{btnAgree= res});
+    this.translate.get('Common.Disagree').subscribe((res)=>{btnDisagree= res});
+
+    let confirm = this.alertCtrl.create({
+      title: title==''?englishDefault.title:title,
+      message: message==''?englishDefault.message:message,
+      buttons: [
+        {
+          text: btnDisagree==''?englishDefault.btnDisagree:btnDisagree,
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: btnAgree==''?englishDefault.btnAgree:btnAgree,
+          handler: () => {
+            console.log('Agree clicked');
+            this.shareTimer(timer);
+            this.presentLoading();
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  presentLoading() {
+    let englishDefault = 'Please wait...'
+    let msg: string = '';
+    this.translate.get('MobileMessage.Wait').subscribe((res)=>{msg = res});
+    this.loader = this.loadingCtrl.create({
+      content: msg ==''?englishDefault:msg,
+    });
+    this.loader.present();
   }
 }

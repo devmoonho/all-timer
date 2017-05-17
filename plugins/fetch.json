@@ -145,10 +145,8 @@
     },
     "de.appplant.cordova.plugin.local-notification": {
         "source": {
-            "type": "git",
-            "url": "https://github.com/katzer/cordova-plugin-local-notifications.git",
-            "subdir": ".",
-            "ref": "fdf8470de329421370ef81c9efa12caab995c309"
+            "type": "registry",
+            "id": "de.appplant.cordova.plugin.local-notification"
         },
         "is_top_level": true,
         "variables": {}
@@ -197,7 +195,7 @@
     "cordova-plugin-vibration": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-vibration"
+            "id": "cordova-plugin-vibration@~2.1.5"
         },
         "is_top_level": true,
         "variables": {}

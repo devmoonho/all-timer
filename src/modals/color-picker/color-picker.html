@@ -1,6 +1,11 @@
 <ion-header no-shadow no-border>
-  <ion-navbar>
-    <ion-title>{{'TimerEditor.Couleur' | translate }}</ion-title>
+  <ion-navbar color="Yellow">
+    <ion-buttons start>
+      <button ion-button icon-only (click)="onCancelTimerItems()">
+        <ion-icon name="ios-arrow-back"></ion-icon>
+        {{'Common.Cancel' | translate }}
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
