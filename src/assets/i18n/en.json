@@ -85,6 +85,7 @@
     "SuccessLogin":"Welcome to All timer",
     "RemoveTimer":"Do you agree to remove this timer?",
     "ShareTimer":"Do you agree to share this timer?",
+    "DownloadTimer":"Do you agree to download this timer?",
     "Wait":"Please wait.."
   },
   "TimerEditor":{
@@ -134,7 +135,9 @@
     "start":"START",
     "stop":"STOP",
     "resume":"RESUME",
-    "pause":"PAUSE"
+    "pause":"PAUSE",
+    "search":"SEARCH",
+    "download":"DOWNLOAD"
   },
   "Default":{
     "Timer":{

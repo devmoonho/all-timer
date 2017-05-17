@@ -84,7 +84,8 @@
     "SuccessCreateUser":"가입을 축하드립니다. 3초 후 홈으로 이동 합니다.",
     "SuccessLogin":"반갑습니다.",
     "RemoveTimer":"해당 타이머를 삭제하시겠습니까?",
-    "ShareTimer":"공유하시겠습니까?",
+    "ShareTimer":"공유 하시겠습니까?",
+    "DownloadTimer":"다운로드 하시겠습니까?",
     "Wait":"기다려주세요.."
   },
   "TimerEditor":{
@@ -134,7 +135,9 @@
     "start":"시작",
     "stop":"멈춤",
     "resume":"재개",
-    "pause":"정지"
+    "pause":"정지",
+    "search":"검색",
+    "download":"다운로드"
   },
   "Default":{
     "Timer":{

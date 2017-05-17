@@ -1,102 +1,55 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, Events, NavParams, ModalController, ViewController, AlertController, LoadingController } from 'ionic-angular';
 
 // services
 import { ShareService } from '../../services/share-service';
-import { StorageService } from '../../services/storage-service';
-import { TimerService } from '../../services/timer-service';
-import { Config } from '../../app/config';
+
+// pipe
+import { ToArrayPipe } from '../../pipes/toArray-pipe';
 
 // utils
-import { UUID } from 'angular2-uuid';
 import { TranslateService } from '@ngx-translate/core';
 
-// modals
-import { ShareTimerInfoModal } from '../../modals/share-timer-info/share-timer-info'
-
 @Component({
-  selector: 'page-store',
-  providers:[TimerService, ShareService],
-  templateUrl: 'store.html'
+  selector: 'share-timer-info',
+  providers:[ShareService],
+  templateUrl: 'share-timer-info.html'
 })
-export class StorePage {
-
-  rootNavCtrl: NavController;
-  timerList:any = [];
-
-  searchQuery: any = '';
+export class ShareTimerInfoModal{
   timer: any;
   loader: any;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public shareService: ShareService,
-    public timerService: TimerService,
-    public config: Config,
+    public viewCtrl: ViewController,
     public modalCtrl: ModalController,
     public translate: TranslateService,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
+    public shareService: ShareService,
     public events: Events,
   ) {
-    this.rootNavCtrl = navParams.get('rootNavCtrl');
+    this.timer = navParams.get('timer');
   }
 
-  ngOnInit(){
-    this.timerService.serviceShareTimerData()
+  closeModal() {
+    this.navCtrl.pop();
+  }
+
+  onBackCategory(){
+    this.closeModal();
+  }
+
+  downloadTimer(){
+    this.shareService.serviceDownloadTimer(this.timer)
     .then((res)=>{
-      this.timerList = this.utilsObjectToArray(res);
-    })
-  }
-
-  getItems(event:Events){
-
-  }
-
-  onSelectTimer(_timer){
-    let profileModal = this.modalCtrl.create(ShareTimerInfoModal, { timer : _timer});
-    profileModal.present();
-  }
-
-  search(){
-    this.timerService.serviceQueryShareTimerData(this.searchQuery)
-    .then((res)=>{
-      this.timerList = this.utilsObjectToArray(res);
-    })
-  }
-
-  getRandomColor(index: number): string {
-    let idx = (index) % this.config.RANDOM_COLOR.length
-    return this.config.RANDOM_COLOR[idx];
-  }
-
-  utilsArrayToObject(arr){
-    let _obj:any = {};
-    for(let item of arr){
-      item.id = UUID.UUID();
-      _obj[item.id] = item;
-    }
-    return _obj;
-  }
-
-  utilsObjectToArray(obj){
-    let ret = [];
-    if(obj!==null){
-      ret = Object.keys(obj).map((k) => obj[k]);
-    }
-    return ret;
-  }
-
-  downloadTimer(timer){
-    this.shareService.serviceDownloadTimer(timer)
-    .then((res)=>{
-      this.events.publish('timer:update-list', timer.category, timer);
+      this.events.publish('timer:update-list', this.timer.category, this.timer);
       this.loader.dismiss();
     })
   }
 
-  showDownloadConfirm(event: Event, timer) {
+  onDownloadTimer() {
     event.stopPropagation();
 
     let englishDefault = {title:'Download this Timer', message:'Do you agree to download this timer?', btnAgree:'Agree', btnDisagree:'Disagree'}
@@ -121,7 +74,7 @@ export class StorePage {
           text: btnAgree==''?englishDefault.btnAgree:btnAgree,
           handler: () => {
             console.log('Agree clicked');
-            this.downloadTimer(timer);
+            this.downloadTimer();
             this.presentLoading();
           }
         }

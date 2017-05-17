@@ -126,12 +126,16 @@ export class TimerService {
   }
 
   private loadShareTimerDataFromServer(){
-    return this.fireDatabase.ref(this.globals.SERVER_PATH_SHARE).orderByChild('name').limitToLast(100).once('value');
+    return this.fireDatabase.ref(this.globals.SERVER_PATH_SHARE).orderByChild('name').limitToFirst(100).once('value');
   }
 
   private queryShareTimerDataFromServer(queryText){
-    return this.fireDatabase.ref(this.globals.SERVER_PATH_SHARE).orderByChild('name').limitToLast(100)
-    .startAt(queryText).endAt(queryText+'\uf8ff').once('value');
+    return this.fireDatabase.ref(this.globals.SERVER_PATH_SHARE).orderByChild('name').limitToFirst(100)
+    .startAt(queryText)
+    .endAt(queryText+"\uf8ff")
+    .once('value');
+    // .startAt(queryText).endAt(queryText+"\uf8ff").once('value');
+    // .equalTo(queryText).once('value');
   }
 
   private loadCategoryDataFromServer(){

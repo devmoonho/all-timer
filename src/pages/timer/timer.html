@@ -90,7 +90,7 @@
   <div class="footer-simple-container">
     <ion-icon *ngIf="detailMode" class="footer-simple-item" [color]="'Yellow'" name="ios-arrow-dropdown" (tap)="onDetailMode()"></ion-icon>
     <ion-icon *ngIf="!detailMode" class="footer-simple-item" [color]="'Yellow'" name="ios-arrow-dropup" (tap)="onDetailMode()"></ion-icon>
-    <button class="footer-simple-item" ion-button  type="button" round [color]="'Yellow'" (click)="onStartAllTimer()">
+    <button class="footer-simple-item" ion-button  type="button" outline [color]="'Yellow'" (click)="onStartAllTimer()">
       {{'Common.'+btnStatus | translate }}
     </button>
   </div>

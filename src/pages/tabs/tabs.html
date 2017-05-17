@@ -1,21 +1,14 @@
 <ion-header no-shadow no-border>
-  <ion-navbar>
-    <button ion-button menuToggle color="yellow">
+  <ion-navbar color="Yellow">
+    <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{pageTitle}}</ion-title>
+    <ion-title>{{'Default.Timer.Name' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content no-bounce>
-  <!-- <super-tabs (tabSelect)="onTabSelect($event)">
-    <super-tab [root]="store" title="Store"></super-tab>
-    <super-tab [root]="timer" title="Timer"></super-tab>
-    <super-tab [root]="timerList" title="My Timer"></super-tab>
-  </super-tabs> -->
-<ion-tabs tabsPlacement="top">
-  <ion-tab [root]="home" tabTitle="Home" tabIcon="contacts"></ion-tab>
-  <!-- <ion-tab [root]="timerList" tabTitle="timerList" tabIcon="contacts"></ion-tab> -->
-  <!-- <ion-tab [root]="timer" tabTitle="timer" tabIcon="information-circle"></ion-tab> -->
-  <ion-tab [root]="store" tabTitle="store" tabIcon="home"></ion-tab>
+<ion-tabs tabsPlacement="bottom" color="Yellow">
+  <ion-tab [root]="home" tabIcon="md-home"></ion-tab>
+  <ion-tab [root]="store" tabIcon="md-timer"></ion-tab>
 </ion-tabs>
 </ion-content>

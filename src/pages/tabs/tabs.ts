@@ -23,7 +23,6 @@ export class TabsPage {
 
   showIcons: boolean = false;
   showTitles: boolean = true;
-  pageTitle: string = 'Timer';
 
   constructor(
     public navCtrl: NavController,

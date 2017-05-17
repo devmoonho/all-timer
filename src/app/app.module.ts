@@ -24,6 +24,7 @@ import { TimerEditorPage } from '../pages/timer-editor/timer-editor';
 
 // Modals
 import { ColorPickerModal } from '../modals/color-picker/color-picker';
+import { ShareTimerInfoModal } from '../modals/share-timer-info/share-timer-info';
 
 // services
 import { LoginService } from '../services/login-service';
@@ -82,6 +83,7 @@ export function createTranslateLoader(http: Http) {
     ToArrayPipe,
     PlaceholderPipe,
     ColorPickerModal,
+    ShareTimerInfoModal,
   ],
   imports: [
     BrowserModule,
@@ -118,6 +120,7 @@ export function createTranslateLoader(http: Http) {
     TimerListPage,
     TimerEditorPage,
     ColorPickerModal,
+    ShareTimerInfoModal,
   ],
   providers: [
     StatusBar,

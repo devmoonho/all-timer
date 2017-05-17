@@ -35,20 +35,25 @@ export class ShareService {
         uid = timer.timerItems[key].id
         if(msg===''|| msg.includes('assets/image/')){
           current += 1;
-          if(current >= total){ return 'complate'; }
+          if(current >= total){
+            this.saveShareTimerDataToServer(timer);
+            return 'complate';
+          }
           continue;
         }
+
         uploadRef = this.fireStorage.child('timer-image/' + uid);
         uploadRef.putString(msg, 'base64')
         .then((res:any)=>{
           console.log('serviceUploadFile', res);
           current += 1;
-          if(current >= total){ return 'complate'; }
+          timer.timerItems[key].image = res.a.downloadURLs[0];
+          this.saveShareTimerDataToServer(timer);
+          if(current >= total){
+            return 'complate';
+          }
         })
       }
-    })
-    .then(()=>{
-      return this.saveShareTimerDataToServer(timer);
     })
     .then(()=>{
       console.log("---- serviceUploadTimer done ----");
@@ -57,17 +62,18 @@ export class ShareService {
   }
 
   public serviceDownloadTimer(timer):any{
-    let downloadRef: any;
-    let msg, uid: any;
+    return Promise.resolve()
+    .then(()=>{
+      return this.storage.set(timer.timerId, timer);
+    })
+    .then(()=>{
+      console.log("---- serviceDownloadTimer done ----");
+      return 'complete';
+    })
+  }
 
-    for(let key in timer.timerItems){
-      uid = timer.timerItems[key].id
-      downloadRef = this.fireStorage.child('timer-image/'+ uid)
-      downloadRef.getDownloadURL()
-      .then((res)=>{
-        console.log('serviceDownloadTimer', res);
-      })
-    }
+  private saveDownloadTimerDataToLocal(timer){
+
   }
 
   private saveShareTimerDataToServer(timer){
@@ -88,7 +94,6 @@ export class ShareService {
       _timer.status = 'ready';
       _timer.btnStatus= 'start';
       _timer.nextTimer = false;
-      _timer.image = '';
       cnt +=1;
     }
 
