@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
 
-    <ion-buttons end>
+    <ion-buttons *ngIf="editMode==true" end>
       <button ion-button icon-only (click)="showDeleteConfirm()">
         <ion-icon name="md-remove"></ion-icon>
         {{'Common.Remove' | translate }}

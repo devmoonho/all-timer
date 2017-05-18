@@ -154,7 +154,7 @@
     "cordova-plugin-nativeaudio": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-nativeaudio"
+            "id": "cordova-plugin-nativeaudio@~3.0.9"
         },
         "is_top_level": true,
         "variables": {}
