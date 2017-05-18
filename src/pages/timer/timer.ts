@@ -131,6 +131,11 @@ export class TimerPage {
     this.setBtnStatus();
   }
 
+  ionViewDidEnter(){
+
+    console.log('ionViewDidEnter', this.content._scroll, this.config.RUNNING_TIMER[this.navParams.get('timer').timerId]);
+  }
+
   initTimer(){
     let category = this.navParams.get('category');
     let items = this.timer.timerItems;
@@ -210,6 +215,15 @@ export class TimerPage {
     console.log('ionViewDidLeave')
   }
 
+  onGoCurrentTimer(){
+    let _timer = this.getNextTimerUI();
+    if(_timer.status == 'running'){
+      this.timerAction({item: _timer, status: "p"});
+      this.timerAction({item: _timer, status: "r"});
+    }
+    this.setPositionForTimer(_timer);
+  }
+
   onStartAllTimer(){
     let _timer = this.getNextTimerUI();
 
@@ -224,7 +238,6 @@ export class TimerPage {
       this.btnStatus = 'pause';
       _timer.btnStatus = 'start';
       this.goTimerAction(_timer);
-      this.setPositionForTimer(_timer);
       break;
       case 'pause':
       this.btnStatus = 'resume';
@@ -237,10 +250,10 @@ export class TimerPage {
       case 'end':
       this.btnStatus = 'start';
       _timer.btnStatus = 'start';
-      this.setPositionForTimer(_timer);
       this.goTimerAction(_timer);
       break;
     }
+    this.setPositionForTimer(_timer);
   }
 
   onBack(){
@@ -375,9 +388,11 @@ export class TimerPage {
   setPositionForTimer(timer){
     let doc:any = document;
     let el:any = doc.getElementById('timerId_' + timer.id);
-    if(el === null || this.content._scroll === null) {return;}
-    let yOffset = el.offsetTop;
-    this.content.scrollTo(0, yOffset - 10, 1000)
+
+    if(el === null || this.content._scroll === null) {
+      return;
+    }
+    this.content.scrollTo(0, el.offsetTop - 10, 1000)
   }
 
   doNextAction(cb){
@@ -557,7 +572,6 @@ export class TimerPage {
       if(item.notification.enable) {
         this.popLocalNotifications(item)
       }
-      // if(this.isAllTimerSleep()){this.utilsBackGroundMode(false)}
       break;
     }
   }
@@ -574,19 +588,16 @@ export class TimerPage {
           item.btnStatus = "end";
           this.goTimerAction(item);
         }
-        // this.utilsBackGroundMode(true);
       })
       break;
 
       case "p":
       item.status = "ready";
       item.subscribtion.unsubscribe();
-      // this.utilsBackGroundMode(false);
       break;
 
       case "r":
       let _current = item.current;
-      // this.utilsBackGroundMode(true);
       item.subscribtion = item.timer.subscribe(t => {
         item.current = t + _current;
         item.status = "running";
@@ -595,7 +606,6 @@ export class TimerPage {
           item.btnStatus = "end";
           this.goTimerAction(item);
         }
-        // this.utilsBackGroundMode(true);
       })
       break;
 
@@ -604,8 +614,6 @@ export class TimerPage {
       item.status = "complete";
       item.current = 0;
       item.timeSet= this.utilsTimerStringFormat({max: item.max, current: item.current});
-      // this.utilsBackGroundMode(false);
-      // item.callback()
       break;
     }
   }

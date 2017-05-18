@@ -111,7 +111,8 @@
   },
   "Timer":{
     "simple-view":"SIMPLE",
-    "repeat-count":"REPEAT"
+    "repeat-count":"REPEAT",
+    "current-timer":"CURRENT"
   },
   "Common":{
     "AlertTitle":{

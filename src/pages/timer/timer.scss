@@ -18,10 +18,19 @@ page-timer{
     font-size:3rem;
   }
   .footer-simple-item:nth-child(2){
-    margin-right:30px;
+    margin-right:5px;
     margin-left:5px;
     height:38px;
-    flex-basis:90%;
+    flex-basis:80%;
+  }
+
+  .footer-simple-item:nth-child(3){
+    margin-right:5px;
+    margin-left:5px;
+    margin-top:8px;
+    height:38px;
+    flex-basis:10%;
+    font-size:3rem;
   }
 
   .progress-simple-container{

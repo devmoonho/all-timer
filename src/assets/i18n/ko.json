@@ -111,7 +111,8 @@
   },
   "Timer":{
     "simple-view":"간단히 보기",
-    "repeat-count":"반복"
+    "repeat-count":"반복",
+    "current-timer":"현재"
   },
   "Common":{
     "AlertTitle":{

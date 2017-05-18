@@ -14,6 +14,11 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-label color="Yellow"> {{'TimerEditor.timer-name' | translate }} </ion-label>
+  <h4 style="margin:0 0 20px 20px;">{{timer.name}}</h4>
+  <ion-label color="Yellow">{{'TimerEditor.summary' | translate}}</ion-label>
+  <p style="margin:0 0 20px 20px;">{{timer.summary}}</p>
+  <ion-label color="Yellow">{{'TimerEditor.timer-list' | translate}}</ion-label>
   <ion-card *ngFor="let item of timer.timerItems | toArrayPipe  ; let i = index" [attr.id]="'timerId_' + item.id">
 
     <h1 style="margin:5px 5px 5px 5px;" [style.color]=item.color >{{item.title}}</h1>
@@ -105,6 +110,10 @@
     <button class="footer-simple-item" ion-button  type="button" outline [color]="'Yellow'" (click)="onStartAllTimer()">
       {{'Common.'+btnStatus | translate }}
     </button>
+    <ion-icon class="footer-simple-item" [color]="'Yellow'" name="md-eye" (click)="onGoCurrentTimer()" ></ion-icon>
+    <!-- <button class="footer-simple-item" ion-button  type="button" outline [color]="'Yellow'" (click)="onGoCurrentTimer()">
+      {{'Timer.current-timer' | translate }}
+    </button> -->
   </div>
 
   <div [@animationDetailMode]="detailShown" style="margin: 0 15px 0 15px;">
