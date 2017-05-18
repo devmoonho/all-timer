@@ -50,6 +50,13 @@ export class StorePage {
     })
   }
 
+  ionViewDidEnter(){
+    this.timerService.serviceShareTimerData()
+    .then((res)=>{
+      this.timerList = this.utilsObjectToArray(res);
+    })
+  }
+
   getItems(event:Events){
 
   }
