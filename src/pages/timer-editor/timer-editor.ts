@@ -164,7 +164,6 @@ export class TimerEditorPage{
   onSaveTimerMain(_name, _summary){
     this.timer.name = _name;
     this.timer.summary = _summary;
-    // this.events.publish('timer:stop');
 
     let items:any = this.timer.timerItems;
     for(let key in items){

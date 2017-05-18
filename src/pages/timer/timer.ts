@@ -118,11 +118,6 @@ export class TimerPage {
       console.log('timer:remove-list');
       this.removeTimer(_timer);
     });
-
-    events.subscribe('timer:stop', () => {
-      console.log('timer:stop');
-      this.onStopAllTimer();
-    });
   }
 
   ngOnInit() {
@@ -156,7 +151,7 @@ export class TimerPage {
 
   updateTimerList(_timer){
     if(this.timer.timerId == _timer.timerId){
-      this.onStopAllTimer();
+      this.onStopAllTimer(_timer);
       delete this.config.RUNNING_TIMER[this.timer.timerId];
 
       this.storageService.serviceGetTimer(this.timer.timerId)
@@ -169,22 +164,22 @@ export class TimerPage {
     }
   }
 
-  onStopAllTimer(){
-    let timer :any = this.config.RUNNING_TIMER[this.timer.timerId];
-    if(timer===undefined){return;}
-    let timerItems = timer.timerItems;
+  onStopAllTimer(timer){
+    let _timer :any = this.config.RUNNING_TIMER[timer.timerId];
 
-    this.timerItems.forEach((el, idx)=>{
-      el.nextTimer = false;
-      if(el.status == 'running'){
-        el.btnStatus = 'end';
-        this.goTimerAction(el)
-      }
-    })
+    if(_timer!==undefined){
+      _timer.timerItems.forEach((el, idx)=>{
+        el.nextTimer = false;
+        if(el.status == 'running'){
+          el.btnStatus = 'end';
+          this.goTimerAction(el)
+        }
+      })
+    }
   }
 
   removeTimer(_timer){
-    this.onStopAllTimer();
+    this.onStopAllTimer(_timer);
     delete this.config.RUNNING_TIMER[_timer.timerId];
   }
 
