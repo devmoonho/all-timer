@@ -69,6 +69,9 @@
         "twitter-connect-plugin": {
             "FABRIC_KEY": "540aa44ce61b01d83d12783716a90d6d93e1bcf6",
             "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-admobpro": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     },
     "dependent_plugins": {
@@ -76,6 +79,9 @@
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "es6-promise-plugin": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-extension": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     }

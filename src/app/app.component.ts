@@ -25,6 +25,7 @@ import { Firebase } from '@ionic-native/firebase';
 import { Network } from '@ionic-native/network';
 import { Storage } from '@ionic/storage';
 import { UUID } from 'angular2-uuid';
+import { AdMob } from '@ionic-native/admob';
 
 // services
 
@@ -43,21 +44,6 @@ export class MyApp implements OnInit{
       name: 'Full page',
       page: LoginPage,
       params: { icons: true, titles: true, pageTitle: 'Full page' }
-    },
-    {
-      name: 'Full - Title only',
-      page: LoginPage,
-      params: { icons: false, titles: true }
-    },
-    {
-      name: 'Full - Icons only',
-      page: LoginPage,
-      params: { icons: true, titles: false }
-    },
-    {
-      name: 'Partial nav',
-      page: LoginPage,
-      params: { icons: true, titles: true }
     },
     {
       name: 'clear',
@@ -86,6 +72,7 @@ export class MyApp implements OnInit{
     public network: Network,
     public events: Events,
     public storage: Storage,
+    public adMob: AdMob,
   ){
     translate.addLangs(["en", "ko"]);
     translate.setDefaultLang('en');
@@ -110,6 +97,7 @@ export class MyApp implements OnInit{
         this.initNavFirebase();
       }
       this.initNetwork();
+      this.initAdMob();
     });//platform.ready()
 
   }
@@ -175,6 +163,35 @@ export class MyApp implements OnInit{
       this.translate.use(userLang);
       // this.translate.use('ko');
     })
+  }
+
+  initAdMob(){
+    let adMobId: any;
+
+    if(this.platform.is('android')) {
+      adMobId = { // for Android
+        banner: 'ca-app-pub-8126362785815437/7203276103',
+        interstitial: 'ca-app-pub-8126362785815437/7203276103'
+      };
+    } else if (this.platform.is('ios')) {
+      adMobId = { // for iOS
+        banner: 'ca-app-pub-8126362785815437/8680009301',
+        interstitial: 'ca-app-pub-8126362785815437/8680009301'
+      };
+    } else {
+      adMobId = {
+        banner: 'ca-app-pub-8126362785815437/7203276103',
+        interstitial: 'ca-app-pub-8126362785815437/7203276103'
+      };
+    }
+
+    let adOptions = {
+      position: 8,
+      isTesting: false,
+      autoShow: true
+    }
+    this.adMob.setOptions(adOptions)
+    this.adMob.createBanner({ adId: adMobId.banner });
   }
 
   ngOnInit() {
