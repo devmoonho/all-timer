@@ -110,6 +110,9 @@
     <button class="footer-simple-item" ion-button  type="button" outline [color]="'Yellow'" (click)="onStartAllTimer()">
       {{'Common.'+btnStatus | translate }}
     </button>
+    <button class="footer-simple-item" ion-button  type="button" outline [color]="'Yellow'" (click)="onAllTimerCancel()">
+      {{'Common.stop'| translate }}
+    </button>
     <ion-icon class="footer-simple-item" [color]="'Yellow'" name="md-eye" (tap)="onGoCurrentTimer()" ></ion-icon>
   </div>
 

@@ -173,13 +173,14 @@ export class TimerPage {
     let _timer :any = this.config.RUNNING_TIMER[timer.timerId];
 
     if(_timer!==undefined){
-      _timer.timerItems.forEach((el, idx)=>{
+      for(let key in _timer.timerItems){
+        let el = _timer.timerItems[key];
         el.nextTimer = false;
         if(el.status == 'running'){
           el.btnStatus = 'end';
           this.goTimerAction(el)
         }
-      })
+      }
     }
   }
 
@@ -222,6 +223,11 @@ export class TimerPage {
       this.timerAction({item: _timer, status: "r"});
     }
     this.setPositionForTimer(_timer);
+  }
+
+  onAllTimerCancel(){
+    this.onStopAllTimer(this.timer);
+    delete this.config.RUNNING_TIMER[this.timer.timerId];
   }
 
   onStartAllTimer(){
