@@ -2,7 +2,7 @@ page-timer{
   ion-footer{
     background: #fff;
   }
-  
+
   .footer-simple-container{
     margin:5px 0 5px 0;
     display:flex;
@@ -191,9 +191,8 @@ page-timer{
   }
   img {
     padding: 5px 5px 5px 5px;
-    height: 150px;
-    object-fit: cover;
-    // object-fit: contain;
+    height: 160px;
+    object-fit: scale-down;
     background-size: cover;
     background-image: url("../assets/image/background-pattern.jpg");
   }
