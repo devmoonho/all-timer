@@ -33,6 +33,7 @@ export class TimerEditorDetailModal{
   defaultSound: string = 'assets/sound/default.mp3';
   soundList:any;
   soundPlayState: string = 'pause';
+  isMobile: boolean = true;
 
   constructor(
     public imagePicker: ImagePicker,
@@ -50,6 +51,10 @@ export class TimerEditorDetailModal{
     public viewCtrl: ViewController,
   ){
     this.initValidator()
+
+    if(device.uuid === null){
+      this.isMobile = false;
+    }
   }
 
   initValidator(){
@@ -67,6 +72,25 @@ export class TimerEditorDetailModal{
 
   initDefaultTimerData(){
     this.currentTimer = this.navParams.get('timer');
+  }
+
+  private base64textString:String="";
+
+  fileChangeEvent(fileInput: any){
+    console.log(fileInput.target.files[0]);
+    var files = fileInput.target.files;
+    var file = files[0];
+
+    var reader = new FileReader();
+    reader.onload =this._handleReaderLoaded.bind(this);
+    reader.readAsBinaryString(file);
+  }
+
+  _handleReaderLoaded(readerEvt) {
+    var binaryString = readerEvt.target.result;
+    this.base64textString= btoa(binaryString);
+
+    this.currentTimer.image = "data:image/png;base64," + btoa(binaryString);
   }
 
   onChangeTimeSet(){

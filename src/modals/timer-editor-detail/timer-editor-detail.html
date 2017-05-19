@@ -73,6 +73,7 @@
         {{'TimerEditor.choose-picture' | translate }}
       </div>
       <div class="color-item" (tap)="onOpenImagePicker()">
+        <input *ngIf="isMobile==false" type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
         <img [src]="currentTimer.image==''?defaultImage:currentTimer.image">
       </div>
     </div>
