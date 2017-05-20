@@ -72,7 +72,7 @@ export class MyApp implements OnInit{
     public network: Network,
     public events: Events,
     public storage: Storage,
-    public adMob: AdMob,
+    public admob: AdMob,
   ){
     translate.addLangs(["en", "ko"]);
     translate.setDefaultLang('en');
@@ -95,9 +95,9 @@ export class MyApp implements OnInit{
         screenOrientation.lock('portrait');
         this.initGlobalization();
         this.initNavFirebase();
+        this.initAdMob();
       }
       this.initNetwork();
-      this.initAdMob();
     });//platform.ready()
 
   }
@@ -186,12 +186,12 @@ export class MyApp implements OnInit{
     }
 
     let adOptions = {
-      position: 8,
-      isTesting: false,
+      position: 7,
+      isTesting: true,
       autoShow: true
     }
-    this.adMob.setOptions(adOptions)
-    this.adMob.createBanner({ adId: adMobId.banner });
+    this.admob.setOptions(adOptions)
+    this.admob.createBanner({adId: adMobId.banner});
   }
 
   ngOnInit() {

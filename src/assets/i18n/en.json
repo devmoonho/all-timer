@@ -142,7 +142,7 @@
   },
   "Default":{
     "Timer":{
-      "Name":"Super Timer",
+      "Name":"All Timer",
       "Summary":"This is a sample timer",
       "Title":"Timer",
       "Detail":"This is first timer, Let's set time"

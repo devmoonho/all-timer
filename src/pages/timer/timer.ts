@@ -177,8 +177,13 @@ export class TimerPage {
         let el = _timer.timerItems[key];
         el.nextTimer = false;
         if(el.status == 'running'){
-          el.btnStatus = 'end';
-          this.goTimerAction(el)
+          this.timerAction({item:el, status: "e"});
+          el.btnStatus = "start";
+          this.btnStatus = 'start';
+          this.executeNextTimer(el);
+
+          // el.btnStatus = 'end';
+          // this.goTimerAction(el)
         }
       }
     }
