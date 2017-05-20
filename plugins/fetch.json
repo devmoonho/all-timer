@@ -1,4 +1,12 @@
 {
+    "ionic-plugin-keyboard": {
+        "source": {
+            "type": "registry",
+            "id": "ionic-plugin-keyboard@~2.2.1"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "cordova-plugin-whitelist": {
         "source": {
             "type": "registry",
@@ -53,116 +61,12 @@
             "id": "cordova-plugin-googleplus"
         },
         "is_top_level": true,
-        "variables": {
-            "REVERSED_CLIENT_ID": "com.googleusercontent.apps.902931259626-nbckc9j7b2p10dqok55ovkpmkbc1c3o4"
-        }
+        "variables": {}
     },
     "twitter-connect-plugin": {
         "source": {
             "type": "registry",
             "id": "twitter-connect-plugin@0.5.0"
-        },
-        "is_top_level": true,
-        "variables": {
-            "FABRIC_KEY": "540aa44ce61b01d83d12783716a90d6d93e1bcf6"
-        }
-    },
-    "cordova-plugin-globalization": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-globalization"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-screen-orientation": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-screen-orientation"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-facebook4": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-facebook4"
-        },
-        "is_top_level": true,
-        "variables": {
-            "APP_ID": "197315390766182",
-            "APP_NAME": "All Timer"
-        }
-    },
-    "cordova-plugin-firebase": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-firebase"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "es6-promise-plugin": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/vstirbu/PromisesPlugin.git",
-            "subdir": "."
-        },
-        "is_top_level": false,
-        "variables": {}
-    },
-    "cordova-plugin-background-mode": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-background-mode"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-datepicker": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-datepicker"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "ionic-plugin-keyboard": {
-        "source": {
-            "type": "registry",
-            "id": "ionic-plugin-keyboard"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-app-event": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-app-event"
-        },
-        "is_top_level": false,
-        "variables": {}
-    },
-    "de.appplant.cordova.plugin.local-notification": {
-        "source": {
-            "type": "registry",
-            "id": "de.appplant.cordova.plugin.local-notification"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-nativeaudio": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-nativeaudio@~3.0.9"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-image-picker": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-image-picker"
         },
         "is_top_level": true,
         "variables": {}
@@ -174,15 +78,9 @@
             "subdir": "."
         },
         "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-imagepicker": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-imagepicker"
-        },
-        "is_top_level": true,
-        "variables": {}
+        "variables": {
+            "PHOTO_LIBRARY_USAGE_DESCRIPTION": " "
+        }
     },
     "cordova-plugin-network-information": {
         "source": {
@@ -200,26 +98,34 @@
         "is_top_level": true,
         "variables": {}
     },
+    "cordova-plugin-nativeaudio": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-nativeaudio@~3.0.9"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "de.appplant.cordova.plugin.local-notification": {
+        "source": {
+            "type": "registry",
+            "id": "de.appplant.cordova.plugin.local-notification@~0.8.4"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-app-event": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-app-event"
+        },
+        "is_top_level": false,
+        "variables": {}
+    },
     "cordova-plugin-extension": {
         "source": {
             "type": "registry",
             "id": "cordova-plugin-extension"
-        },
-        "is_top_level": false,
-        "variables": {}
-    },
-    "cordova-promise-polyfill": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-promise-polyfill"
-        },
-        "is_top_level": false,
-        "variables": {}
-    },
-    "cordova-admob-sdk": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-admob-sdk"
         },
         "is_top_level": false,
         "variables": {}
