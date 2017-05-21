@@ -7,52 +7,64 @@
         "files": {}
     },
     "installed_plugins": {
-        "ionic-plugin-keyboard": {
+        "com.synconset.imagepicker": {
+            "PHOTO_LIBRARY_USAGE_DESCRIPTION": " ",
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
-        "cordova-plugin-whitelist": {
+        "cordova-plugin-admobpro": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
-        "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
-        "cordova-plugin-splashscreen": {
+        "cordova-plugin-firebase": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
-        "cordova-sqlite-storage": {
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "com.synconset.imagepicker": {
-            "PHOTO_LIBRARY_USAGE_DESCRIPTION": " ",
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "cordova-plugin-vibration": {
+        "cordova-plugin-globalization": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "cordova-plugin-nativeaudio": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-screen-orientation": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-vibration": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-sqlite-storage": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
         "de.appplant.cordova.plugin.local-notification": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
-        "cordova-plugin-admobpro": {
+        "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     },
     "dependent_plugins": {
+        "cordova-plugin-extension": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
         "cordova-plugin-app-event": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
-        "cordova-plugin-extension": {
+        "es6-promise-plugin": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     }

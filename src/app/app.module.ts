@@ -132,6 +132,7 @@ export function createTranslateLoader(http: Http) {
   providers: [
     StatusBar,
     SplashScreen,
+    AdMob,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginService,
     TimerService,
@@ -153,7 +154,6 @@ export function createTranslateLoader(http: Http) {
     ImagePicker,
     Network,
     Vibration,
-    AdMob,
   ]
 })
 export class AppModule {}

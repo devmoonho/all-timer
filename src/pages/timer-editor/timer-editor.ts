@@ -28,6 +28,7 @@ import { TimerEditorDetailModal } from '../../modals/timer-editor-detail/timer-e
 import { TranslateService } from '@ngx-translate/core';
 import { Device } from '@ionic-native/device';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { AdMob } from '@ionic-native/admob';
 
 // pipe
 import { ToArrayPipe } from '../../pipes/toArray-pipe';
@@ -90,6 +91,7 @@ export class TimerEditorPage{
     public device: Device,
     public nativeAudio: NativeAudio,
     public alertCtrl: AlertController,
+    public admob: AdMob,
   ){
     this.initValidator()
   }
@@ -110,6 +112,11 @@ export class TimerEditorPage{
     this.categoryList = this.config.CATETGORY;
     this.soundList = this.config.SOUND;
     this.initDefaultTimerData();
+  }
+
+  ionViewDidEnter(){
+    this.admob.hideBanner();
+    this.admob.showBanner(8);
   }
 
   initDefaultTimerData(){

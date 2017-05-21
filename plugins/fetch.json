@@ -55,22 +55,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-googleplus": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-googleplus"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "twitter-connect-plugin": {
-        "source": {
-            "type": "registry",
-            "id": "twitter-connect-plugin@0.5.0"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "com.synconset.imagepicker": {
         "source": {
             "type": "git",
@@ -130,10 +114,59 @@
         "is_top_level": false,
         "variables": {}
     },
+    "cordova-promise-polyfill": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-promise-polyfill"
+        },
+        "is_top_level": false,
+        "variables": {}
+    },
+    "cordova-admob-sdk": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-admob-sdk"
+        },
+        "is_top_level": false,
+        "variables": {}
+    },
     "cordova-plugin-admobpro": {
         "source": {
             "type": "registry",
             "id": "cordova-plugin-admobpro"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-screen-orientation": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-screen-orientation"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "es6-promise-plugin": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/vstirbu/PromisesPlugin.git",
+            "subdir": "."
+        },
+        "is_top_level": false,
+        "variables": {}
+    },
+    "cordova-plugin-globalization": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-globalization"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-firebase": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-firebase"
         },
         "is_top_level": true,
         "variables": {}

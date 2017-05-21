@@ -25,8 +25,8 @@ import { Firebase } from '@ionic-native/firebase';
 import { Network } from '@ionic-native/network';
 import { Storage } from '@ionic/storage';
 import { UUID } from 'angular2-uuid';
-import { AdMob } from '@ionic-native/admob';
 
+import { AdMob } from '@ionic-native/admob';
 // services
 
 @Component({
@@ -95,9 +95,9 @@ export class MyApp implements OnInit{
         screenOrientation.lock('portrait');
         this.initGlobalization();
         this.initNavFirebase();
-        this.initAdMob();
       }
       this.initNetwork();
+      this.initAdMob();
     });//platform.ready()
 
   }
@@ -130,16 +130,10 @@ export class MyApp implements OnInit{
         console.log(res);
         let message: any;
 
-        if (this.platform.is('ios')) {
-            message = res.aps.alert;
-        }
-        else{
-            message = res.body;
-        }
+        if (this.platform.is('ios')) { message = res.aps.alert; }
+        else{ message = res.body; }
 
-        if (message.replace(/ /g,'') == ''){
-          return ;
-        }
+        if (message.replace(/ /g,'') == ''){ return ; }
 
         let alert = this.alertCtrl.create({
           title: 'All timer',
@@ -161,37 +155,25 @@ export class MyApp implements OnInit{
       let userLang = res.value.split('-')[0];
       userLang = /(en|ko)/gi.test(userLang) ? userLang : 'en';
       this.translate.use(userLang);
-      // this.translate.use('ko');
     })
   }
 
   initAdMob(){
-    let adMobId: any;
+    let adId;
 
     if(this.platform.is('android')) {
-      adMobId = { // for Android
-        banner: 'ca-app-pub-8126362785815437/7203276103',
-        interstitial: 'ca-app-pub-8126362785815437/7203276103'
-      };
+      adId = 'ca-app-pub-8126362785815437/7203276103';
     } else if (this.platform.is('ios')) {
-      adMobId = { // for iOS
-        banner: 'ca-app-pub-8126362785815437/8680009301',
-        interstitial: 'ca-app-pub-8126362785815437/8680009301'
-      };
-    } else {
-      adMobId = {
-        banner: 'ca-app-pub-8126362785815437/7203276103',
-        interstitial: 'ca-app-pub-8126362785815437/7203276103'
-      };
+      adId = 'ca-app-pub-8126362785815437/8680009301';
     }
 
-    let adOptions = {
-      position: 7,
-      isTesting: true,
-      autoShow: true
-    }
-    this.admob.setOptions(adOptions)
-    this.admob.createBanner({adId: adMobId.banner});
+    this.admob.setOptions({
+      autoShow: true,
+      isTesting: false,
+      position: 8 
+    })
+
+    this.admob.createBanner({ adId: adId })
   }
 
   ngOnInit() {

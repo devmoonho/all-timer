@@ -22,6 +22,7 @@ import { Vibration } from '@ionic-native/vibration';
 
 import { Config } from '../../app/config';
 import { Globals } from '../../app/globals';
+import { AdMob } from '@ionic-native/admob';
 
 // pages
 import { LoginPage } from '../login/login';
@@ -108,6 +109,7 @@ export class TimerPage {
     public vibration: Vibration,
     public globals: Globals,
     public config: Config,
+    public admob: AdMob,
   ) {
     events.subscribe('timer:update-list', (_category, _timer) => {
       console.log('timer:update-list');
@@ -132,6 +134,8 @@ export class TimerPage {
   }
 
   ionViewDidEnter(){
+    this.admob.hideBanner();
+    this.admob.showBanner(8);
 
     console.log('ionViewDidEnter', this.content._scroll, this.config.RUNNING_TIMER[this.navParams.get('timer').timerId]);
   }
