@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <div style="display:flex; flex-direction:row;align-items:center">
+      <ion-icon style="font-size:3rem;margin-left:10px;" color="Yellow" name="md-search"></ion-icon>
+      <ion-input clearOnEdit='true' style="font-size:2.0rem;" type="text" placeholder="{{'TimerEditor.please-enter' | translate}}" [(ngModel)]="searchQuery" clearInput></ion-input>
+      <button style="margin-right:10px;" ion-button small outline type="button" name="button" (click)="search()" color="Yellow">
+        {{'Common.search' | translate}}
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <ion-item style="padding-left:2px;" *ngFor="let timer of timerList; let j = index" (click)="onSelectTimer(timer)" tappable>
+    <ion-avatar item-left>
+      <h1 class="avatar-text" [style.background-color]="getRandomColor(j)" text-center>{{timer.name | slice:0:2}}</h1>
+    </ion-avatar>
+    <h2>{{timer.name}}</h2>
+    <p>{{timer.summary}}</p>
+
+    <div style="display:flex;align-items:center;z-index:1;width:40px;" item-right>
+      <button ion-button type="button" clear [color]="'Yellow'" (click)="showDownloadConfirm($event, timer)">
+        <ion-icon style="font-size:2.8rem;" name="md-download"></ion-icon>
+      </button>
+    </div>
+
+  </ion-item>
+</ion-content>
+<ion-footer>
+
+</ion-footer>

@@ -7,8 +7,17 @@ export class Globals{
   public SERVER_PATH_USER_PROFILE: any = '/profile/';
   public SERVER_PATH_TIMER: any = '/timer/';
 
+  public SERVER_PATH_APP: any = '/app/';
+  public SERVER_PATH_SHARE: any = '/share/';
+  public SERVER_PATH_DEFAULT: any = '/default/';
+  public SERVER_PATH_TIMER_CATEGORY: any = '/timer-category/';
+  public SERVER_PATH_TIMER_SOUND: any = '/timer-sound/';
+  public SERVER_PATH_TIMER_TEMPLATE: any = '/timer-template/';
+  public SERVER_PATH_TIMER_TEMPLATE_ITEMS: any = '/timer-template-items/';
+
   // for local storage
   public LOCAL_STORAGE_KEY_USER_INFO: any = 'userInfo';
+  public LOCAL_STORAGE_KEY_TIMER: any = 'super-timer';
 
   // variable
   public WEB_CLINED_ID: any = '902931259626-87cv97578lsa82ea92us4o3h1qje31u4.apps.googleusercontent.com';

@@ -11,7 +11,7 @@ import * as moment from 'moment';
 
 //Oauth
 import { GooglePlus } from '@ionic-native/google-plus';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { Facebook } from '@ionic-native/facebook';
 import { TwitterConnect } from '@ionic-native/twitter-connect';
 
 @Injectable()
@@ -26,6 +26,30 @@ export class LoginService {
     this.fireAuth = firebase.auth();
     this.fireDatabase = firebase.database();
   }
+
+  public serviceAuthStateChanged(state){
+    console.log('serviceAuthStateChanged', state);
+    // 1. login
+    // 1-1.
+    // 2. logout
+    // 2-1.
+  }
+
+  public serviceCurrentUser():any{
+    let user = this.fireAuth.currentUser;
+    return user;
+  }
+
+  public serviceAnonymousLogin(): any{
+    return Promise.resolve()
+    .then(()=>{
+      return this.anonymousLogin();
+    })
+    .then(()=>{
+      console.log("---- anonymousLogin done ----");
+    })
+  }
+
 
   public serviceTwitterLogin(): any{
     return Promise.resolve()
@@ -156,6 +180,10 @@ export class LoginService {
     .then(() => {
       console.log(" ---- serviceSignup done ----");
     });
+  }
+
+  private anonymousLogin(){
+    return this.fireAuth.signInAnonymously();
   }
 
   private firebaseTwitterCredentialLogin(res: any): any{

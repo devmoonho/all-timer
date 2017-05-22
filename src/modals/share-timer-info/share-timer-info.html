@@ -1,0 +1,35 @@
+<ion-header no-shadow no-border>
+  <ion-navbar color="Yellow">
+    <ion-buttons start>
+      <button ion-button icon-only (click)="closeModal()">
+        <ion-icon item-right name="ios-close-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title >{{timer.name}}</ion-title>
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding >
+  <ion-label color="Yellow">{{'TimerEditor.summary' | translate}}</ion-label>
+  <p style="margin:0 0 20px 20px;">{{timer.summary}}</p>
+  <ion-label color="Yellow">{{'TimerEditor.category-title' | translate}}</ion-label>
+  <p style="margin:0 0 20px 20px;">{{'Main.'+timer.category | translate}}</p>
+  <ion-label color="Yellow">{{'TimerEditor.timer-list' | translate}}</ion-label>
+  <ion-item *ngFor="let item of timer.timerItems | toArrayPipe">
+    <h2>{{item.title}}</h2>
+    <h4>{{item.detail}}</h4>
+    <h3>{{item.timeSet}}</h3>
+  </ion-item>
+</ion-content>
+
+<ion-footer>
+  <div class="flex_button_group">
+    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onDownloadTimer()">
+        {{'Common.download' | translate }}
+    </button>
+    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onBackCategory()">
+        {{'Common.Back' | translate }}
+    </button>
+  </div>
+</ion-footer>

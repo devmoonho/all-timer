@@ -1,0 +1,210 @@
+page-timer{
+  ion-footer{
+    background: #fff;
+  }
+
+  .footer-simple-container{
+    margin:5px 0 5px 0;
+    display:flex;
+    flex-direction:row;
+    justify-content: space-between;
+    align-items:center;
+  }
+  .footer-simple-item:nth-child(1){
+    margin-left:10px;
+    margin-right:10px;
+    margin-top:5px;
+    flex-basis:10%;
+    font-size:3rem;
+  }
+  .footer-simple-item:nth-child(2){
+    margin-right:5px;
+    margin-left:5px;
+    height:38px;
+    flex-basis:40%;
+  }
+  .footer-simple-item:nth-child(3){
+    margin-right:5px;
+    margin-left:5px;
+    height:38px;
+    flex-basis:40%;
+  }
+  .footer-simple-item:nth-child(4){
+    margin-right:10px;
+    margin-left:5px;
+    margin-top:8px;
+    height:38px;
+    flex-basis:10%;
+    font-size:3rem;
+  }
+
+  .progress-simple-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items:center;
+  }
+  .progress-simple-item{
+    width:100%;
+  }
+  .progress-simple-item:nth-child(1){
+    flex-basis:30%;
+  }
+  .datetime-md, .datetime-ios{
+    padding: 0 0 0 0;
+  }
+  .progress-simple-item:nth-child(2){
+    flex-basis:50%;
+    // font-size: 2.5rem;
+    font-weight: bold;
+  }
+  .progress-simple-item:nth-child(3){
+    font-family: fontello;
+    flex-basis:20%;
+    font-size: 4rem;
+    font-weight: bold;
+  }
+
+  .item-cover {
+    height: 0px;
+  }
+  .progress-wrapper {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin: 10px 0 40px 0;
+    font-size: 21px;
+  }
+
+  .progress-text {
+    font-family: 'Raleway', sans-serif;
+    position: absolute;
+    color: #000000;
+    font-weight: 100;
+    line-height: 1;
+    top: 47%;
+    bottom: auto;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 2.6rem;
+    font-weight: 900;
+    z-index: 2;
+  }
+
+  .progress-default-text{
+    font-family: 'Raleway', sans-serif;
+    position: absolute;
+    color: #000000;
+    font-weight: 100;
+    line-height: 1;
+    top: 34%;
+    bottom: auto;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 1.4rem;
+    font-weight: 900;
+    z-index: 2;
+  }
+
+  .progress-percent{
+    font-family: 'Raleway', sans-serif;
+    position: absolute;
+    color: #000000;
+    font-weight: 100;
+    line-height: 1;
+    top: 61%;
+    bottom: auto;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 1.4rem;
+    font-weight: 900;
+    z-index: 2;
+  }
+
+  .progress-icon {
+    font-family: fontello;
+    position: absolute;
+    color: #000000;
+    top: 78%;
+    bottom: auto;
+    left: 50%;
+    transform: translateY(-50%) translateX(-45%);
+    font-size: 3rem;
+    z-index: 3;
+  }
+
+  .progress-status{
+    font-family: fontello;
+    position: absolute;
+    top: 20%;
+    bottom: auto;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 3rem;
+    z-index: 1;
+  }
+
+  .progress-notification{
+    position: absolute;
+    top: 115%;
+    bottom: auto;
+    left: 71%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 3.5rem;
+    z-index: 0;
+  }
+
+  .progress-setting{
+    position: absolute;
+    top: 90%;
+    bottom: auto;
+    left: 12%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 3.5rem;
+    z-index: 0;
+  }
+
+  .progress-current{
+    position: absolute;
+    top: 115%;
+    bottom: auto;
+    left: 30%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 3.5rem;
+    z-index: 0;
+  }
+
+  .progress-refresh{
+    position: absolute;
+    top: 115%;
+    bottom: auto;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 3.5rem;
+    z-index: 0;
+  }
+  .flex_button_group{
+    margin: 0 16px 0 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .flex_button_item{
+    margin: 0 5px 0 5px;
+    width: 100%;
+    font-weight: bold;
+  }
+  img {
+    padding: 5px 5px 5px 5px;
+    height: 160px;
+    object-fit: scale-down;
+    background-size: cover;
+    background-image: url("../assets/image/background-pattern.jpg");
+  }
+  ion-card{
+    h1{
+      font-weight: bold !important;
+      border-bottom: 5px solid orange;
+    }
+  }
+}

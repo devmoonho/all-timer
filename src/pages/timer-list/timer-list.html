@@ -1,0 +1,54 @@
+<ion-header no-shadow no-border>
+  <ion-navbar color="Yellow">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{'Default.Timer.Name' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onCreateTimer()">
+        <ion-icon name="md-add"></ion-icon>
+        {{'Common.Create' | translate }}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="card-background-page">
+    <ion-card class="card-detail" (tap)="onBackCategory()" tappable>
+      <img [src]="currentCategory.defaultImage">
+      <div class="card-title">{{ 'Main.' + currentCategory.value | translate}}</div>
+      <div class="card-subtitle">{{ timerList | categoryPipe:{category:currentCategory.value} }} {{'Main.listings' | translate}}</div>
+      <ion-icon class="card-icon-back" name="ios-arrow-back"></ion-icon>
+    </ion-card>
+  </div>
+  <ion-item *ngFor="let timer of timerList ; let j = index" (click)="onSelectTimer(timer)" tappable>
+    <ion-avatar item-left>
+      <h1 class="avatar-text" [style.background-color]="getRandomColor(j)" text-center>{{timer.name | slice:0:2}}</h1>
+    </ion-avatar>
+    <h2>{{timer.name}}</h2>
+    <p>{{timer.summary}}</p>
+
+    <div style="display:flex;align-items:center;" item-right>
+      <ion-spinner *ngIf="config.RUNNING_TIMER[timer.timerId]!=undefined" [color]="'Yellow'" name="crescent"></ion-spinner>
+    </div>
+
+    <div style="display:flex;align-items:center;z-index:1;" item-right>
+      <button ion-button type="button" clear [color]="'Yellow'" (click)="showShareConfirm($event, timer)">
+        <ion-icon style="font-size:2.8rem;" name="md-cloud-upload"></ion-icon>
+      </button>
+    </div>
+
+  </ion-item>
+</ion-content>
+
+<!-- <ion-footer>
+  <div class="flex_button_group">
+    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onCreateTimer()">
+        {{'Common.Create' | translate }}
+    </button>
+    <button ion-button class="flex_button_item" type="button" clear [color]="'Yellow'" (click)="onBackCategory()">
+        {{'Common.Back' | translate }}
+    </button>
+  </div>
+</ion-footer> -->

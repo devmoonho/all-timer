@@ -1,43 +1,83 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Platform, NavController, AlertController } from 'ionic-angular';
+import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
+import { Platform, Nav, AlertController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Globalization } from '@ionic-native/globalization';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { Device } from '@ionic-native/device';
 
 import { Globals } from './globals';
+import { Config } from './config';
 
 // page
+import { TabsPage } from '../pages/tabs/tabs';
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
+import { StorePage } from '../pages/store/store';
+import { LoginPage } from '../pages/login/login';
 
 // utils
 import { TranslateService } from '@ngx-translate/core';
 import * as firebase from 'firebase';
 import * as moment from 'moment';
 import { Firebase } from '@ionic-native/firebase';
+import { Network } from '@ionic-native/network';
+import { Storage } from '@ionic/storage';
+import { UUID } from 'angular2-uuid';
+
+import { AdMob } from '@ionic-native/admob';
+// services
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
 })
 export class MyApp implements OnInit{
-  @ViewChild('rootNav') navCtrl: NavController
-  rootPage: any;
+  @ViewChild(Nav) nav: Nav;
+
+  rootPage: any = null;
+  rootParams: any;
+  zone: NgZone;
+
+  menuItems: any[] = [
+    {
+      name: 'Full page',
+      page: LoginPage,
+      params: { icons: true, titles: true, pageTitle: 'Full page' }
+    },
+    {
+      name: 'clear',
+      page: '',
+      params: { icons: false, titles: true }
+    },
+    {
+      name: 'Logout',
+      page: '',
+      params: { icons: true, titles: false }
+    }
+  ];
 
   constructor(public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public globals: Globals,
+    public config: Config,
     public alertCtrl: AlertController,
     public screenOrientation: ScreenOrientation,
     public translate: TranslateService,
     public globalization: Globalization,
     public keyboard: Keyboard,
-    public cordovaFirebase: Firebase
+    public cordovaFirebase: Firebase,
+    public device: Device,
+    public network: Network,
+    public events: Events,
+    public storage: Storage,
+    public admob: AdMob,
   ){
-    translate.addLangs(["en", "ko"]);
+    translate.addLangs(["en", "ko", "fr", "hi", "ja", "pt", "zh"]);
     translate.setDefaultLang('en');
+    // translate.setDefaultLang('ko');
+    this.initFirebase();
 
     platform.ready()
     .then(() => {
@@ -47,23 +87,41 @@ export class MyApp implements OnInit{
       splashScreen.hide();
 
       if (platform.is('ios')) {
-        keyboard.disableScroll(false);
+        keyboard.disableScroll(true);
         keyboard.hideKeyboardAccessoryBar(false);
       }
 
-      if (platform.is('ios') || platform.is('android')) {
+      // real device case
+      if(this.device.uuid != null){
         screenOrientation.lock('portrait');
+        this.initGlobalization();
+        this.initNavFirebase();
       }
-
-      this.initGlobalization();
-      this.initNavFirebase();
+      this.initNetwork();
+      this.initAdMob();
     });//platform.ready()
 
-    this.initFirebase();
+  }
+
+  initNetwork(){
+    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+      console.log('network was disconnected :-(', this.network.type);
+      this.events.publish('network:disconnected');
+    });
+    // stop disconnect watch
+    // disconnectSubscription.unsubscribe();
+
+    let connectSubscription = this.network.onConnect().subscribe(() => {
+      console.log('network connected!', this.network.type); 
+      this.events.publish('network:connected');
+      });
+    // stop connect watch
+    // connectSubscription.unsubscribe();
   }
 
   initFirebase(){
     firebase.initializeApp(this.globals.FIREBASE_CONFIG);
+    this.zone = new NgZone({});
   }
 
   initNavFirebase(){
@@ -73,16 +131,10 @@ export class MyApp implements OnInit{
         console.log(res);
         let message: any;
 
-        if (this.platform.is('ios')) {
-            message = res.aps.alert;
-        }
-        else{
-            message = res.body;
-        }
+        if (this.platform.is('ios')) { message = res.aps.alert; }
+        else{ message = res.body; }
 
-        if (message.replace(/ /g,'') == ''){
-          return ;
-        }
+        if (message.replace(/ /g,'') == ''){ return ; }
 
         let alert = this.alertCtrl.create({
           title: 'All timer',
@@ -101,23 +153,215 @@ export class MyApp implements OnInit{
   initGlobalization(){    // config translate
     this.globalization.getPreferredLanguage()
     .then((res) => {
-      let userLang = res.value.split('-')[0];
-      userLang = /(en|ko)/gi.test(userLang) ? userLang : 'en';
+      let userLang: string;
+
+      if(res.value.includes("zh")){
+        if(res.value.includes("CN") || res.value.includes("Hans")){
+          userLang = 'zh-Hans';
+        }else{
+          userLang = 'zh-Hant';
+        }
+      }else{
+        userLang = res.value.split('-')[0];
+        userLang = /(en|fr|hi|ja|ko|pt)/gi.test(userLang) ? userLang : 'en';
+      }
+      console.log('initGlobalization', res.value, userLang);
       this.translate.use(userLang);
     })
   }
 
+  initAdMob(){
+    let adId;
+
+    if(this.platform.is('android')) {
+      adId = 'ca-app-pub-8126362785815437/7203276103';
+    } else if (this.platform.is('ios')) {
+      adId = 'ca-app-pub-8126362785815437/8680009301';
+    }
+
+    this.admob.setOptions({
+      autoShow: true,
+      isTesting: false,
+      position: 8
+    })
+
+    this.admob.createBanner({ adId: adId })
+  }
+
   ngOnInit() {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        console.log(user)
-        this.updateLastConnection();
-        this.navCtrl.setRoot(HomePage);
-      } else {
-        this.navCtrl.setRoot(StartPage);
-        console.log("No user is signed in.")
-      }
+      this.zone.run(() => {
+        if (!user) {
+          console.log("No user is signed in.")
+          this.rootPage = StartPage ;
+        } else {
+          console.log(user)
+          this.loadingProcessFromLocal();
+          // this.loadingProcessFromServer();
+        }
+      });
     });
+  }
+
+  private loadingProcessFromLocal(){
+    this.zone.run(() =>{
+      Promise.resolve()
+      .then(() =>{
+        return this.isFirstAccessLocalStorage();
+      })
+      .then((res)=>{
+        if(res===0){ // first access
+          return this.makeDefaultTimer();
+        }
+        return;
+      })
+      .then((res)=>{
+        this.events.publish('timer:update-list');
+        this.rootPage = TabsPage;
+      })
+    })
+  }
+
+  private isFirstAccessLocalStorage():any {
+    return this.storage.length();
+  }
+
+  private makeDefaultTimer(){
+    let firstTimer = {};
+    let timerItems = {};
+    let newPostTimerKey = UUID.UUID();
+
+    firstTimer[newPostTimerKey]= Object.assign({}, this.config.TEMP_TIMER);
+    for(let i=0 ; i<3 ; i++){
+      let _items = Object.assign({}, this.config.TEMP_TIMER_ITEMS);
+      let newPostItemsKey = UUID.UUID();
+
+      _items['id'] = newPostItemsKey;
+      _items['color'] = this.config.RANDOM_COLOR[this.randomRange(0, this.config.RANDOM_COLOR.length-1)];
+      timerItems[newPostItemsKey] = _items;
+    }
+    firstTimer[newPostTimerKey]['timerId'] = newPostTimerKey;
+    firstTimer[newPostTimerKey]['timerItems'] = timerItems;
+
+    return this.storage.set(newPostTimerKey, this.defaultDataForFirstAccess(firstTimer[newPostTimerKey]));
+  }
+
+  private loadTimerDataFromLocalStorage(){
+    let _timer = {};
+    this.storage.forEach((value, key, iterationNumber) =>{
+      _timer[key] = value[key];
+    })
+    return _timer;
+  }
+
+  private isFirstAccess(){
+    let user = firebase.auth().currentUser;
+    return firebase.database().ref(this.globals.SERVER_PATH_USERS + user.uid ).once('value');
+  }
+
+  private loadTemplateTimerFromServer(): any{
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_TEMPLATE ).once('value')
+  }
+
+  private loadTemplateItemsFromServer(): any{
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_TEMPLATE_ITEMS ).once('value')
+  }
+
+  private copyDefaultTimer(timer, items): any{
+    let _timer = Object.assign({}, timer);
+    let user = firebase.auth().currentUser;
+    let ref = firebase.database().ref(this.globals.SERVER_PATH_USERS +  user.uid + this.globals.SERVER_PATH_TIMER);
+    let newPostTimerKey = ref.push().key;
+
+    let updates = {};
+    let timerItems = {};
+
+    for(let i=0 ; i<3 ; i++){
+      let _items = Object.assign({}, items);
+      let newPostItemsKey = ref.push().key;
+
+      _items['id'] = newPostItemsKey;
+      _items['color'] = this.config.RANDOM_COLOR[this.randomRange(0, this.config.RANDOM_COLOR.length-1)];
+      timerItems[newPostItemsKey] = _items;
+    }
+    _timer['timerItems'] = timerItems;
+    _timer['timerId'] = newPostTimerKey;
+    _timer = this.defaultDataForFirstAccess(_timer);
+
+    // first default timer
+    updates[newPostTimerKey] = _timer;
+    return ref.update(updates);
+  }
+
+  private defaultDataForFirstAccess(_timer): any{
+    let englishDefault:any ={
+      name:"Super Timer",
+      summary:"This is a sample timer",
+      title:"Timer",
+      detail:"This is first timer, Let's set time"
+    }
+
+    this.translate.get('Default.Timer.Name')
+    .subscribe((res: string) => {
+      if(res === 'Default.Timer.Name'){
+        _timer.name = englishDefault.name;
+      }else{
+        _timer.name = res;
+      }
+    })
+    this.translate.get('Default.Timer.Summary')
+    .subscribe((res: string) => {
+      if(res === 'Default.Timer.Summary'){
+        _timer.summary = englishDefault.summary;
+      }else{
+        _timer.summary = res;
+      }
+    })
+    this.translate.get('Default.Timer.Title')
+    .subscribe((res: string) => {
+      if(res === 'Default.Timer.Title'){
+        for(let key in _timer.timerItems){
+          _timer.timerItems[key]['title'] = englishDefault.title;
+        }
+      }else{
+        for(let key in _timer.timerItems){
+          _timer.timerItems[key]['title'] = res;
+        }
+      }
+
+    })
+    this.translate.get('Default.Timer.Detail')
+    .subscribe((res: string) => {
+      if(res === 'Default.Timer.Detail'){
+        for(let key in _timer.timerItems){
+          _timer.timerItems[key]['detail'] = englishDefault.detail;
+        }
+      }else{
+        for(let key in _timer.timerItems){
+          _timer.timerItems[key]['detail'] = res;
+        }
+      }
+    })
+
+    return _timer;
+  }
+
+
+  private loadCategoryDataFromServer(){
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_CATEGORY).once('value')
+  }
+
+  private loadSoundDataFromServer(){
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_SOUND).once('value')
+  }
+
+  private loadTimerTemplateDataFromServer(){
+    return firebase.database().ref(this.globals.SERVER_PATH_APP + this.globals.SERVER_PATH_TIMER_TEMPLATE).once('value')
+  }
+
+  private loadTimerDataFromServer(){
+    let user = firebase.auth().currentUser;
+    return firebase.database().ref(this.globals.SERVER_PATH_USERS + user.uid + this.globals.SERVER_PATH_TIMER).once('value')
   }
 
   private updateLastConnection(): void {
@@ -125,5 +369,25 @@ export class MyApp implements OnInit{
     firebase.database().ref(this.globals.SERVER_PATH_USERS + user.uid + this.globals.SERVER_PATH_USER_PROFILE).update({
       lastConnect: moment().format('YYYYMMDDHHmmss')
     });
+  }
+
+  private randomRange(min, max){
+    var RandVal = Math.random() * (max- min) + min;
+    return Math.floor(RandVal);
+  }
+
+  private logout(){
+    firebase.auth().signOut();
+  }
+
+  openPage(page) {
+    if(page.name === 'Logout'){
+      this.logout();
+    }else if(page.name === 'clear'){
+      this.storage.clear();
+    }else{
+      page.params.pageTitle = page.name;
+      this.nav.push(page.page, page.params);
+    }
   }
 }

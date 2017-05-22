@@ -1,82 +1,144 @@
 import { Component } from '@angular/core';
+import { NavController, NavParams, Events } from 'ionic-angular';
+import { UUID } from 'angular2-uuid';
+import { Observable } from 'rxjs/Rx';
 
-import { NavController, AlertController } from 'ionic-angular';
+// animatin
+import { trigger, state, style, transition, animate, keyframes} from '@angular/core'
 
 // services
-import { LoginService } from '../../services/login-service';
+import { TimerService } from '../../services/timer-service';
+import { StorageService } from '../../services/storage-service';
+import { Config } from '../../app/config';
+import { Globals } from '../../app/globals';
 
-// utils
-import { TranslateService } from '@ngx-translate/core';
+// pipe
+import { CategoryPipe } from '../../pipes/category-pipe';
 
 // pages
-import { LoginPage } from '../login/login';
+import { TimerPage } from '../timer/timer';
+import { TimerListPage } from '../timer-list/timer-list';
+import { TimerEditorPage } from '../timer-editor/timer-editor';
+
+// Utils
+import { AdMob } from '@ionic-native/admob';
 
 @Component({
-  selector: 'page-home',
-  providers: [LoginService],
-  templateUrl: 'home.html'
+  selector: 'home-page',
+  providers:[TimerService, StorageService],
+  templateUrl: 'home.html',
 })
+
 export class HomePage {
+  rootNavCtrl: NavController;
+
+  categoryMode: any = true;
+  currentCategory: any;
+
+  timer: any;
+  timerList: any;
+  category: any;
+
+  selectedTimer: any;
 
   constructor(
     public navCtrl: NavController,
-    public alertCtrl: AlertController,
-    public translate: TranslateService,
-    public loginService: LoginService
-  ) {
+    public navParams: NavParams,
+    public timerService: TimerService,
+    public storageService: StorageService,
+    public config: Config,
+    public globals: Globals,
+    public events: Events,
+    public admob: AdMob,
+  ){
+    this.rootNavCtrl = navParams.get('rootNavCtrl');
 
-  }
-  goLoginPage(): void{
-    this.navCtrl.push(LoginPage);
-  }
-
-  goLogout(): void{
-    this.loginService.serviceLogout()
-    .then((res) =>{
-      this.showAlert({titleCode: "Common.AlertTitle.Information", messageObj: "Login.Alert.LogoutMessage"});
-    })
-    .catch((err)=>{
-      console.log(err);
-      this.showAlert({titleCode: "Common.AlertTitle.Error", messageObj: "Login.Alert.LogoutErrorMessage"});
-    })
-  }
-
-  showAlert({titleCode, messageObj}) {
-    let title, message, btnConfirm: string;
-
-    this.translate.get(titleCode)
-    .subscribe((res: string) => {
-      title = res;
-    })
-
-    if(typeof messageObj == 'string'){
-      this.translate.get(messageObj)
-      .subscribe((res: string) => {
-        message = res;
-      })
-    }else{
-      this.translate.get("FirebaseMessage." + messageObj.code)
-      .subscribe((res: string) => {
-        message = res.match("FirebaseMessage.")? messageObj.message : res;
-      })
-    }
-
-    this.translate.get('Common.Confirm')
-    .subscribe((res: string) => {
-      btnConfirm = res;
-    })
-
-    let alert = this.alertCtrl.create({
-      title: title,
-      subTitle: message,
-      buttons: [{
-        text: btnConfirm,
-        handler: () => {
-          console.log('Confirm clicked');
-        }
-      }]
+    events.subscribe('timer:update-list', () => {
+      console.log('timer:update-list');
+      this.updateTimerList();
     });
 
-    alert.present();
+    events.subscribe('timer:remove-list', () => {
+      console.log('timer:update-list');
+      this.updateTimerList();
+    });
+  }
+
+  ngOnInit(){
+    this.category = this.config.CATETGORY;
+  }
+
+  ionViewWillEnter(){
+    this.storageService.serviceGetAllTimer()
+    .then((res)=>{
+      this.timer = res;
+    })
+  }
+
+  onSelectCard(idx){
+    this.navCtrl.push(TimerListPage, {
+      timerList: this.getCategoryTimer(idx),
+      category:this.config.CATETGORY[idx]
+    })
+  }
+
+  getCategoryTimer(idx):any{
+    let _retTimer: any = {};
+    let _category = this.config.CATETGORY[idx]
+    for(let key in this.timer){
+      if(this.timer[key].category === _category.value){
+        _retTimer[key] = this.timer[key];
+      }
+    }
+    return _retTimer
+  }
+
+  onBackCategory(){
+
+  }
+
+  onCreateTimer(){
+    this.navCtrl.push(TimerEditorPage, {
+      mode: 'create',
+      timer: '',
+      category: this.category[this.category.length - 1],
+    });
+  }
+
+  onSelectTimer(_timer){
+    this.navCtrl.push(TimerPage, {
+      mode: 'edit',
+      timer: _timer,
+      category: this.currentCategory,
+    });
+  }
+
+  updateTimerList(){
+    this.storageService.serviceGetAllTimer()
+    .then((res)=>{
+      this.timer = res;
+    })
+  }
+
+  getCategoryByValue(_value){
+    for(let obj of this.category){
+      if(_value === obj.value){
+        return obj;
+      }
+    }
+    return this.category[0];
+  }
+
+  utilsArrayToObject(arr){
+    let _obj:any = {};
+    for(let item of arr){
+      item.id = UUID.UUID();
+      _obj[item.id] = item;
+    }
+    return _obj;
+  }
+
+  utilsObjectToArray(obj){
+    return Object.keys(obj).map((k) => obj[k])
   }
 }

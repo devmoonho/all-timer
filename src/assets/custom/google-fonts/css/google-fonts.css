@@ -1,0 +1,20 @@
+@font-face{
+  font-family: 'Passion';
+  src: url('../Passion.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face{
+  font-family: 'Poiret';
+  src: url('../Poiret.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face{
+  font-family: 'Raleway';
+  src: url('../Raleway.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
