@@ -2,7 +2,7 @@ page-timer{
   ion-footer{
     background: #fff;
   }
-  
+
   .footer-simple-container{
     margin:5px 0 5px 0;
     display:flex;
@@ -18,10 +18,24 @@ page-timer{
     font-size:3rem;
   }
   .footer-simple-item:nth-child(2){
-    margin-right:30px;
+    margin-right:5px;
     margin-left:5px;
     height:38px;
-    flex-basis:90%;
+    flex-basis:40%;
+  }
+  .footer-simple-item:nth-child(3){
+    margin-right:5px;
+    margin-left:5px;
+    height:38px;
+    flex-basis:40%;
+  }
+  .footer-simple-item:nth-child(4){
+    margin-right:10px;
+    margin-left:5px;
+    margin-top:8px;
+    height:38px;
+    flex-basis:10%;
+    font-size:3rem;
   }
 
   .progress-simple-container{
@@ -182,9 +196,8 @@ page-timer{
   }
   img {
     padding: 5px 5px 5px 5px;
-    height: 150px;
-    object-fit: cover;
-    // object-fit: contain;
+    height: 160px;
+    object-fit: scale-down;
     background-size: cover;
     background-image: url("../assets/image/background-pattern.jpg");
   }

@@ -28,6 +28,7 @@ import { TimerEditorDetailModal } from '../../modals/timer-editor-detail/timer-e
 import { TranslateService } from '@ngx-translate/core';
 import { Device } from '@ionic-native/device';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { AdMob } from '@ionic-native/admob';
 
 // pipe
 import { ToArrayPipe } from '../../pipes/toArray-pipe';
@@ -90,6 +91,7 @@ export class TimerEditorPage{
     public device: Device,
     public nativeAudio: NativeAudio,
     public alertCtrl: AlertController,
+    public admob: AdMob,
   ){
     this.initValidator()
   }
@@ -110,6 +112,11 @@ export class TimerEditorPage{
     this.categoryList = this.config.CATETGORY;
     this.soundList = this.config.SOUND;
     this.initDefaultTimerData();
+  }
+
+  ionViewDidEnter(){
+    this.admob.hideBanner();
+    this.admob.showBanner(8);
   }
 
   initDefaultTimerData(){
@@ -164,7 +171,6 @@ export class TimerEditorPage{
   onSaveTimerMain(_name, _summary){
     this.timer.name = _name;
     this.timer.summary = _summary;
-    // this.events.publish('timer:stop');
 
     let items:any = this.timer.timerItems;
     for(let key in items){
@@ -204,6 +210,9 @@ export class TimerEditorPage{
     let detailModal = this.modalCtrl.create(TimerEditorDetailModal, { timer : _timer, mode: this.navParams.get('mode'), category: this.navParams.get('category')});
     detailModal.onDidDismiss(data => {
       console.log(data);
+
+      this.admob.hideBanner();
+      this.admob.showBanner(8);
     });
     detailModal.present();
   }
@@ -339,6 +348,10 @@ export class TimerEditorPage{
     let colorPickerModal = this.modalCtrl.create(ColorPickerModal);
     colorPickerModal.onDidDismiss(data => {
       this.getCurrentTimer().color = data.color;
+
+      this.admob.hideBanner();
+      this.admob.showBanner(8);
+
       console.log(data);
     });
     colorPickerModal.present();

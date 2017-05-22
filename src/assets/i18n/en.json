@@ -1,20 +1,20 @@
 {
   "IntroSlider": {
     "Slider1" :{
-      "Title": "dolor noster",
-      "Description": "enim quem elit quis dolore dolor dolor veniam fore minim aliqua aute eram cillu"
+      "Title": "All Timer",
+      "Description": "You can create, register, and execute all necessary timers and share them with others."
     },
     "Slider2" :{
-      "Title": "aute aute",
-      "Description": "elit duis sint quorum veniam dolore malis export culpa sunt irure sint aute"
+      "Title": "Cooking timer",
+      "Description": "You can find a timer for cooking along the recipe."
     },
     "Slider3" :{
-      "Title": "dolore eram",
-      "Description": "dolore tamen illum malis nulla amet malis magna quem quid quorum summis labore"
+      "Title": "Test timer",
+      "Description": "There is a timer for worldwide test time, so you can respond effectively to testing."
     },
     "Slider4" :{
-      "Title": "quem sunt",
-      "Description": "eram elit quid fore irure quis quis summis cillum sint esse fore tempor export",
+      "Title": "Exercise timer",
+      "Description": "There is a timer to effectively carry out various exercises.Let's start now.",
       "Start": "START"
     }
   },
@@ -71,7 +71,7 @@
     "listings": "Listings"
   },
   "FirebaseMessage":{
-    "auth/account-exists-with-different-credential": "An account already exists with the same email addr",
+    "auth/account-exists-with-different-credential": "An account already exists with the same email address",
     "auth/user-not-found": "Unable to find registered user.",
     "auth/wrong-password": "The password is invalid",
     "auth/invalid-email": "The email address is badly formatted.",
@@ -107,11 +107,12 @@
     "choose-color":"CHOOSE COLOR",
     "color":"COLOR",
     "choose-picture":"CHOOSE PICTURE",
-    "Couleur":"COULEUR"
+    "Couleur":"COLOR"
   },
   "Timer":{
     "simple-view":"SIMPLE",
-    "repeat-count":"REPEAT"
+    "repeat-count":"REPEAT",
+    "current-timer":"CURRENT"
   },
   "Common":{
     "AlertTitle":{
@@ -141,7 +142,7 @@
   },
   "Default":{
     "Timer":{
-      "Name":"Super Timer",
+      "Name":"All Timer",
       "Summary":"This is a sample timer",
       "Title":"Timer",
       "Detail":"This is first timer, Let's set time"

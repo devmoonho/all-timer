@@ -64,6 +64,8 @@ import { ImagePicker } from '@ionic-native/image-picker';
 import { Network } from '@ionic-native/network';
 import { Vibration } from '@ionic-native/vibration';
 
+import { AdMob } from '@ionic-native/admob';
+
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -130,6 +132,7 @@ export function createTranslateLoader(http: Http) {
   providers: [
     StatusBar,
     SplashScreen,
+    AdMob,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginService,
     TimerService,

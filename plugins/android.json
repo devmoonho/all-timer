@@ -10,30 +10,22 @@
         "com.synconset.imagepicker": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
+        "cordova-plugin-admobpro": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
         "cordova-plugin-background-mode": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
-        "cordova-plugin-datepicker": {
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "cordova-plugin-facebook4": {
-            "APP_ID": "197315390766182",
-            "APP_NAME": "All Timer",
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "cordova-plugin-firebase": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "cordova-plugin-globalization": {
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "cordova-plugin-googleplus": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "cordova-plugin-nativeaudio": {
@@ -65,13 +57,12 @@
         },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "twitter-connect-plugin": {
-            "FABRIC_KEY": "540aa44ce61b01d83d12783716a90d6d93e1bcf6",
-            "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     },
     "dependent_plugins": {
+        "cordova-plugin-extension": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
         "cordova-plugin-app-event": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },

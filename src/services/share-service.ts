@@ -33,7 +33,7 @@ export class ShareService {
       for(let key in timer.timerItems){
         msg = (timer.timerItems[key].image).replace('data:image/png;base64,','');
         uid = timer.timerItems[key].id
-        if(msg===''|| msg.includes('assets/image/')){
+        if(msg===''|| msg.includes('assets/image/') || msg.includes('firebasestorage.googleapis.com')){
           current += 1;
           if(current >= total){
             this.saveShareTimerDataToServer(timer);

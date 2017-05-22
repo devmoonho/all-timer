@@ -20,6 +20,9 @@ import { TimerPage } from '../timer/timer';
 import { TimerListPage } from '../timer-list/timer-list';
 import { TimerEditorPage } from '../timer-editor/timer-editor';
 
+// Utils
+import { AdMob } from '@ionic-native/admob';
+
 @Component({
   selector: 'home-page',
   providers:[TimerService, StorageService],
@@ -46,6 +49,7 @@ export class HomePage {
     public config: Config,
     public globals: Globals,
     public events: Events,
+    public admob: AdMob,
   ){
     this.rootNavCtrl = navParams.get('rootNavCtrl');
 
@@ -77,7 +81,6 @@ export class HomePage {
       category:this.config.CATETGORY[idx]
     })
   }
-
 
   getCategoryTimer(idx):any{
     let _retTimer: any = {};

@@ -21,6 +21,7 @@ import { TimerEditorPage } from '../timer-editor/timer-editor';
 
 // utils
 import { TranslateService } from '@ngx-translate/core';
+import { AdMob } from '@ionic-native/admob';
 
 @Component({
   selector: 'page-timer-list',
@@ -53,6 +54,7 @@ export class TimerListPage {
     public translate: TranslateService,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
+    public admob: AdMob,
   ){
     this.rootNavCtrl = navParams.get('rootNavCtrl');
 

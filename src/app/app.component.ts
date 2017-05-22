@@ -26,6 +26,7 @@ import { Network } from '@ionic-native/network';
 import { Storage } from '@ionic/storage';
 import { UUID } from 'angular2-uuid';
 
+import { AdMob } from '@ionic-native/admob';
 // services
 
 @Component({
@@ -43,21 +44,6 @@ export class MyApp implements OnInit{
       name: 'Full page',
       page: LoginPage,
       params: { icons: true, titles: true, pageTitle: 'Full page' }
-    },
-    {
-      name: 'Full - Title only',
-      page: LoginPage,
-      params: { icons: false, titles: true }
-    },
-    {
-      name: 'Full - Icons only',
-      page: LoginPage,
-      params: { icons: true, titles: false }
-    },
-    {
-      name: 'Partial nav',
-      page: LoginPage,
-      params: { icons: true, titles: true }
     },
     {
       name: 'clear',
@@ -86,9 +72,11 @@ export class MyApp implements OnInit{
     public network: Network,
     public events: Events,
     public storage: Storage,
+    public admob: AdMob,
   ){
-    translate.addLangs(["en", "ko"]);
+    translate.addLangs(["en", "ko", "fr", "hi", "ja", "pt", "zh"]);
     translate.setDefaultLang('en');
+    // translate.setDefaultLang('ko');
     this.initFirebase();
 
     platform.ready()
@@ -110,6 +98,7 @@ export class MyApp implements OnInit{
         this.initNavFirebase();
       }
       this.initNetwork();
+      this.initAdMob();
     });//platform.ready()
 
   }
@@ -142,16 +131,10 @@ export class MyApp implements OnInit{
         console.log(res);
         let message: any;
 
-        if (this.platform.is('ios')) {
-            message = res.aps.alert;
-        }
-        else{
-            message = res.body;
-        }
+        if (this.platform.is('ios')) { message = res.aps.alert; }
+        else{ message = res.body; }
 
-        if (message.replace(/ /g,'') == ''){
-          return ;
-        }
+        if (message.replace(/ /g,'') == ''){ return ; }
 
         let alert = this.alertCtrl.create({
           title: 'All timer',
@@ -170,11 +153,39 @@ export class MyApp implements OnInit{
   initGlobalization(){    // config translate
     this.globalization.getPreferredLanguage()
     .then((res) => {
-      let userLang = res.value.split('-')[0];
-      userLang = /(en|ko)/gi.test(userLang) ? userLang : 'en';
+      let userLang: string;
+
+      if(res.value.includes("zh")){
+        if(res.value.includes("CN") || res.value.includes("Hans")){
+          userLang = 'zh-Hans';
+        }else{
+          userLang = 'zh-Hant';
+        }
+      }else{
+        userLang = res.value.split('-')[0];
+        userLang = /(en|fr|hi|ja|ko|pt)/gi.test(userLang) ? userLang : 'en';
+      }
+      console.log('initGlobalization', res.value, userLang);
       this.translate.use(userLang);
-      // this.translate.use('ko');
     })
+  }
+
+  initAdMob(){
+    let adId;
+
+    if(this.platform.is('android')) {
+      adId = 'ca-app-pub-8126362785815437/7203276103';
+    } else if (this.platform.is('ios')) {
+      adId = 'ca-app-pub-8126362785815437/8680009301';
+    }
+
+    this.admob.setOptions({
+      autoShow: true,
+      isTesting: false,
+      position: 8
+    })
+
+    this.admob.createBanner({ adId: adId })
   }
 
   ngOnInit() {

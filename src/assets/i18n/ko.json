@@ -1,7 +1,7 @@
 {
   "IntroSlider": {
     "Slider1" :{
-      "Title": "슈퍼 타이머",
+      "Title": "올 타이머",
       "Description": "필요한 모든 타이머를 생성, 등록, 실행 할 수 있으며 타인과 공유가능합니다."
     },
     "Slider2" :{
@@ -111,7 +111,8 @@
   },
   "Timer":{
     "simple-view":"간단히 보기",
-    "repeat-count":"반복"
+    "repeat-count":"반복",
+    "current-timer":"현재"
   },
   "Common":{
     "AlertTitle":{
@@ -141,8 +142,8 @@
   },
   "Default":{
     "Timer":{
-      "Name":"슈퍼타이머",
-      "Summary":"슈퍼타이머 예제입니다. 마음껏 이용하세요",
+      "Name":"올 타이머",
+      "Summary":"타이머 예제입니다. 마음껏 이용하세요",
       "Title":"타이머",
       "Detail":"첫번째 타이머입니다. 시간을 선택해 보세요"
     }

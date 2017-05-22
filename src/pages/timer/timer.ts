@@ -22,6 +22,7 @@ import { Vibration } from '@ionic-native/vibration';
 
 import { Config } from '../../app/config';
 import { Globals } from '../../app/globals';
+import { AdMob } from '@ionic-native/admob';
 
 // pages
 import { LoginPage } from '../login/login';
@@ -108,6 +109,7 @@ export class TimerPage {
     public vibration: Vibration,
     public globals: Globals,
     public config: Config,
+    public admob: AdMob,
   ) {
     events.subscribe('timer:update-list', (_category, _timer) => {
       console.log('timer:update-list');
@@ -117,11 +119,6 @@ export class TimerPage {
     events.subscribe('timer:remove-list', (_category, _timer) => {
       console.log('timer:remove-list');
       this.removeTimer(_timer);
-    });
-
-    events.subscribe('timer:stop', () => {
-      console.log('timer:stop');
-      this.onStopAllTimer();
     });
   }
 
@@ -134,6 +131,10 @@ export class TimerPage {
     }
     this.initTimerItems();
     this.setBtnStatus();
+  }
+
+  ionViewDidEnter(){
+    console.log('ionViewDidEnter', this.content._scroll, this.config.RUNNING_TIMER[this.navParams.get('timer').timerId]);
   }
 
   initTimer(){
@@ -156,7 +157,7 @@ export class TimerPage {
 
   updateTimerList(_timer){
     if(this.timer.timerId == _timer.timerId){
-      this.onStopAllTimer();
+      this.onStopAllTimer(_timer);
       delete this.config.RUNNING_TIMER[this.timer.timerId];
 
       this.storageService.serviceGetTimer(this.timer.timerId)
@@ -169,22 +170,28 @@ export class TimerPage {
     }
   }
 
-  onStopAllTimer(){
-    let timer :any = this.config.RUNNING_TIMER[this.timer.timerId];
-    if(timer===undefined){return;}
-    let timerItems = timer.timerItems;
+  onStopAllTimer(timer){
+    let _timer :any = this.config.RUNNING_TIMER[timer.timerId];
 
-    this.timerItems.forEach((el, idx)=>{
-      el.nextTimer = false;
-      if(el.status == 'running'){
-        el.btnStatus = 'end';
-        this.goTimerAction(el)
+    if(_timer!==undefined){
+      for(let key in _timer.timerItems){
+        let el = _timer.timerItems[key];
+        el.nextTimer = false;
+        if(el.status == 'running'){
+          this.timerAction({item:el, status: "e"});
+          el.btnStatus = "start";
+          this.btnStatus = 'start';
+          this.executeNextTimer(el);
+
+          // el.btnStatus = 'end';
+          // this.goTimerAction(el)
+        }
       }
-    })
+    }
   }
 
   removeTimer(_timer){
-    this.onStopAllTimer();
+    this.onStopAllTimer(_timer);
     delete this.config.RUNNING_TIMER[_timer.timerId];
   }
 
@@ -215,6 +222,20 @@ export class TimerPage {
     console.log('ionViewDidLeave')
   }
 
+  onGoCurrentTimer(){
+    let _timer = this.getNextTimerUI();
+    if(_timer.status == 'running'){
+      this.timerAction({item: _timer, status: "p"});
+      this.timerAction({item: _timer, status: "r"});
+    }
+    this.setPositionForTimer(_timer);
+  }
+
+  onAllTimerCancel(){
+    this.onStopAllTimer(this.timer);
+    delete this.config.RUNNING_TIMER[this.timer.timerId];
+  }
+
   onStartAllTimer(){
     let _timer = this.getNextTimerUI();
 
@@ -229,7 +250,6 @@ export class TimerPage {
       this.btnStatus = 'pause';
       _timer.btnStatus = 'start';
       this.goTimerAction(_timer);
-      this.setPositionForTimer(_timer);
       break;
       case 'pause':
       this.btnStatus = 'resume';
@@ -242,10 +262,10 @@ export class TimerPage {
       case 'end':
       this.btnStatus = 'start';
       _timer.btnStatus = 'start';
-      this.setPositionForTimer(_timer);
       this.goTimerAction(_timer);
       break;
     }
+    this.setPositionForTimer(_timer);
   }
 
   onBack(){
@@ -380,9 +400,11 @@ export class TimerPage {
   setPositionForTimer(timer){
     let doc:any = document;
     let el:any = doc.getElementById('timerId_' + timer.id);
-    if(el === null || this.content._scroll === null) {return;}
-    let yOffset = el.offsetTop;
-    this.content.scrollTo(0, yOffset - 10, 1000)
+
+    if(el === null || this.content._scroll === null) {
+      return;
+    }
+    this.content.scrollTo(0, el.offsetTop - 10, 1000)
   }
 
   doNextAction(cb){
@@ -562,7 +584,6 @@ export class TimerPage {
       if(item.notification.enable) {
         this.popLocalNotifications(item)
       }
-      // if(this.isAllTimerSleep()){this.utilsBackGroundMode(false)}
       break;
     }
   }
@@ -579,19 +600,16 @@ export class TimerPage {
           item.btnStatus = "end";
           this.goTimerAction(item);
         }
-        // this.utilsBackGroundMode(true);
       })
       break;
 
       case "p":
       item.status = "ready";
       item.subscribtion.unsubscribe();
-      // this.utilsBackGroundMode(false);
       break;
 
       case "r":
       let _current = item.current;
-      // this.utilsBackGroundMode(true);
       item.subscribtion = item.timer.subscribe(t => {
         item.current = t + _current;
         item.status = "running";
@@ -600,7 +618,6 @@ export class TimerPage {
           item.btnStatus = "end";
           this.goTimerAction(item);
         }
-        // this.utilsBackGroundMode(true);
       })
       break;
 
@@ -609,8 +626,6 @@ export class TimerPage {
       item.status = "complete";
       item.current = 0;
       item.timeSet= this.utilsTimerStringFormat({max: item.max, current: item.current});
-      // this.utilsBackGroundMode(false);
-      // item.callback()
       break;
     }
   }
