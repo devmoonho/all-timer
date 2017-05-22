@@ -69,9 +69,6 @@ export class HomePage {
   }
 
   ionViewWillEnter(){
-    this.admob.hideBanner();
-    this.admob.showBanner(8);
-
     this.storageService.serviceGetAllTimer()
     .then((res)=>{
       this.timer = res;

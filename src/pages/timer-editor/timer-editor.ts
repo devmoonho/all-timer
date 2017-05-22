@@ -210,6 +210,9 @@ export class TimerEditorPage{
     let detailModal = this.modalCtrl.create(TimerEditorDetailModal, { timer : _timer, mode: this.navParams.get('mode'), category: this.navParams.get('category')});
     detailModal.onDidDismiss(data => {
       console.log(data);
+
+      this.admob.hideBanner();
+      this.admob.showBanner(8);
     });
     detailModal.present();
   }
@@ -345,6 +348,10 @@ export class TimerEditorPage{
     let colorPickerModal = this.modalCtrl.create(ColorPickerModal);
     colorPickerModal.onDidDismiss(data => {
       this.getCurrentTimer().color = data.color;
+
+      this.admob.hideBanner();
+      this.admob.showBanner(8);
+
       console.log(data);
     });
     colorPickerModal.present();

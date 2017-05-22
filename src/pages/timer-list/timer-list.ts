@@ -75,9 +75,6 @@ export class TimerListPage {
   }
 
   ionViewWillEnter(){
-    this.admob.hideBanner();
-    this.admob.showBanner(8);
-
     this.currentCategory = this.navParams.get('category');
     this.updateTimerList(this.currentCategory.value);
   }

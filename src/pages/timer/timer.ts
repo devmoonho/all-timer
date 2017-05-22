@@ -134,9 +134,6 @@ export class TimerPage {
   }
 
   ionViewDidEnter(){
-    this.admob.hideBanner();
-    this.admob.showBanner(8);
-
     console.log('ionViewDidEnter', this.content._scroll, this.config.RUNNING_TIMER[this.navParams.get('timer').timerId]);
   }
 

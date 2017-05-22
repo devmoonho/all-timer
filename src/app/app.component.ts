@@ -74,8 +74,9 @@ export class MyApp implements OnInit{
     public storage: Storage,
     public admob: AdMob,
   ){
-    translate.addLangs(["en", "ko"]);
+    translate.addLangs(["en", "ko", "fr", "hi", "ja", "pt", "zh"]);
     translate.setDefaultLang('en');
+    // translate.setDefaultLang('ko');
     this.initFirebase();
 
     platform.ready()
@@ -152,8 +153,19 @@ export class MyApp implements OnInit{
   initGlobalization(){    // config translate
     this.globalization.getPreferredLanguage()
     .then((res) => {
-      let userLang = res.value.split('-')[0];
-      userLang = /(en|ko)/gi.test(userLang) ? userLang : 'en';
+      let userLang: string;
+
+      if(res.value.includes("zh")){
+        if(res.value.includes("CN") || res.value.includes("Hans")){
+          userLang = 'zh-Hans';
+        }else{
+          userLang = 'zh-Hant';
+        }
+      }else{
+        userLang = res.value.split('-')[0];
+        userLang = /(en|fr|hi|ja|ko|pt)/gi.test(userLang) ? userLang : 'en';
+      }
+      console.log('initGlobalization', res.value, userLang);
       this.translate.use(userLang);
     })
   }
@@ -170,7 +182,7 @@ export class MyApp implements OnInit{
     this.admob.setOptions({
       autoShow: true,
       isTesting: false,
-      position: 8 
+      position: 8
     })
 
     this.admob.createBanner({ adId: adId })

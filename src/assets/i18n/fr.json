@@ -1,0 +1,151 @@
+{
+  "IntroSlider": {
+    "Slider1" :{
+      "Title": "Toute la minuterie",
+      "Description": "Vous pouvez créer, enregistrer et exécuter tous les temporisateurs nécessaires et les partager avec les autres."
+    },
+    "Slider2" :{
+      "Title": "Minuterie de cuisson",
+      "Description": "ous pouvez trouver une minuterie pour la cuisson le long de la recette."
+    },
+    "Slider3" :{
+      "Title": "Chronomètre de test",
+      "Description": "Il existe une minuterie pour le temps de test mondial, afin que vous puissiez répondre efficacement aux tests."
+    },
+    "Slider4" :{
+      "Title": "Temporisateur d'exercice",
+      "Description": "Il existe une minuterie pour effectuer efficacement plusieurs exercices. Commencez maintenant.",
+      "Start": "DÉBUT"
+    }
+  },
+  "Login": {
+    "Header":{
+      "Title": "S'identifier"
+    },
+    "Content":{
+      "UserEmail":"Courrier électronique de l'utilisateur",
+      "Password":"Mot de passe",
+      "BtnLogin":"S'identifier",
+      "ForgetPassword":"Mot de passe oublié",
+      "SignUp":"S'inscrire"
+    },
+    "Alert":{
+      "ResetPasswordTitle":"réinitialiser le mot de passe",
+      "ResetPasswordMessage":"Entrez votre email pour réinitialiser le mot de passe et vérifiez votre courrier électronique",
+      "InputEmail":"Courrier électronique de l'utilisateur",
+      "BtnCancel":"Annuler",
+      "BtnOk":"D'accord",
+      "ResetPasswordErrorTitle":"Restaurer l'erreur de mot de passe",
+      "SendEmailTitle":"Envoyer un courriel",
+      "SendEmailMessage":"Un courriel a été envoyé. Veuillez le vérifier.",
+      "LogoutTitle":"Connectez - Out",
+      "LogoutMessage":"LOgged out.",
+      "LogoutErrorTitle":"Erreur de déconnexion",
+      "LogoutErrorMessage":"Une erreur s'est produite lors de la connexion."
+    }
+  },
+  "SignUp" :{
+    "Header": {
+      "Title": "S'inscrire"
+    },
+    "Content":{
+      "UserName":"Nom d'utilisateur",
+      "UserEmail":"Courrier électronique de l'utilisateur",
+      "Password":"Mot de passe",
+      "BtnSignUp":"S'inscrire"
+    },
+    "Alert":{
+      "LoginErrorTitle":"Erreur d'inscription",
+      "CreateUserErrorTitle":"Créer une erreur utilisateur"
+    }
+  },
+  "Main" :{
+    "workout": "FAIRE DES EXERCICES",
+    "workout-detail": "FAIRE DES EXERCICES",
+    "cooking": "CUISINE",
+    "cooking-detail": "CUISINE",
+    "study": "ÉTUDE",
+    "study-detail": "ÉTUDE",
+    "etc": "ETC",
+    "etc-detail": "ETC",
+    "listings": "Listes"
+  },
+  "FirebaseMessage":{
+    "auth/account-exists-with-different-credential": "Un compte existe déjà avec la même adresse de messagerie",
+    "auth/user-not-found": "Impossible de trouver un utilisateur enregistré.",
+    "auth/wrong-password": "Le mot de passe est invalide",
+    "auth/invalid-email": "L'adresse email est mal formatée.",
+    "auth/email-already-in-use": "Il existe déjà un compte avec l'adresse électronique donnée.",
+    "auth/operation-not-allowed": "Les comptes de messagerie / mot de passe ne sont pas activés.",
+    "auth/weak-password": "Le mot de passe doit comporter au moins 6 caractères."
+  },
+  "MobileMessage":{
+    "Congratuation": "Toutes nos félicitations",
+    "SuccessCreateUser": "Félicitations pour vous joindre à nous. Rendez-vous chez vous après 3 secondes.",
+    "SuccessLogin": "Bienvenue dans All timer",
+    "RemoveTimer": "Êtes-vous d'accord pour supprimer cette minuterie?",
+    "ShareTimer": "Êtes-vous d'accord de partager cette minuterie?",
+    "DownloadTimer": "Êtes-vous d'accord pour télécharger cette minuterie?",
+    "Wait": "S'il vous plaît, attendez.."
+  },
+  "TimerEditor":{
+    "timer-name":"NOM DE TIMER",
+    "summary":"RÉSUMÉ",
+    "category-title":"CATÉGORIE",
+    "timer-list":"LISTE DE TIMER",
+    "please-enter":"Entrez s'il vous plait",
+    "category-list":{
+      "workout":"Faire des exercices",
+      "study":"Étude",
+      "cooking":"Cuisine",
+      "etc":"Etc"
+    },
+    "sound":"DU SON",
+    "title":"TITRE",
+    "set-time":"RÉGLER LE TEMPS",
+    "detail":"DÉTAIL",
+    "choose-color":"CHOISIR LA COULEUR",
+    "color":"COULEUR",
+    "choose-picture":"CHOOSE PICTURE",
+    "Couleur":"COULEUR"
+  },
+  "Timer":{
+    "simple-view":"SIMPLE",
+    "repeat-count":"RÉPÉTER",
+    "current-timer":"ACTUEL"
+  },
+  "Common":{
+    "AlertTitle":{
+        "Information":"Information",
+        "Warning":"Attention",
+        "Notification":"Notification",
+        "Error":"Erreur"
+    },
+    "Save":"ENREGISTRER",
+    "Ok":"D'accord",
+    "Cancel":"ANNULER",
+    "Remove":"RETIRER",
+    "Yes":"OUI",
+    "No":"NON",
+    "Confirm":"CONFIRMER",
+    "Agree":"SE METTRE D'ACCORD",
+    "Disagree":"ÊTRE EN DÉSACCORD",
+    "Create":"CRÉER",
+    "Back":"ARRIÈRE",
+    "Edit":"MODIFIER",
+    "start":"DÉBUT",
+    "stop":"ARRÊTEZ",
+    "resume":"Résumé",
+    "pause":"PAUSE",
+    "search":"CHERCHER",
+    "download":"TÉLÉCHARGER"
+  },
+  "Default":{
+    "Timer":{
+      "Name":"All Timer",
+      "Summary":"Il s'agit d'un exemple de minuterie",
+      "Title":"Minuteur",
+      "Detail":"Ceci est le premier temporisateur, fixons le temps"
+    }
+  }
+}

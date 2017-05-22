@@ -1,0 +1,151 @@
+{
+  "IntroSlider": {
+    "Slider1" :{
+      "Title": "Todos os temporizadores",
+      "Description": "Você pode criar, registrar e executar todos os temporizadores necessários e compartilhá-los com outras pessoas."
+    },
+    "Slider2" :{
+      "Title": "Temporizador de cozinha",
+      "Description": "Você pode encontrar um temporizador para cozinhar ao longo da receita."
+    },
+    "Slider3" :{
+      "Title": "teste h",
+      "Description": "Há um temporizador para o tempo de teste em todo o mundo, para que você possa responder eficazmente aos testes."
+    },
+    "Slider4" :{
+      "Title": "Temporizador de exercício",
+      "Description": "Há um temporizador para efetivamente realizar vários exercícios. Vamos começar agora.",
+      "Start": "COMEÇAR"
+    }
+  },
+  "Login": {
+    "Header":{
+      "Title": "Entrar"
+    },
+    "Content":{
+      "UserEmail":"E-mail do usuário",
+      "Password":"Senha",
+      "BtnLogin":"Entrar",
+      "ForgetPassword":"Esqueceu a senha",
+      "SignUp":"inscrever-se"
+    },
+    "Alert":{
+      "ResetPasswordTitle":"Trocar a senha",
+      "ResetPasswordMessage":"Digite seu e-mail para redefinir a senha e verifique seu e-mail",
+      "InputEmail":"E-mail do usuário",
+      "BtnCancel":"Cancelar",
+      "BtnOk":"Está bem",
+      "ResetPasswordErrorTitle":"Redefinir Erro de Senha",
+      "SendEmailTitle":"Enviar email",
+      "SendEmailMessage":"Um email foi enviado. Por favor, verifique.",
+      "LogoutTitle":"Sair",
+      "LogoutMessage":"Desconectado.",
+      "LogoutErrorTitle":"Erro de Logout",
+      "LogoutErrorMessage":"Ocorreu um erro ao sair."
+    }
+  },
+  "SignUp" :{
+    "Header": {
+      "Title": "inscrever-se"
+    },
+    "Content":{
+      "UserName":"Nome do usuário",
+      "UserEmail":"E-mail do usuário",
+      "Password":"Senha",
+      "BtnSignUp":"inscrever-se"
+    },
+    "Alert":{
+      "LoginErrorTitle":"Erro de inscrição",
+      "CreateUserErrorTitle":"Criar erro de usuário"
+    }
+  },
+  "Main" :{
+    "workout": "EXERCITE-SE",
+    "workout-detail": "EXERCITE-SE",
+    "cooking": "COZINHANDO",
+    "cooking-detail": "COZINHANDO",
+    "study": "ESTUDE",
+    "study-detail": "ESTUDE",
+    "etc": "ETC",
+    "etc-detail": "ETC",
+    "listings": "Listagens"
+  },
+  "FirebaseMessage":{
+    "auth/account-exists-with-different-credential": "Já existe uma conta com o mesmo endereço de e-mail",
+    "auth/user-not-found": "Não foi possível encontrar o usuário registrado.",
+    "auth/wrong-password": "A senha é inválida",
+    "auth/invalid-email": "O endereço de e-mail está mal formatado.",
+    "auth/email-already-in-use": "Já existe uma conta com o endereço de e-mail fornecido.",
+    "auth/operation-not-allowed": "As contas de email / senha não estão habilitadas.",
+    "auth/weak-password": "A senha deve ter pelo menos 6 caracteres."
+  },
+  "MobileMessage":{
+    "Congratuation": "Parabéns",
+    "SuccessCreateUser":"Parabéns por se juntar a nós. Vá para casa depois de 3 segundos.",
+    "SuccessLogin":"Bem-vindo ao All timer",
+    "RemoveTimer":"Você concorda em remover este temporizador?",
+    "ShareTimer":"Você concorda em compartilhar este temporizador?",
+    "DownloadTimer":"Você concorda em fazer o download deste temporizador?",
+    "Wait":"Por favor, espere.."
+  },
+  "TimerEditor":{
+    "timer-name":"NOME DO TEMPORIZADOR",
+    "summary":"RESUMO",
+    "category-title":"CATEGORIA",
+    "timer-list":"LISTA DE TEMPORIZADORES",
+    "please-enter":"Por favor, insira",
+    "category-list":{
+      "workout":"Exercite-se",
+      "study":"Estude",
+      "cooking":"Cozinhando",
+      "etc":"Etc"
+    },
+    "sound":"SOM",
+    "title":"TÍTULO",
+    "set-time":"DEFINIR TEMPO",
+    "detail":"DETALHE",
+    "choose-color":"ESCOLHA A COR",
+    "color":"COR",
+    "choose-picture":"ESCOLHA A IMAGEM",
+    "Couleur":"COR"
+  },
+  "Timer":{
+    "simple-view":"SIMPLES",
+    "repeat-count":"REPETIR",
+    "current-timer":"ATUAL"
+  },
+  "Common":{
+    "AlertTitle":{
+        "Information":"Em formação",
+        "Warning":"Atenção",
+        "Notification":"Notificação",
+        "Error":"Erro"
+    },
+    "Save":"SALVE",
+    "Ok":"Está bem",
+    "Cancel":"CANCELAR",
+    "Remove":"REMOVER",
+    "Yes":"SIM",
+    "No":"NÃO",
+    "Confirm":"CONFIRME",
+    "Agree":"ACEITA",
+    "Disagree":"Discordo",
+    "Create":"CRIO",
+    "Back":"COSTAS",
+    "Edit":"EDITAR",
+    "start":"COMEÇAR",
+    "stop":"PARE",
+    "resume":"CURRÍCULO",
+    "pause":"PAUSA",
+    "search":"PESQUISA",
+    "download":"DOWNLOAD"
+  },
+  "Default":{
+    "Timer":{
+      "Name":"Todos os temporizadores",
+      "Summary":"Este é um temporizador de amostra",
+      "Title":"horas",
+      "Detail":"Este é o primeiro temporizador, vamos ajustar o tempo"
+    }
+  }
+}

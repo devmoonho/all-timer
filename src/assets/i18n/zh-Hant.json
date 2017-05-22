@@ -1,0 +1,151 @@
+{
+  "IntroSlider": {
+    "Slider1" :{
+      "Title": "所有定時器",
+      "Description": "您可以創建，註冊和執行所有必需的計時器並與他人共享。"
+    },
+    "Slider2" :{
+      "Title": "烹飪計時器",
+      "Description": "您可以在食譜中找到一個定時器進行烹飪。"
+    },
+    "Slider3" :{
+      "Title": "測試計時器",
+      "Description": "有一個全球測試時間的定時器，所以你可以有效地回應測試。"
+    },
+    "Slider4" :{
+      "Title": "運動計時器",
+      "Description": "有一個定時器來有效地進行各種練習。現在開始吧。",
+      "Start": "開始"
+    }
+  },
+  "Login": {
+    "Header":{
+      "Title": "登錄"
+    },
+    "Content":{
+      "UserEmail":"用戶電子郵件",
+      "Password":"密碼",
+      "BtnLogin":"登錄",
+      "ForgetPassword":"忘記密碼",
+      "SignUp":"註冊"
+    },
+    "Alert":{
+      "ResetPasswordTitle":"重設密碼",
+      "ResetPasswordMessage":"輸入您的電子郵件重置密碼並檢查您的電子郵件",
+      "InputEmail":"用戶電子郵件",
+      "BtnCancel":"取消",
+      "BtnOk":"好",
+      "ResetPasswordErrorTitle":"重置密碼錯誤",
+      "SendEmailTitle":"發電子郵件",
+      "SendEmailMessage":"已發送電子郵件。請檢查。",
+      "LogoutTitle":"登出",
+      "LogoutMessage":"登出。",
+      "LogoutErrorTitle":"註銷錯誤",
+      "LogoutErrorMessage":"註銷時發生錯誤。"
+    }
+  },
+  "SignUp" :{
+    "Header": {
+      "Title": "註冊"
+    },
+    "Content":{
+      "UserName":"用戶名",
+      "UserEmail":"用戶電子郵件",
+      "Password":"密碼",
+      "BtnSignUp":"註冊"
+    },
+    "Alert":{
+      "LoginErrorTitle":"註冊錯誤",
+      "CreateUserErrorTitle":"創建用戶錯誤"
+    }
+  },
+  "Main" :{
+    "workout": "鍛煉",
+    "workout-detail": "鍛煉",
+    "cooking": "烹飪",
+    "cooking-detail": "烹飪",
+    "study": "研究",
+    "study-detail": "研究",
+    "etc": "等等",
+    "etc-detail": "等等",
+    "listings": "房源"
+  },
+  "FirebaseMessage":{
+    "auth/account-exists-with-different-credential": "一個帳戶已經存在，具有相同的電子郵件地址",
+    "auth/user-not-found": "無法找到註冊用戶。",
+    "auth/wrong-password": "密碼無效",
+    "auth/invalid-email": "電子郵件地址格式不正確。",
+    "auth/email-already-in-use": "已經有一個帳戶與給定的電子郵件地址。",
+    "auth/operation-not-allowed": "電子郵件/密碼帳戶未啟用。",
+    "auth/weak-password": "密碼應至少為6個字符。"
+  },
+  "MobileMessage":{
+    "Congratuation": "祝賀",
+    "SuccessCreateUser":"恭喜您加入我們。3秒後回家。",
+    "SuccessLogin":"歡迎來到All定時器",
+    "RemoveTimer":"你同意刪除這個計時器嗎？",
+    "ShareTimer":"你同意分享這個計時器嗎？",
+    "DownloadTimer":"你同意下載這個計時器嗎？",
+    "Wait":"請稍候.."
+  },
+  "TimerEditor":{
+    "timer-name":"定時器名稱",
+    "summary":"概要",
+    "category-title":"類別",
+    "timer-list":"定時器列表",
+    "please-enter":"請輸入",
+    "category-list":{
+      "workout":"鍛煉",
+      "study":"研究",
+      "cooking":"烹飪",
+      "etc":"等等"
+    },
+    "sound":"聲音",
+    "title":"標題",
+    "set-time":"設置時間",
+    "detail":"詳情",
+    "choose-color":"選擇顏色",
+    "color":"顏色",
+    "choose-picture":"選擇圖片",
+    "Couleur":"顏色"
+  },
+  "Timer":{
+    "simple-view":"簡單",
+    "repeat-count":"重複",
+    "current-timer":"當前"
+  },
+  "Common":{
+    "AlertTitle":{
+        "Information":"信息",
+        "Warning":"警告",
+        "Notification":"通知",
+        "Error":"錯誤"
+    },
+    "Save":"保存",
+    "Ok":"好",
+    "Cancel":"取消",
+    "Remove":"去掉",
+    "Yes":"是",
+    "No":"沒有",
+    "Confirm":"確認",
+    "Agree":"同意",
+    "Disagree":"不同意",
+    "Create":"創建",
+    "Back":"背部",
+    "Edit":"編輯",
+    "start":"開始",
+    "stop":"停",
+    "resume":"恢復",
+    "pause":"暫停",
+    "search":"搜索",
+    "download":"下載"
+  },
+  "Default":{
+    "Timer":{
+      "Name":"所有定時器",
+      "Summary":"這是一個抽樣計時器",
+      "Title":"計時器",
+      "Detail":"這是第一個定時器，讓我們設定時間"
+    }
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "IntroSlider": {
+    "Slider1" :{
+      "Title": "すべてのタイマー",
+      "Description": "必要なタイマーを作成、登録、実行し、他のタイマーと共有することができます。"
+    },
+    "Slider2" :{
+      "Title": "調理タイマー",
+      "Description": "レシピに沿って調理するタイマーを見つけることができます。"
+    },
+    "Slider3" :{
+      "Title": "テストタイマー",
+      "Description": "世界中のテスト時間用のタイマーがあるので、テストに効果的に対応できます。"
+    },
+    "Slider4" :{
+      "Title": "エクササイズタイマー",
+      "Description": "さまざまな運動を効果的に行うためのタイマーがあります。今すぐ始めましょう。",
+      "Start": "開始"
+    }
+  },
+  "Login": {
+    "Header":{
+      "Title": "ログイン"
+    },
+    "Content":{
+      "UserEmail":"ユーザーメール",
+      "Password":"パスワード",
+      "BtnLogin":"ログイン",
+      "ForgetPassword":"パスワードをお忘れですか",
+      "SignUp":"サインアップ"
+    },
+    "Alert":{
+      "ResetPasswordTitle":"パスワードを再設定する",
+      "ResetPasswordMessage":"パスワードをリセットするためのメールアドレスを入力し、メールを確認してください",
+      "InputEmail":"ユーザーメール",
+      "BtnCancel":"キャンセル",
+      "BtnOk":"オッケー",
+      "ResetPasswordErrorTitle":"パスワードのリセットエラー",
+      "SendEmailTitle":"メールを送る",
+      "SendEmailMessage":"電子メールが送信されました。確認してください。",
+      "LogoutTitle":"ログアウト",
+      "LogoutMessage":"ログアウトしました。",
+      "LogoutErrorTitle":"ログアウトエラー",
+      "LogoutErrorMessage":"ログアウト中にエラーが発生しました。"
+    }
+  },
+  "SignUp" :{
+    "Header": {
+      "Title": "サインアップ"
+    },
+    "Content":{
+      "UserName":"ユーザー名",
+      "UserEmail":"ユーザーメール",
+      "Password":"パスワード",
+      "BtnSignUp":"サインアップ"
+    },
+    "Alert":{
+      "LoginErrorTitle":"サインアップエラー",
+      "CreateUserErrorTitle":"ユーザーエラーを作成する"
+    }
+  },
+  "Main" :{
+    "workout": "いい結果になる",
+    "workout-detail": "いい結果になる",
+    "cooking": "料理",
+    "cooking-detail": "料理",
+    "study": "調査",
+    "study-detail": "調査",
+    "etc": "等",
+    "etc-detail": "等",
+    "listings": "リスト"
+  },
+  "FirebaseMessage":{
+    "auth/account-exists-with-different-credential": "同じ電子メールアドレスを持つアカウントがすでに存在します",
+    "auth/user-not-found": "登録ユーザーを見つけることができません。",
+    "auth/wrong-password": "パスワードが無効です",
+    "auth/invalid-email": "電子メールアドレスの形式が間違っています。",
+    "auth/email-already-in-use": "指定された電子メールアドレスを持つアカウントが既に存在します。",
+    "auth/operation-not-allowed": "電子メール/パスワードアカウントは有効になっていません。",
+    "auth/weak-password": "パスワードは6文字以上にする必要があります。"
+  },
+  "MobileMessage":{
+    "Congratuation": "おめでとう",
+    "SuccessCreateUser":"あなたが私たちに加わることをお祝いします.3秒後に帰宅します。",
+    "SuccessLogin":"すべてのタイマーへようこそ",
+    "RemoveTimer":"このタイマーを削除することに同意しますか？",
+    "ShareTimer":"このタイマーを共有することに同意しますか？",
+    "DownloadTimer":"このタイマーをダウンロードすることに同意しますか？",
+    "Wait":"お待ちください.."
+  },
+  "TimerEditor":{
+    "timer-name":"タイマー名",
+    "summary":"概要",
+    "category-title":"カテゴリー",
+    "timer-list":"タイマーリスト",
+    "please-enter":"入力してください",
+    "category-list":{
+      "workout":"いい結果になる",
+      "study":"調査",
+      "cooking":"料理",
+      "etc":"等"
+    },
+    "sound":"音",
+    "title":"タイトル",
+    "set-time":"時間を設定する",
+    "detail":"詳細",
+    "choose-color":"色を選んでください",
+    "color":"色",
+    "choose-picture":"写真を選んでください",
+    "Couleur":"色"
+  },
+  "Timer":{
+    "simple-view":"単純",
+    "repeat-count":"繰り返す",
+    "current-timer":"現在"
+  },
+  "Common":{
+    "AlertTitle":{
+        "Information":"情報",
+        "Warning":"警告",
+        "Notification":"お知らせ",
+        "Error":"エラー"
+    },
+    "Save":"セーブ",
+    "Ok":"オッケー",
+    "Cancel":"キャンセル",
+    "Remove":"削除",
+    "Yes":"はい",
+    "No":"いいえ",
+    "Confirm":"確認",
+    "Agree":"同意する",
+    "Disagree":"不信",
+    "Create":"作成する",
+    "Back":"バック",
+    "Edit":"編集",
+    "start":"開始",
+    "stop":"やめる",
+    "resume":"履歴書",
+    "pause":"一時停止する",
+    "search":"サーチ",
+    "download":"ダウンロード"
+  },
+  "Default":{
+    "Timer":{
+      "Name":"すべてのタイマー",
+      "Summary":"これはサンプルタイマーです",
+      "Title":"時間",
+      "Detail":"これは最初のタイマーです、時間を設定しましょう"
+    }
+  }
+}
