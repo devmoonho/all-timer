@@ -14,6 +14,12 @@
         "cordova-plugin-admobpro": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
+        "cordova-plugin-background-mode": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
@@ -50,13 +56,10 @@
         "de.appplant.cordova.plugin.local-notification": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
+        "es6-promise-plugin": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "cordova-plugin-background-mode": {
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "cordova-plugin-console": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     },
@@ -65,9 +68,6 @@
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "cordova-plugin-app-event": {
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "es6-promise-plugin": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     }

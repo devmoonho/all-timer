@@ -31,9 +31,6 @@
         "cordova-plugin-nativeaudio": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
-        "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
         "cordova-plugin-screen-orientation": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
@@ -55,7 +52,13 @@
         "de.appplant.cordova.plugin.local-notification": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
+        "es6-promise-plugin": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
         "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.halflemon.alltimer"
+        },
+        "cordova-plugin-network-information": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     },
@@ -64,9 +67,6 @@
             "PACKAGE_NAME": "com.halflemon.alltimer"
         },
         "cordova-plugin-app-event": {
-            "PACKAGE_NAME": "com.halflemon.alltimer"
-        },
-        "es6-promise-plugin": {
             "PACKAGE_NAME": "com.halflemon.alltimer"
         }
     }

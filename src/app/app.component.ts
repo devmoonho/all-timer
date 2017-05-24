@@ -76,7 +76,7 @@ export class MyApp implements OnInit{
   ){
     translate.addLangs(["en", "ko", "fr", "hi", "ja", "pt", "zh"]);
     translate.setDefaultLang('en');
-    // translate.setDefaultLang('ko');
+    // translate.setDefaultLang('hi');
     this.initFirebase();
 
     platform.ready()
@@ -108,15 +108,11 @@ export class MyApp implements OnInit{
       console.log('network was disconnected :-(', this.network.type);
       this.events.publish('network:disconnected');
     });
-    // stop disconnect watch
-    // disconnectSubscription.unsubscribe();
 
     let connectSubscription = this.network.onConnect().subscribe(() => {
       console.log('network connected!', this.network.type); 
       this.events.publish('network:connected');
       });
-    // stop connect watch
-    // connectSubscription.unsubscribe();
   }
 
   initFirebase(){
@@ -194,6 +190,8 @@ export class MyApp implements OnInit{
         if (!user) {
           console.log("No user is signed in.")
           this.rootPage = StartPage ;
+          // TODO For test
+          // this.rootPage = TabsPage;
         } else {
           console.log(user)
           this.loadingProcessFromLocal();

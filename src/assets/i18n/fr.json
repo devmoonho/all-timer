@@ -142,7 +142,7 @@
   },
   "Default":{
     "Timer":{
-      "Name":"All Timer",
+      "Name":"Toutes les minuteries",
       "Summary":"Il s'agit d'un exemple de minuterie",
       "Title":"Minuteur",
       "Detail":"Ceci est le premier temporisateur, fixons le temps"
