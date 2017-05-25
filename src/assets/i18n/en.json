@@ -80,6 +80,7 @@
     "auth/weak-password": "Password should be at least 6 characters."
   },
   "MobileMessage":{
+    "BackroundMode":"If you use background mode, this mode may consume a lot of battery.",
     "Congratuation": "Congratulations",
     "SuccessCreateUser":"Congratulations on your joining us.Go home after 3 seconds.",
     "SuccessLogin":"Welcome to All timer",

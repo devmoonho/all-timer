@@ -80,6 +80,7 @@
     "auth/weak-password": "密码应至少为6个字符。"
   },
   "MobileMessage":{
+    "BackroundMode":"如果你使用背景模式也可以是电池消耗。",
     "Congratuation": "祝贺",
     "SuccessCreateUser":"恭喜您加入我们。3秒后回家。",
     "SuccessLogin":"欢迎来到All定时器",

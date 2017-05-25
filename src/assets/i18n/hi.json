@@ -80,6 +80,7 @@
     "auth/weak-password": "पासवर्ड कम से कम 6 अक्षरों का होना shoulds।"
   },
   "MobileMessage":{
+    "BackroundMode":"आप पृष्ठभूमि मोड का उपयोग करते हैं यह भी बैटरी लग सकता है।",
     "Congratuation": "बधाई हो",
     "SuccessCreateUser":"बाद 3 अपने में शामिल होने us.Go घर दूसरे के लिए बधाई।",
     "SuccessLogin":"सभी घड़ी में आपका स्वागत है",

@@ -80,6 +80,7 @@
     "auth/weak-password": "Le mot de passe doit comporter au moins 6 caractères."
   },
   "MobileMessage":{
+    "BackroundMode":"Si vous utilisez le mode d'arrière-plan, il peut aussi être consommatrice batterie.",
     "Congratuation": "Toutes nos félicitations",
     "SuccessCreateUser": "Félicitations pour vous joindre à nous. Rendez-vous chez vous après 3 secondes.",
     "SuccessLogin": "Bienvenue dans All timer",

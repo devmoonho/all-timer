@@ -80,6 +80,7 @@
     "auth/weak-password": "パスワードは6文字以上にする必要があります。"
   },
   "MobileMessage":{
+    "BackroundMode":"バックグラウンドモードを使用している場合、バッテリーが消費されることがあります。",
     "Congratuation": "おめでとう",
     "SuccessCreateUser":"あなたが私たちに加わることをお祝いします.3秒後に帰宅します。",
     "SuccessLogin":"すべてのタイマーへようこそ",
